@@ -10,14 +10,17 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  avatar: {type:String},
+
   verifyOtpExpireAt: {
     type: Number,
     default: 0,
-    },
-    isAccountVerified: {
-      type:Boolean,default:false
   },
-resetPassOtp: {
+  isAccountVerified: {
+    type: Boolean,
+    default: false,
+  },
+  resetPassOtp: {
     type: String,
     default: "",
   },

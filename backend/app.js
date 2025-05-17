@@ -4,6 +4,7 @@ require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const  authRouter  = require("./routes/authRoutes");
+const userRouter = require("./routes/userRoutes");
 
 const app = express();
 
@@ -13,10 +14,25 @@ connectDB();
 
 const PORT = process.env.PORT || 3000;
 
+const allowedOrigins = ["http://localhost:5173"];
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ credentials: true, origin: "http://localhost:3000" })); // Add origin for frontend
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+    methods: "GET, POST, PUT, DELETE, OPTIONS",
+    allowedHeaders:
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+  })
+);
 
 // Routes
 app.get("/", (req, res) => {
@@ -25,6 +41,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
 
 // Start the server
 app.listen(PORT, () => {
