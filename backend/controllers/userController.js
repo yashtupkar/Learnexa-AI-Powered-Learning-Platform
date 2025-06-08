@@ -2,7 +2,7 @@ const express = require('express');
 const userModel = require('../models/userModel');
 
 const getUserData = async (req, res) => {
-    const { userId } = req.body;
+    const { userId } = req.user;
     if (!userId) {
         return res.json({ success: false, message: "User Id not found" });
     }

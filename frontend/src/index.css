@@ -1,7 +1,38 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&display=swap');
 
 @import "tailwindcss";
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 *{
   font-family: "Outfit", sans-serif;
+}
+
+/* Base scrollbar style */
+.scrollbar-custom::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: var(--scrollbar-track-bg);
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb-bg);
+  border-radius: 10px;
+}
+
+/* Light mode (default) */
+:root {
+  --scrollbar-track-bg: #f1f1f1;
+  --scrollbar-thumb-bg: #9f9f9f;
+}
+
+/* Dark mode */
+.dark {
+  --scrollbar-track-bg: #1f1f1f;
+  --scrollbar-thumb-bg: #5a5a5a;
+}
+
+.scrollbar-none::-webkit-scrollbar{
+  display: none;
 }

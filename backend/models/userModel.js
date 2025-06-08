@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
-  avatar: {type:String},
+  avatar: { type: String },
 
   verifyOtpExpireAt: {
     type: Number,
@@ -28,6 +28,12 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  generatedQuizzes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Quiz",
+    },
+  ],
 });
 
 const userModel = mongoose.model("userModel", userSchema);

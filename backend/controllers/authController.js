@@ -48,6 +48,8 @@ const {EMAIL_VERIFY_TEMPLATE , PASSWORD_RESET_TEMPLATE} = require('../config/ema
 // }
 const GoogleLogin = async (req, res) => {
   const { sub, name, email, picture } = req.body;
+
+
  
 
   try {
@@ -70,6 +72,7 @@ const GoogleLogin = async (req, res) => {
       await user.save();
     } else if (!user.googleId) {
       user.googleId = sub;
+      user.name = name; 
       await user.save();
     }
 
@@ -80,14 +83,24 @@ const GoogleLogin = async (req, res) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
+    const userObj = user.toObject();
 
+    delete userObj.password;
+    delete userObj.__v;
+    delete userObj.updatedAt;
+    delete userObj.createdAt;
+    delete userObj.verifyOtp;
+    delete userObj.verifyOtpExpireAt;
+    delete userObj.resetPassOtp;
+    delete userObj.resetPassOtpExpireAt;
+    delete userObj.isAccountVerified;
 
 
     res.json({
       success: true,
       message: "Login successful",
       token: token,
-      user
+      user:userObj
     });
   } catch (error) {
     console.error("Google login error:", error);

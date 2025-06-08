@@ -70,12 +70,16 @@ const GoogleAuth = () => {
         login();
       }}
       disabled={isGoogleLoading}
-      className={`w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-lg shadow-sm transition-colors duration-200 mb-6 ${
-        isGoogleLoading ? "bg-gray-100 cursor-not-allowed" : "hover:bg-gray-50"
-      }`}
+      className={`w-full flex items-center justify-center gap-3 py-3 px-4 border rounded-lg shadow-sm transition-colors duration-200 mb-6
+    ${
+      isGoogleLoading
+        ? "bg-gray-100 dark:bg-gray-800 cursor-not-allowed"
+        : "hover:bg-gray-50 dark:hover:bg-gray-700"
+    }
+    border-gray-300 dark:border-gray-600`}
     >
       {isGoogleLoading ? (
-        <Loader2 className="w-5 h-5 animate-spin" />
+        <Loader2 className="w-5 h-5 animate-spin text-gray-600 dark:text-gray-300" />
       ) : (
         <>
           <svg
@@ -100,7 +104,7 @@ const GoogleAuth = () => {
               fill="#EA4335"
             />
           </svg>
-          <span className="text-gray-700 font-medium">
+          <span className="text-gray-700 text-sm dark:text-gray-200 font-medium">
             Continue with Google
           </span>
         </>

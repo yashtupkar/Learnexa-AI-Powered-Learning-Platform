@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const  authRouter  = require("./routes/authRoutes");
 const userRouter = require("./routes/userRoutes");
+const quizRouter = require("./routes/quizRoutes");
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
+app.use('/api/quiz', quizRouter);
 
 // Start the server
 app.listen(PORT, () => {
