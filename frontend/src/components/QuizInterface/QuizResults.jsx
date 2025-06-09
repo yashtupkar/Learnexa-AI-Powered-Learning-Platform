@@ -337,38 +337,38 @@
 //       </motion.button>
 
 //       {/* Confetti effect */}
-//       {showConfetti && (
-//         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-//           {[...Array(50)].map((_, i) => (
-//             <motion.div
-//               key={i}
-//               className={`absolute w-2 h-2 rounded-full ${
-//                 [
-//                   "bg-yellow-400",
-//                   "bg-red-400",
-//                   "bg-blue-400",
-//                   "bg-green-400",
-//                   "bg-purple-400",
-//                 ][i % 5]
-//               }`}
-//               style={{
-//                 left: `${Math.random() * 100}%`,
-//                 top: `${Math.random() * 100}%`,
-//               }}
-//               animate={{
-//                 y: [0, window.innerHeight],
-//                 x: [(Math.random() - 0.5) * 50, (Math.random() - 0.5) * 100],
-//                 rotate: [0, 360],
-//                 opacity: [1, 0],
-//               }}
-//               transition={{
-//                 duration: Math.random() * 2 + 2,
-//                 ease: "linear",
-//               }}
-//             />
-//           ))}
-//         </div>
-//       )}
+      // {showConfetti && (
+      //   <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      //     {[...Array(50)].map((_, i) => (
+      //       <motion.div
+      //         key={i}
+      //         className={`absolute w-2 h-2 rounded-full ${
+      //           [
+      //             "bg-yellow-400",
+      //             "bg-red-400",
+      //             "bg-blue-400",
+      //             "bg-green-400",
+      //             "bg-purple-400",
+      //           ][i % 5]
+      //         }`}
+      //         style={{
+      //           left: `${Math.random() * 100}%`,
+      //           top: `${Math.random() * 100}%`,
+      //         }}
+      //         animate={{
+      //           y: [0, window.innerHeight],
+      //           x: [(Math.random() - 0.5) * 50, (Math.random() - 0.5) * 100],
+      //           rotate: [0, 360],
+      //           opacity: [1, 0],
+      //         }}
+      //         transition={{
+      //           duration: Math.random() * 2 + 2,
+      //           ease: "linear",
+      //         }}
+      //       />
+      //     ))}
+      //   </div>
+      // )}
 
 //       <motion.div
 //         initial={{ opacity: 0, scale: 0.95 }}
@@ -687,39 +687,69 @@ const QuizResults = ({
     return true;
   });
 
-  const Confetti = () => (
+const Confetti = () => {
+  // Create an array of confetti particles with random properties
+  const particles = Array.from({ length: 100 }).map((_, i) => {
+    const color = [
+      "bg-yellow-400",
+      "bg-red-400",
+      "bg-blue-400",
+      "bg-green-400",
+      "bg-purple-400",
+      "bg-pink-400",
+      "bg-indigo-400",
+      "bg-orange-400",
+    ][i % 8];
+
+    const shape =
+      i % 3 === 0 ? "triangle" : i % 3 === 1 ? "circle" : "pentagon";
+
+    return {
+      id: i,
+      color,
+      shape,
+      left: Math.random() * 100,
+      delay: Math.random() * 2,
+      duration: Math.random() * 3 + 2,
+      rotate: Math.random() * 360,
+    };
+  });
+
+  return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-40">
-      {[...Array(100)].map((_, i) => (
-        <div
-          key={i}
-          className={`absolute w-3 h-3 animate-bounce ${
-            [
-              "bg-yellow-400",
-              "bg-red-400",
-              "bg-blue-400",
-              "bg-green-400",
-              "bg-purple-400",
-              "bg-pink-400",
-              "bg-indigo-400",
-              "bg-orange-400",
-            ][i % 8]
+      {particles.map((particle) => (
+        <motion.div
+          key={particle.id}
+          className={`absolute w-3 h-3 ${particle.color} ${
+            particle.shape === "triangle"
+              ? "clip-triangle"
+              : particle.shape === "pentagon"
+              ? "clip-pentagon"
+              : "rounded-full"
           }`}
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 2}s`,
-            animationDuration: `${Math.random() * 2 + 1}s`,
-            clipPath:
-              i % 3 === 0
-                ? "polygon(50% 0%, 0% 100%, 100% 100%)"
-                : i % 3 === 1
-                ? "circle(50%)"
-                : "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)",
+          initial={{
+            top: -10,
+            left: `${particle.left}%`,
+            rotate: 0,
+            opacity: 1,
+          }}
+          animate={{
+            top: "110%",
+            rotate: particle.rotate,
+            x: [(Math.random() - 0.5) * 50, (Math.random() - 0.5) * 100],
+          }}
+          transition={{
+            duration: particle.duration,
+            delay: particle.delay,
+            ease: "linear",
+            repeat: Infinity,
+            repeatDelay: particle.duration + Math.random() * 5,
           }}
         />
       ))}
     </div>
   );
+};
 
   const ShareModal = () => (
     <>
@@ -757,9 +787,40 @@ const QuizResults = ({
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-slate-800 transition-all duration-500">
-      {shouldShowConfetti && <Confetti />}
+      {shouldShowConfetti && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {[...Array(50)].map((_, i) => (
+            <motion.div
+              key={i}
+              className={`absolute w-2 h-2 rounded-full ${
+                [
+                  "bg-yellow-400",
+                  "bg-red-400",
+                  "bg-blue-400",
+                  "bg-green-400",
+                  "bg-purple-400",
+                ][i % 5]
+              }`}
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                y: [0, window.innerHeight],
+                x: [(Math.random() - 0.5) * 50, (Math.random() - 0.5) * 100],
+                rotate: [0, 360],
+                opacity: [1, 0],
+              }}
+              transition={{
+                duration: Math.random() * 2 + 2,
+                ease: "linear",
+              }}
+            />
+          ))}
+        </div>
+      )}
 
-      <ThemeToggle/>
+      <ThemeToggle />
 
       <div className="flex items-center justify-center min-h-screen p-4">
         <motion.div

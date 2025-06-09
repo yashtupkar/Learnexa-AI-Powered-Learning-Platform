@@ -13,6 +13,12 @@ import {
   Sliders,
   Sparkles,
   BarChart2,
+  Play,
+  Edit,
+  Share2,
+  Download,
+  Trash2,
+  Check,
   Award,
   Plus,
   X,
@@ -21,6 +27,7 @@ import axios from "axios";
 import { AppContext } from "../../context/AppContext";
 import toast from 'react-hot-toast'
 import QuizGeneratingModal from "../modal/QuizGeneratingModal";
+import {useNavigate} from 'react-router-dom';
 
 const QuizGeneration = () => {
   const [difficultyLevel, setDifficultyLevel] = useState("beginner");
@@ -39,9 +46,12 @@ const QuizGeneration = () => {
   const [selectedPreset, setSelectedPreset] = useState(null);
   const [showQuizGeneratingModal, setShowQuizGeneratingModal] = useState(false); 
   const [isLoading, setIsLoading] = useState(false);
+    const [currentQuiz, setCurrentQuiz] = useState(null);
  
   const [suggestions, setSuggestions] = useState([]);
   const [typingTimeout, setTypingTimeout] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     return () => {
@@ -122,28 +132,6 @@ const QuizGeneration = () => {
   const handleTopicChange = (e) => {
     const value = e.target.value;
     setTopic(value);
-
-    if (typingTimeout) clearTimeout(typingTimeout);
-
-    // Show loading state immediately when user is typing
-    if (value.length >= 3) {
-      setIsLoading(true);
-    } else {
-      setSuggestions([]);
-      setIsLoading(false);
-    }
-
-    setTypingTimeout(
-      setTimeout(async () => {
-        if (value.length >= 3) {
-          // Just call fetchSuggestions - it handles state management internally
-          await fetchSuggestions(value);
-        } else {
-          setSuggestions([]);
-          setIsLoading(false);
-        }
-      }, 500)
-    );
   };
 
   const handleSuggestionClick = (sug) => {
@@ -193,7 +181,7 @@ const QuizGeneration = () => {
       );
 
       if (data.success) {
-        console.log(data);
+        setCurrentQuiz(data.quiz);
         setquizReady(true);
         setTimeout(() => {
           setShowQuizGeneratingModal(false);
@@ -232,7 +220,61 @@ const QuizGeneration = () => {
         message="Generating your quiz, please wait..."
         isSuccess={quizReady}
       />
+
+
+        {/* Current Quiz Card - Added at the top */}
+        {currentQuiz && (
+          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 shadow-lg mb-6">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <h2 className="text-xl font-bold text-gray-800 dark:text-white">
+                  {currentQuiz.topic || topic}
+                </h2>
+                <div className="flex flex-wrap items-center gap-3 mt-2">
+                  <span className="text-sm px-3 py-1 rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200">
+                    {currentQuiz.questions?.length || questionsCount} questions
+                  </span>
+                  <span className="text-sm px-3 py-1 rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 capitalize">
+                    {currentQuiz.difficultyLevel || difficultyLevel}
+                  </span>
+                  {currentQuiz.quizTimer > 0 && (
+                    <span className="text-sm px-3 py-1 rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+                      ⏱️ {currentQuiz.quizTimer || quizTimer} min
+                    </span>
+                  )}
+                </div>
+              </div>
+              
+              <div className="flex flex-wrap gap-2">
+              <div onClick={() => {
+                navigate(`/quiz/${currentQuiz._id}`);
+                }}
+                  className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors"
+                >
+                  <Play size={16} />
+                  Start Quiz
+                </div>
+                
+           
+                
+                <button className="flex items-center gap-2 px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg transition-colors">
+                  <Share2 size={16} />
+                  Share
+                </button>
+                
+                <button className="flex items-center gap-2 px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg transition-colors">
+                  <Download size={16} />
+                  Export
+                </button>
+                
+          
+              </div>
+            </div>
+          </div>
+        )}
+
       <div className="space-y-6 z-10">
+        
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
             <div>
@@ -283,56 +325,6 @@ const QuizGeneration = () => {
                   required
                 />
 
-                {/* Loading indicator */}
-                {isLoading && (
-                  <div className="absolute right-3 top-3.5">
-                    <svg
-                      className="animate-spin h-5 w-5 text-gray-400"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      />
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      />
-                    </svg>
-                  </div>
-                )}
-
-                {/* Suggestions dropdown - Only show when we have suggestions and not loading */}
-                {!isLoading && suggestions && suggestions.length > 0 && (
-                  <ul className=" z-10 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg max-h-60 overflow-y-auto">
-                    {suggestions.map((sug, i) => (
-                      <li
-                        key={i}
-                        className="px-4 py-2 cursor-pointer hover:bg-indigo-50 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-100 transition-colors first:rounded-t-xl last:rounded-b-xl"
-                        onClick={() => handleSuggestionClick(sug)}
-                      >
-                        {sug}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-
-                {/* No suggestions found message - Only show when not loading, no suggestions, and user has typed enough */}
-                {/* {!isLoading &&
-                  suggestions &&
-                  suggestions.length === 0 &&
-                  topic.trim().length > 2 && (
-                    <div className="absolute z-10 mt-1 w-full px-4 py-2 text-sm text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg">
-                      No suggestions found
-                    </div>
-                  )} */}
               </div>
             </div>
 
