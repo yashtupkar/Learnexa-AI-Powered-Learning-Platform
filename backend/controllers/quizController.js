@@ -139,7 +139,8 @@ const GenerateQuiz = async (req, res) => {
       user.generatedQuizzes = [];
     }
 
-    user.generatedQuizzes.push(newQuiz._id);
+    user.generatedQuizzes.push({ quiz: newQuiz._id });
+
 
     await user.save();
 
@@ -298,7 +299,7 @@ const SuggestTopic = async (req, res) => {
 //fetch all quiz
 const getAllQuiz = async (req, res) => {
   try {
-    const quizzes = await Quiz.find().populate("created_by", "name");
+    const quizzes = await Quiz.find().populate("created_by", "name email");
     res.json(quizzes);
   } catch (error) {
     console.error("Error fetching quizzes:", error);
@@ -322,6 +323,166 @@ const getQuizById = async (req, res) => {
   }
 }
 
+//submit quiz
+// const submitQuiz = async (req, res) => {
+//   const { quizId, userId, score } = req.body;
+
+//   try {
+//     const quiz = await Quiz.findById(quizId);
+//     if (!quiz) return res.status(404).json({ error: "Quiz not found" });
+
+//     const user = await userModel.findById(userId);
+//     if (!user) return res.status(404).json({ error: "User not found" });
+
+//     // Prevent duplicate attempts
+//     // const alreadyAttempted = quiz.attempts.some(
+//     //   (attempt) => attempt.user_id.toString() === userId
+//     // );
+//     // if (alreadyAttempted) {
+//     //   return res
+//     //     .status(400)
+//     //     .json({ error: "User already attempted this quiz" });
+//     // }
+
+//     quiz.attempts.push({ user: userId, score });
+//     await quiz.save();
+
+//     user.attemptedQuizzes = user.attemptedQuizzes || [];
+//     user.attemptedQuizzes.push({ quiz: quizId, score });
+//     await user.save();
+
+//     res.json({
+//       success: true,
+//       message: "Quiz submitted successfully",
+//       score,
+//     });
+//   } catch (error) {
+//     console.error("Error submitting quiz:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
+
+const submitQuiz = async (req, res) => {
+  const { quizId, userId, score } = req.body;
+
+  try {
+  
+  
+    if (
+      !score ||
+      typeof score.correct !== "number" ||
+      typeof score.totalQuestions !== "number" ||
+      typeof score.percentage !== "number"
+    ) {
+      return res.status(400).json({ error: "Invalid score format" });
+    }
+
+    // Find documents
+    const [quiz, user] = await Promise.all([
+      Quiz.findById(quizId),
+      userModel.findById(userId),
+    ]);
+
+    if (!quiz) return res.status(404).json({ error: "Quiz not found" });
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    // Prepare score data
+    const newScore = {
+      correct: score.correct,
+      totalQuestions: score.totalQuestions,
+      percentage: score.percentage,
+      submittedAt: new Date(),
+    };
+
+    // Update user's attempts
+    const userAttemptIndex = user.attemptedQuizzes.findIndex(
+      (attempt) => attempt.quiz.toString() === quizId
+    );
+
+    if (userAttemptIndex !== -1) {
+      user.attemptedQuizzes[userAttemptIndex].scores.push(newScore);
+      user.attemptedQuizzes[userAttemptIndex].lastSubmittedAt = new Date();
+    } else {
+      user.attemptedQuizzes.push({
+        quiz: quizId,
+        scores: [newScore],
+        lastSubmittedAt: new Date(),
+      });
+    }
+
+    // Update quiz's attempts
+    const quizAttemptIndex = quiz.attempts.findIndex(
+      (attempt) => attempt.user.toString() === userId
+    );
+
+    if (quizAttemptIndex !== -1) {
+      quiz.attempts[quizAttemptIndex].scores.push(newScore);
+      quiz.attempts[quizAttemptIndex].lastSubmittedAt = new Date();
+    } else {
+      quiz.attempts.push({
+        user: userId,
+        scores: [newScore],
+        lastSubmittedAt: new Date(),
+      });
+    }
+
+    // Save changes
+    await Promise.all([user.save(), quiz.save()]);
+
+    res.status(200).json({
+      success: true,
+      message: "Quiz attempt recorded successfully",
+      attempt: newScore,
+      totalAttempts:
+        userAttemptIndex !== -1
+          ? user.attemptedQuizzes[userAttemptIndex].scores.length
+          : 1,
+    });
+  } catch (error) {
+    console.error("Error submitting quiz:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+//get User generated quiz
+const getUserGeneratedQuiz = async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const user = await userModel.findById(userId).populate({
+      path: "generatedQuizzes.quiz",
+      populate: {
+        path: "created_by",
+        select: "name",
+      },
+    });
+    if (!user) return res.status(404).json({ error: "User not found" });
+    res.json(user.generatedQuizzes);
+  } catch (error) {
+    console.error("Error fetching user generated quizzes:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+//get user attempted quiz
+const getUserAttemptedQuiz = async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const user = await userModel.findById(userId).populate("attemptedQuizzes").populate({
+      path: "attemptedQuizzes.quiz",
+      populate: {
+        path: "created_by",
+        select: "name",
+      },
+    });
+    if (!user) return res.status(404).json({ error: "User not found" });
+    res.json(user.attemptedQuizzes);
+  } catch (error) {
+    console.error("Error fetching user attempted quizzes:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+
 module.exports = {
   GenerateQuiz,
   GenerateCodingQuiz,
@@ -329,4 +490,7 @@ module.exports = {
   SuggestTopic,
   getAllQuiz,
   getQuizById,
+  submitQuiz,
+  getUserGeneratedQuiz,
+  getUserAttemptedQuiz
 };

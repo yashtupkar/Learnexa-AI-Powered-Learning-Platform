@@ -1,5 +1,6 @@
 const { verify } = require("jsonwebtoken");
 const mongoose = require("mongoose");
+const Quiz = require("../models/quizModel")
 
 const userSchema = new mongoose.Schema({
   name: { type: String },
@@ -30,8 +31,43 @@ const userSchema = new mongoose.Schema({
   },
   generatedQuizzes: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Quiz",
+      quiz: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Quiz",
+      },
+      createdAt: { type: Date, default: Date.now },
+    },
+  ],
+  // attemptedQuizzes: [
+  //   {
+  //     quiz: {
+  //       type: mongoose.Schema.Types.ObjectId,
+  //       ref: "Quiz",
+  //     },
+  //     score: {
+  //       correct: Number,
+  //       totalQuestions: Number,
+  //       percentage: Number,
+  //     },
+
+  //     submittedAt: { type: Date, default: Date.now },
+  //   },
+  // ],
+  attemptedQuizzes: [
+    {
+      quiz: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Quiz",
+      },
+      scores: [
+        {
+          correct: Number,
+          totalQuestions: Number,
+          percentage: Number,
+          submittedAt: { type: Date, default: Date.now },
+        },
+      ],
+      lastSubmittedAt: { type: Date, default: Date.now },
     },
   ],
 });

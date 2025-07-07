@@ -20,8 +20,8 @@ const Layout = ({ children }) => {
     "/dashboard": "Dashboard",
     "/create-quiz": "Create Quiz",
     "/my-quizzes": "My Quizzes",
-    "/analytics": "Analytics",
-  
+    "/current-affairs": "Current Affairs",
+    "/study-plan": "Study Plan",
   };
 
   const pageTitle = routeTitles[location.pathname] || "Page";
@@ -38,7 +38,7 @@ const Layout = ({ children }) => {
       <Sidebar isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} />
       <div className="content-wrapper flex-1 flex flex-col overflow-hidden">
         <DashboardNav pageTitle={pageTitle} />
-        <main className="main-content scrollbar-custom dark:bg-black flex-1 overflow-y-auto p-6">
+        <main className="main-content scrollbar-custom dark:bg-black flex-1 overflow-y-auto ">
           {children}
         </main>
       </div>

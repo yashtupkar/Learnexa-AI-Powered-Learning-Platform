@@ -93,17 +93,17 @@ const QuizOpenModal = ({ quiz, isOpen, onClose }) => {
                 </span>
                 <span className="text-orange-500 bg-yellow-100  dark:bg-yellow-200/20 px-3 py-1 rounded-full dark:text-orange-300 text-xs font-medium flex items-center gap-1">
                   <Clock size={14} />
-                  {quiz.duration || "10"} mins
+                  {quiz.quiz_timer || "10"} mins
                 </span>
                 <span className="bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-300 px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
                   <Logs size={14} />
-                    {quiz.question_type === "mcq"
-                      ? "MCQ"
-                      : quiz.question_type === "fill-blank"
-                      ? "Fill in the Blank"
-                      : quiz.question_type === "short-answer"
-                      ? "Short Answer"
-                      : "True/False"}
+                  {quiz.question_type === "mcq"
+                    ? "MCQ"
+                    : quiz.question_type === "fill-blank"
+                    ? "Fill in the Blank"
+                    : quiz.question_type === "short-answer"
+                    ? "Short Answer"
+                    : "True/False"}
                 </span>
               </div>
 
@@ -122,9 +122,12 @@ const QuizOpenModal = ({ quiz, isOpen, onClose }) => {
 
             {/* Action buttons */}
             <div className="flex flex-col gap-3">
-              <button onClick={() => {
-                navigate(`/quiz/${quiz._id}`);
-              }} className="bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700 text-white py-3 px-6 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0">
+              <button
+                onClick={() => {
+                  navigate(`/quiz/${quiz._id}`);
+                }}
+                className="bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700 text-white py-3 px-6 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0"
+              >
                 <Play className="w-5 h-5" />
                 Start Quiz
               </button>

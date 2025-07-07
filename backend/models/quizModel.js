@@ -1,7 +1,6 @@
 // models/Quiz.js
-
 const mongoose = require("mongoose");
-const userModel = require("./userModel");
+const userModel = require("../models/userModel");
 
 const questionSchema = new mongoose.Schema({
   question_number: { type: Number, required: true },
@@ -19,21 +18,34 @@ const questionSchema = new mongoose.Schema({
   explanation: { type: String },
 });
 
+// const userAttemptSchema = new mongoose.Schema({
+//   user: {
+//     type: mongoose.Schema.Types.ObjectId,
+//     ref: "userModel",
+//     required: true,
+//   },
+//   attempted_at: { type: Date, default: Date.now },
+//   score: {
+//     correct: Number,
+//     totalQuestions: Number,
+//     percentage: Number,
+//   },
+// });
 const userAttemptSchema = new mongoose.Schema({
-  user_id: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "userModel",
     required: true,
   },
-  attempted_at: { type: Date, default: Date.now },
-  answers: [
+  lastSubmittedAt: { type: Date, default: Date.now },
+  scores: [
     {
-      question_number: Number,
-      answer: mongoose.Schema.Types.Mixed, // string, boolean, etc.
-      is_correct: Boolean,
+      correct: Number,
+      totalQuestions: Number,
+      percentage: Number,
+      submittedAt: { type: Date, default: Date.now },
     },
   ],
-  score: { type: Number, default: 0 },
 });
 
 const quizSchema = new mongoose.Schema(
@@ -50,6 +62,7 @@ const quizSchema = new mongoose.Schema(
 
       required: true,
     },
+    
     created_by: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "userModel",

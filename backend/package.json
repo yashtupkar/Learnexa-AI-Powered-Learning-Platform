@@ -13,9 +13,11 @@
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
+    "corn": "^0.0.1",
     "cors": "^2.8.5",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.14.3",
+    "node-cron": "^4.2.0",
     "nodemailer": "^7.0.3",
     "nodemon": "^3.1.10",
     "pdf-img-convert": "^2.0.0",

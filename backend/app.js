@@ -6,6 +6,7 @@ const cors = require("cors");
 const  authRouter  = require("./routes/authRoutes");
 const userRouter = require("./routes/userRoutes");
 const quizRouter = require("./routes/quizRoutes");
+const newsRouter = require("./routes/newsRoute");
 
 const app = express();
 
@@ -44,6 +45,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use('/api/quiz', quizRouter);
+app.use('/api/news', newsRouter);
 
 // Start the server
 app.listen(PORT, () => {

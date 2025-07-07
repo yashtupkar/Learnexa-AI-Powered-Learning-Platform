@@ -7,7 +7,10 @@ import {
   HelpCircle, Home, List, BookOpen, Hash, Star, AlertCircle,
   X,
   Target,
-  Timer
+  Timer,
+  Menu,
+  PanelRightOpen,
+  PanelLeftOpen
 } from 'lucide-react';
 import QuizStartScreen from '../components/QuizInterface/QuizStartScreen';
 import QuizResults from '../components/QuizInterface/QuizResults';
@@ -37,7 +40,7 @@ const QuizInterface = () => {
  const [bookmarkedQuestions, setBookmarkedQuestions] = useState([]);
  const [flaggedQuestions, setFlaggedQuestions] = useState([]);
  const [showConfetti, setShowConfetti] = useState(false);
- const [sidebarOpen, setSidebarOpen] = useState(false);
+ const [sidebarOpen, setSidebarOpen] = useState(true);
  const [showBookmarks, setShowBookmarks] = useState(false);
  const [answeredQuestions, setAnsweredQuestions] = useState([]);
  const [selectedTheme, setSelectedTheme] = useState("cyber");
@@ -49,6 +52,7 @@ const QuizInterface = () => {
  const { isAuthenticated, user } = useSelector((state) => state.auth);
  const { backend_URL } = useContext(AppContext);
   const { quizId } = useParams();
+  
 
 
 
@@ -157,9 +161,16 @@ const QuizInterface = () => {
 
  // Check if current question is answered
  useEffect(() => {
-   setAnswered(answers[currentQuestion] !== undefined);
-   setShowExplanation(false);
- }, [currentQuestion, answers]);
+   const isAnswered = answers[currentQuestion] !== undefined;
+   setAnswered(isAnswered);
+
+   // Automatically show explanation when answered in practice mode
+   if (quizMode === "practice" && isAnswered) {
+     setShowExplanation(true);
+   } else {
+     setShowExplanation(false); // Reset for other modes or unanswered questions
+   }
+ }, [currentQuestion, answers, quizMode]);
 
  const formatTime = (seconds) => {
    const mins = Math.floor(seconds / 60);
@@ -186,10 +197,23 @@ const QuizInterface = () => {
    }
  };
 
- const handleSubmit = () => {
-   setShowResults(true);
-   setShowConfetti(true);
-   setTimeout(() => setShowConfetti(false), 5000);
+  const handleSubmit = async () => {
+    const scoreDetails = calculateDetailedScore();
+    try {
+     const response = await axios.post(`${backend_URL}/api/quiz/submit-quiz`, {
+      quizId: quizId,
+      userId: user._id,
+      score: scoreDetails,  
+     });
+    setShowResults(true);
+    setShowConfetti(true);
+    setTimeout(() => setShowConfetti(false), 5000);
+    } catch (error) {
+      console.error("Error submitting quiz:", error);
+      setError("Failed to submit quiz");
+    
+   }
+
  };
 
  const calculateScore = () => {
@@ -206,7 +230,42 @@ const QuizInterface = () => {
      }
    });
    return correct;
- };
+  };
+  
+  const calculateDetailedScore = () => {
+    if (!quizData?.questions) {
+      return {
+        correct: 0,
+        totalQuestions: 0,
+        percentage: 0,
+      };
+    }
+
+    let correct = 0;
+    const totalQuestions = quizData.questions.length;
+
+    quizData.questions.forEach((question, index) => {
+      const userAnswer = answers[index];
+
+      const correctAnswer =
+        question.question_type === "true_false"
+          ? question.correct_answer.toString().toLowerCase()
+          : question.correct_answer;
+
+      if (userAnswer?.toString().toLowerCase() === correctAnswer) {
+        correct++;
+      }
+    });
+
+    const percentage = Math.round((correct / totalQuestions) * 100);
+
+    return {
+      correct,
+      totalQuestions,
+      percentage,
+    };
+  };
+  
 
  const resetQuiz = () => {
    setCurrentQuestion(0);
@@ -368,452 +427,381 @@ const QuizInterface = () => {
 
   // Main Quiz Interface
   return (
-    <div className={`min-h-screen bg-gradient-to-b ${currentTheme.colors}`}>
-      {/* Sidebar */}
-      <motion.div
-        initial={{ x: -400 }}
-        animate={{ x: sidebarOpen ? 0 : -400 }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="fixed top-0 left-0 h-full w-80 bg-white/95 dark:bg-zinc-800 backdrop-blur-xl shadow-2xl border-r border-gray-200 dark:border-zinc-600 z-50"
-      >
-        <div className="p-6 h-full flex flex-col">
-          {/* Sidebar Header */}
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h3 className="text-xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
-                Quiz Navigator
-              </h3>
-              <p className="text-sm dark:text-gray-400 text-gray-500 mt-1">
-                Track your progress
-              </p>
-            </div>
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setSidebarOpen(false)}
-              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-700 cursor-pointer transition-colors duration-200"
+    <div
+      className={`min-h-screen w-full bg-gradient-to-b ${currentTheme.colors}`}
+    >
+      <div className="flex h-screen overflow-hidden">
+        {/* Sidebar Container - Fixed */}
+        <motion.div
+          animate={{ width: sidebarOpen ? 320 : 0 }}
+          className="h-full flex-shrink-0 overflow-hidden"
+        >
+          {/* Sidebar toggle button - Fixed position */}
+       
+            <motion.div
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="h-8 w-8 fixed top-8 left-8 bg-white/95 dark:bg-black backdrop-blur-lg rounded-xl shadow-lg shadow-black/20 flex items-center justify-center cursor-pointer "
             >
-              <X className="w-5 h-5 text-gray-500" />
-            </motion.button>
-          </div>
+              <PanelLeftOpen
+                size={20}
+                className="text-black dark:text-gray-300"
+              />
+            </motion.div>
+          
+         
 
-          {/* Quiz Stats */}
-          <div className="grid grid-cols-2 gap-4 mb-8">
-            <div className="bg-gradient-to-br from-violet-500 to-purple-600 p-4 rounded-xl text-white">
-              <div className="flex items-center space-x-2 mb-2">
-                <Target className="w-5 h-5" />
-                <span className="text-sm font-medium">Progress</span>
-              </div>
-              <div className="text-2xl font-bold">{Math.round(progress)}%</div>
-            </div>
-            <div className="bg-gradient-to-br from-emerald-500 to-teal-600 p-4 rounded-xl text-white">
-              <div className="flex items-center space-x-2 mb-2">
-                <Timer className="w-5 h-5" />
-                <span className="text-sm font-medium">Time Left</span>
-              </div>
-              <div className="text-2xl font-bold">{formatTime(timeLeft)}</div>
-            </div>
-          </div>
-
-          {/* Question Grid */}
-          <div className="flex-1 overflow-y-auto">
-            <h4 className="font-semibold text-gray-700 dark:text-gray-400 mb-4 flex items-center space-x-2">
-              <Hash className="w-4 h-4" />
-              <span>Questions</span>
-            </h4>
-            <div className="grid grid-cols-4 gap-3 mb-6 p-3">
-              {quizData.questions.map((_, index) => (
-                <motion.button
-                  key={index}
-                  whileHover={{ scale: 1.05, rotate: 2 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => {
-                    setCurrentQuestion(index);
-                    setSidebarOpen(false);
-                  }}
-                  className={`relative p-3 rounded-xl flex flex-col items-center justify-center transition-all duration-300 shadow-sm ${
-                    currentQuestion === index
-                      ? "bg-gradient-to-br from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25 cursor-pointer"
-                      : answers[index] !== undefined
-                      ? isAnswerCorrect(index)
-                        ? "bg-gradient-to-br from-emerald-400 to-green-500 text-white shadow-lg shadow-emerald-500/25 cursor-pointer"
-                        : "bg-gradient-to-br from-red-400 to-pink-500 text-white shadow-lg shadow-red-500/25 cursor-pointer"
-                      : "bg-gradient-to-br from-gray-100 to-gray-200 text-gray-600 dark:from-gray-500 dark:to-gray-600 dark:text-gray-200 hover:from-gray-200 hover:to-gray-300 dark:hover:from-gray-400 dark:hover:to-gray-500 cursor-pointer"
-                  }`}
-                >
-                  <span className="text-sm font-bold">Q{index + 1}</span>
-
-                  {/* Status indicators */}
-                  <div className="absolute -top-1 -right-1 flex space-x-1">
-                    {flaggedQuestions.includes(index) && (
-                      <div className="w-3 h-3 bg-red-500 rounded-full border-2 border-white" />
-                    )}
-                    {bookmarkedQuestions.includes(index) && (
-                      <div className="w-3 h-3 bg-yellow-500 rounded-full border-2 border-white" />
-                    )}
-                  </div>
-
-                  {/* Answer status */}
-                  {answers[index] !== undefined && (
-                    <div className="absolute -bottom-1 -right-1">
-                      {isAnswerCorrect(index) ? (
-                        <CheckCircle className="w-4 h-4 text-green-600 dark:text-white" />
-                      ) : (
-                        <XCircle className="w-4 h-4 text-red-600 dark:text-white" />
-                      )}
-                    </div>
-                  )}
-                </motion.button>
-              ))}
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="space-y-4 pt-6 border-t border-gray-200 dark:border-zinc-700">
-            <div className="grid grid-cols-2 gap-3 text-sm">
-              <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-                <span className="text-blue-700 font-medium">Answered</span>
-                <span className="text-blue-900 font-bold">
-                  {Object.keys(answers).length}/{quizData.questions.length}
-                </span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
-                <span className="text-purple-700 font-medium">Bookmarked</span>
-                <span className="text-purple-900 font-bold">
-                  {bookmarkedQuestions.length}
-                </span>
-              </div>
-            </div>
-
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={handleSubmit}
-              className="w-full bg-gradient-to-r from-violet-500 to-purple-600 text-white py-3 rounded-xl font-semibold shadow-lg shadow-violet-500/25 hover:from-violet-600 hover:to-purple-700 transition-all duration-300"
-            >
-              <div className="flex items-center justify-center space-x-2">
-                <Zap className="w-5 h-5" />
-                <span>Submit Quiz</span>
-              </div>
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => {
-                handleSubmit, setQuizStarted(false);
-                setCurrentQuestion(0);
-                setAnswers({});
-                setSidebarOpen(false);
-                setTimeLeft(
-                  quizData?.quiz_timer ? quizData.quiz_timer * 60 : 0
-                );
-              }}
-              className="w-full bg-gradient-to-r from-red-500 to-red-600 text-white py-3 rounded-xl font-semibold shadow-lg shadow-violet-500/25 hover:from-red-600 hover:to-red-700 transition-all duration-300"
-            >
-              <div className="flex items-center justify-center space-x-2">
-                <span>Exit Quiz</span>
-              </div>
-            </motion.button>
-
-            <div className="flex items-center space-x-3 pt-4 border-t border-gray-200 dark:border-zinc-700">
-              <Avatar name={user?.name} size={40} variant="bean" />
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-200 truncate">
-                  {user?.name}
-                </p>
-                <p className="text-xs text-gray-400 dark:text-gray-500 truncate">
-                  Pro Plan
-                </p>
-              </div>
-              <ThemeToggle />
-            </div>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Sidebar Overlay */}
-      <AnimatePresence>
-        {sidebarOpen && (
+          {/* Sidebar Content */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/20 backdrop-blur-xs z-40"
-            onClick={() => setSidebarOpen(false)}
-          />
-        )}
-      </AnimatePresence>
-
-      {/* Theme Toggle */}
-
-      <div className="flex fixed top-0 left-0 w-full justify-between items-center mb-2 px-4 py-3 rounded-xl bg-transparent dark:shadow-gray-700/50">
-        {/* Sidebar toggle button with tooltip */}
-        <div className="relative group">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setSidebarOpen(true)}
-            className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
-            aria-label="Open sidebar"
+            initial={{ x: -400 }}
+            animate={{ x: sidebarOpen ? 0 : -400 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="h-full w-80 bg-white/95 dark:bg-black backdrop-blur-xl shadow-2xl border-r border-gray-200 dark:border-zinc-600 fixed"
           >
-            <List className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-          </motion.button>
-          <span className="absolute left-full ml-2 px-2 py-1 text-xs rounded bg-gray-800 text-white dark:bg-gray-100 dark:text-gray-800 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
-            Menu
-          </span>
-        </div>
-
-        {/* Quiz info section */}
-        <div className="flex items-center space-x-6">
-          {/* Timer with warning states */}
-
-          <div
-            className={`flex items-center space-x-2 px-3 py-1.5 rounded-full ${
-              timeLeft < 60
-                ? "bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400"
-                : "bg-gray-700  text-white dark:text-white"
-            }`}
-          >
-            <Clock className="w-5 h-5" />
-            <span className="">{formatTime(timeLeft)}</span>
-            {timeLeft < 60 && (
-              <motion.span
-                animate={{ opacity: [0.5, 1, 0.5] }}
-                transition={{ repeat: Infinity, duration: 1.5 }}
-                className="ml-1 text-xs"
-              >
-                Hurry!
-              </motion.span>
-            )}
-          </div>
-
-          {/* Bookmarked questions with popover */}
-          <div className="relative group">
-            <button
-              onClick={() => setShowBookmarks(!showBookmarks)}
-              className="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-gray-700  text-white  "
-            >
-              <Bookmark className="w-5 h-5" />
-              <span className="font-medium">{bookmarkedQuestions.length}</span>
-            </button>
-
-            {/* Bookmarks dropdown */}
-            {showBookmarks && (
-              <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-700 rounded-lg shadow-xl z-10 border border-gray-200 dark:border-gray-600">
-                <div className="p-3 border-b border-gray-200 dark:border-gray-600">
-                  <h3 className="font-medium text-gray-900 dark:text-white">
-                    Bookmarked Questions
+            <div className="p-6 h-full flex flex-col">
+              {/* Sidebar Header */}
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <h3 className="text-xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                    Quiz Info
                   </h3>
+                  <p className="text-sm dark:text-gray-400 text-gray-500 mt-1">
+                    Track your progress
+                  </p>
                 </div>
-                <div className="max-h-60 overflow-y-auto">
-                  {bookmarkedQuestions.length > 0 ? (
-                    bookmarkedQuestions.map((qIndex) => (
-                      <button
-                        key={qIndex}
-                        onClick={() => {
-                          setCurrentQuestion(qIndex);
-                          setShowBookmarks(false);
-                        }}
-                        className="w-full px-3 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-600 text-sm flex items-center"
-                      >
-                        <span className="mr-2 text-gray-500 dark:text-gray-400">
-                          Q{qIndex + 1}
-                        </span>
-                        <span className="truncate">
-                          {quizData.questions[qIndex].question.substring(0, 40)}
-                          ...
-                        </span>
-                      </button>
-                    ))
-                  ) : (
-                    <div className="px-3 py-4 text-center text-sm text-gray-500 dark:text-gray-400">
-                      No bookmarks yet
-                    </div>
-                  )}
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => setSidebarOpen(false)}
+                  className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-zinc-700 cursor-pointer transition-colors duration-200"
+                >
+                  <PanelRightOpen className="w-5 h-5 text-gray-400" />
+                </motion.button>
+              </div>
+
+              {/* Quiz Stats */}
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                <div className="bg-gradient-to-br from-violet-500 to-purple-600 p-4 rounded-xl text-white">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Target className="w-5 h-5" />
+                    <span className="text-sm font-medium">Progress</span>
+                  </div>
+                  <div className="text-2xl font-bold">
+                    {Math.round(progress)}%
+                  </div>
+                </div>
+                <div className="bg-gradient-to-br from-emerald-500 to-teal-600 p-4 rounded-xl text-white">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Timer className="w-5 h-5" />
+                    <span className="text-sm font-medium">Time Left</span>
+                  </div>
+                  <div className="text-2xl font-bold">
+                    {formatTime(timeLeft)}
+                  </div>
                 </div>
               </div>
-            )}
-          </div>
 
-          <ThemeToggle />
+              {/* Question Grid */}
+              <div className="flex-1 overflow-y-auto">
+                <h4 className="font-semibold text-gray-700 dark:text-gray-400 mb-4 flex items-center space-x-2">
+                  <Hash className="w-4 h-4" />
+                  <span>Questions</span>
+                </h4>
+                <div className="grid grid-cols-4 gap-3 mb-6 p-3">
+                  {quizData.questions.map((_, index) => (
+                    <motion.button
+                      key={index}
+                      whileHover={{ scale: 1.05, rotate: 2 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => {
+                        setCurrentQuestion(index);
+                      }}
+                      className={`relative p-3 rounded-xl flex flex-col items-center justify-center transition-all duration-300 shadow-sm ${
+                        quizMode === "practice"
+                          ? currentQuestion === index
+                            ? "bg-gradient-to-br from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25 cursor-pointer"
+                            : answers[index] !== undefined
+                            ? isAnswerCorrect(index)
+                              ? "bg-gradient-to-br from-emerald-400 to-green-500 text-white shadow-lg shadow-emerald-500/25 cursor-pointer"
+                              : "bg-gradient-to-br from-red-400 to-pink-500 text-white shadow-lg shadow-red-500/25 cursor-pointer"
+                            : "bg-gradient-to-br from-gray-100 to-gray-200 text-gray-600 dark:from-gray-500 dark:to-gray-600 dark:text-gray-200 hover:from-gray-200 hover:to-gray-300 dark:hover:from-gray-400 dark:hover:to-gray-500 cursor-pointer"
+                          : currentQuestion === index
+                          ? "bg-gradient-to-br from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25 cursor-pointer": answers[index] !== undefined
+                          ? "bg-gradient-to-br from-emerald-400 to-green-500 text-white shadow-lg shadow-emerald-500/25 cursor-pointer"
+                          : "bg-gradient-to-br from-gray-100 to-gray-200 text-gray-600 dark:from-gray-500 dark:to-gray-600 dark:text-gray-200"
+                      }`}
+                    >
+                      <span className="text-sm font-bold">Q{index + 1}</span>
 
-          {/* Difficulty indicator */}
-        </div>
-      </div>
-      {/* Main Content */}
-      <div className="max-w-3xl mx-auto px-4 py-8">
-        {/* Header */}
+                      {/* Status indicators */}
+                      <div className="absolute -top-1 -right-1 flex space-x-1">
+                        {flaggedQuestions.includes(index) && (
+                          <div className="w-3 h-3 bg-red-500 rounded-full border-2 border-white" />
+                        )}
+                        {bookmarkedQuestions.includes(index) && (
+                          <div className="w-3 h-3 bg-yellow-500 rounded-full border-2 border-white" />
+                        )}
+                      </div>
 
-        {/* Enhanced Progress Bar */}
-        <div className="mb-6 bg-white dark:bg-black p-4 rounded-xl shadow-sm dark:shadow-gray-700/50">
-          <div className="flex justify-between items-center mb-2">
-            <div className="flex items-center space-x-2">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                Question {currentQuestion + 1} of {quizData.questions.length}
-              </span>
-              <span className="text-xs px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">
-                {Math.round(
-                  ((currentQuestion + 1) / quizData.questions.length) * 100
+                      {/* Answer status */}
+                      {quizMode === "practice" &&
+                        answers[index] !== undefined && (
+                          <div className="absolute -bottom-1 -right-1">
+                            {isAnswerCorrect(index) ? (
+                              <CheckCircle className="w-4 h-4 text-green-600 dark:text-white" />
+                            ) : (
+                              <XCircle className="w-4 h-4 text-red-600 dark:text-white" />
+                            )}
+                          </div>
+                        )}
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="space-y-4 pt-6 border-t border-gray-200 dark:border-zinc-700">
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                    <span className="text-blue-700 font-medium">Answered</span>
+                    <span className="text-blue-900 font-bold">
+                      {Object.keys(answers).length}/{quizData.questions.length}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
+                    <span className="text-purple-700 font-medium">
+                      Bookmarked
+                    </span>
+                    <span className="text-purple-900 font-bold">
+                      {bookmarkedQuestions.length}
+                    </span>
+                  </div>
+                </div>
+
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleSubmit}
+                  className="w-full bg-gradient-to-r from-violet-500 to-purple-600 text-white py-3 rounded-xl font-semibold shadow-lg shadow-violet-500/25 hover:from-violet-600 hover:to-purple-700 transition-all duration-300"
+                >
+                  <div className="flex items-center justify-center space-x-2">
+                    <Zap className="w-5 h-5" />
+                    <span>Submit Quiz</span>
+                  </div>
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => {
+                    handleSubmit, setQuizStarted(false);
+                    setCurrentQuestion(0);
+                    setAnswers({});
+                    setSidebarOpen(false);
+                    setTimeLeft(
+                      quizData?.quiz_timer ? quizData.quiz_timer * 60 : 0
+                    );
+                  }}
+                  className="w-full bg-gradient-to-r from-red-500 to-red-600 text-white py-3 rounded-xl font-semibold shadow-lg shadow-violet-500/25 hover:from-red-600 hover:to-red-700 transition-all duration-300"
+                >
+                  <div className="flex items-center justify-center space-x-2">
+                    <span>Exit Quiz</span>
+                  </div>
+                </motion.button>
+
+                <div className="flex items-center space-x-3 pt-4 border-t border-gray-200 dark:border-zinc-700">
+                  <Avatar name={user?.name} size={40} variant="bean" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-200 truncate">
+                      {user?.name}
+                    </p>
+                    <p className="text-xs text-gray-400 dark:text-gray-500 truncate">
+                      Pro Plan
+                    </p>
+                  </div>
+                  <ThemeToggle />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Main Content - Scrollable */}
+        <div className="flex-1 overflow-y-auto">
+          <div className="max-w-5xl w-full mx-auto px-4 py-8">
+            {/* Header */}
+
+            {/* Enhanced Progress Bar */}
+            <div className="mb-6 bg-white dark:bg-black p-4 rounded-xl shadow-sm dark:shadow-gray-700/50">
+              <div className="flex justify-between items-center mb-2">
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Question {currentQuestion + 1} of{" "}
+                    {quizData.questions.length}
+                  </span>
+                  <span className="text-xs px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">
+                    {Math.round(
+                      ((currentQuestion + 1) / quizData.questions.length) * 100
+                    )}
+                    % complete
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <span className="text-xs mr-2 text-gray-500 dark:text-gray-400">
+                    Score:
+                  </span>
+                  <span className="text-sm font-medium bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-purple-400">
+                    {calculateScore()} points
+                  </span>
+                </div>
+              </div>
+
+              {/* Multi-segment progress bar */}
+              <div className="w-full h-3 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
+                <div className="relative h-full">
+                  {/* Background progress */}
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${progress}%` }}
+                    transition={{ duration: 0.7, ease: "easeOut" }}
+                    className="absolute h-full bg-gradient-to-r from-blue-500 to-purple-500"
+                  />
+
+                  {/* Animated pulse effect at progress head */}
+                  <motion.div
+                    animate={{
+                      opacity: [0, 0.8, 0],
+                      scale: [1, 1.5, 1],
+                    }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 1.5,
+                      ease: "easeOut",
+                    }}
+                    className="absolute top-0 right-0 h-full w-2 bg-white rounded-full"
+                    style={{ left: `${progress}%` }}
+                  />
+                </div>
+              </div>
+
+              {/* Question navigation quick links */}
+              <div className="mt-3 flex flex-wrap gap-1">
+                {quizData.questions.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentQuestion(index)}
+                    className={`w-8 h-8 rounded-md text-xs flex items-center justify-center transition-all ${
+                      index === currentQuestion
+                        ? "bg-gradient-to-br from-blue-600 to-purple-600 text-white shadow-md"
+                        : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                    } ${
+                      answeredQuestions.includes(index)
+                        ? "ring-1 ring-green-500 dark:ring-green-400"
+                        : ""
+                    } ${
+                      bookmarkedQuestions.includes(index)
+                        ? "ring-1 ring-amber-500 dark:ring-amber-400"
+                        : ""
+                    }`}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Question Card */}
+            <QuizQuestionRenderer
+              question={quizData.questions[currentQuestion]}
+              currentQuestion={currentQuestion}
+              answers={answers}
+              showResults={showResults}
+              handleAnswer={handleAnswer}
+              answerRefs={answerRefs}
+              isAnswerCorrect={isAnswerCorrect}
+              bookmarkedQuestions={bookmarkedQuestions}
+              flaggedQuestions={flaggedQuestions}
+              toggleBookmark={toggleBookmark}
+              toggleFlag={toggleFlag}
+              showExplanation={showExplanation}
+              quizData={quizData}
+              quizMode={quizMode}
+            />
+
+            {/* Navigation Buttons */}
+            <div className="flex justify-between items-center">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={prevQuestion}
+                disabled={currentQuestion === 0}
+                className={`flex items-center space-x-2 px-4 py-2 rounded-lg ${
+                  currentQuestion === 0
+                    ? "bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-500 cursor-not-allowed"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                }`}
+              >
+                <ArrowLeft className="w-5 h-5" />
+                <span>Previous</span>
+              </motion.button>
+
+              <div className="flex space-x-3">
+                {quizMode === "practice" && answered && (
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setShowExplanation(!showExplanation)}
+                    className={`px-4 py-2 rounded-lg flex items-center space-x-2 ${
+                      darkMode
+                        ? "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    }`}
+                  >
+                    <HelpCircle className="w-5 h-5" />
+                    <span>
+                      {showExplanation
+                        ? "Hide Explanation"
+                        : "Show Explanation"}
+                    </span>
+                  </motion.button>
                 )}
-                % complete
-              </span>
+
+                {currentQuestion < quizData.questions.length - 1 ? (
+                  <>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={nextQuestion}
+                      className={`flex items-center space-x-2 dark:text-gray-300 cursor-pointer  dark:bg-gray-800 bg-gray-200 text-gray-600 px-4 py-2 rounded-lg `}
+                    >
+                      <span>Skip</span>
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={nextQuestion}
+                      disabled={!answered}
+                      className={`flex items-center space-x-2 px-4 py-2 rounded-lg ${
+                        !answered
+                          ? "bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-500 cursor-not-allowed"
+                          : "bg-blue-500 text-white hover:bg-blue-600"
+                      }`}
+                    >
+                      <span>Next</span>
+                      <ArrowRight className="w-5 h-5" />
+                    </motion.button>
+                  </>
+                ) : (
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleSubmit}
+                    className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600"
+                  >
+                    <span>Submit Quiz</span>
+                    <Zap className="w-5 h-5" />
+                  </motion.button>
+                )}
+              </div>
             </div>
-            <div className="flex items-center">
-              <span className="text-xs mr-2 text-gray-500 dark:text-gray-400">
-                Score:
-              </span>
-              <span className="text-sm font-medium bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-purple-400">
-                {calculateScore()} points
-              </span>
-            </div>
-          </div>
-
-          {/* Multi-segment progress bar */}
-          <div className="w-full h-3 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
-            <div className="relative h-full">
-              {/* Background progress */}
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${progress}%` }}
-                transition={{ duration: 0.7, ease: "easeOut" }}
-                className="absolute h-full bg-gradient-to-r from-blue-500 to-purple-500"
-              />
-
-              {/* Animated pulse effect at progress head */}
-              <motion.div
-                animate={{
-                  opacity: [0, 0.8, 0],
-                  scale: [1, 1.5, 1],
-                }}
-                transition={{
-                  repeat: Infinity,
-                  duration: 1.5,
-                  ease: "easeOut",
-                }}
-                className="absolute top-0 right-0 h-full w-2 bg-white rounded-full"
-                style={{ left: `${progress}%` }}
-              />
-            </div>
-          </div>
-
-          {/* Question navigation quick links */}
-          <div className="mt-3 flex flex-wrap gap-1">
-            {quizData.questions.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentQuestion(index)}
-                className={`w-8 h-8 rounded-md text-xs flex items-center justify-center transition-all ${
-                  index === currentQuestion
-                    ? "bg-gradient-to-br from-blue-600 to-purple-600 text-white shadow-md"
-                    : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
-                } ${
-                  answeredQuestions.includes(index)
-                    ? "ring-1 ring-green-500 dark:ring-green-400"
-                    : ""
-                } ${
-                  bookmarkedQuestions.includes(index)
-                    ? "ring-1 ring-amber-500 dark:ring-amber-400"
-                    : ""
-                }`}
-              >
-                {index + 1}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Question Card */}
-
-        <QuizQuestionRenderer
-          question={quizData.questions[currentQuestion]}
-          currentQuestion={currentQuestion}
-          answers={answers}
-          showResults={showResults}
-          handleAnswer={handleAnswer}
-          answerRefs={answerRefs}
-          isAnswerCorrect={isAnswerCorrect}
-          bookmarkedQuestions={bookmarkedQuestions}
-          flaggedQuestions={flaggedQuestions}
-          toggleBookmark={toggleBookmark}
-          toggleFlag={toggleFlag}
-          showExplanation={showExplanation}
-          quizData={quizData}
-          quizMode={quizMode}
-        />
-
-        {/* Navigation Buttons */}
-        <div className="flex justify-between items-center">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={prevQuestion}
-            disabled={currentQuestion === 0}
-            className={`flex items-center space-x-2 px-4 py-2 rounded-lg ${
-              currentQuestion === 0
-                ? "bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-500 cursor-not-allowed"
-                : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
-            }`}
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span>Previous</span>
-          </motion.button>
-
-          <div className="flex space-x-3">
-            
-            {quizMode === "practice" && answered && (
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setShowExplanation(!showExplanation)}
-                className={`px-4 py-2 rounded-lg flex items-center space-x-2 ${
-                  darkMode
-                    ? "bg-gray-700 text-gray-300 hover:bg-gray-600"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                }`}
-              >
-                <HelpCircle className="w-5 h-5" />
-                <span>
-                  {showExplanation ? "Hide Explanation" : "Show Explanation"}
-                </span>
-              </motion.button>
-            )}
-
-            {currentQuestion < quizData.questions.length - 1 ? (
-              <>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={nextQuestion}
-                  className={`flex items-center space-x-2 dark:text-gray-300 cursor-pointer  dark:bg-gray-800 bg-gray-200 text-gray-600 px-4 py-2 rounded-lg `}
-                >
-                  <span>Skip</span>
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={nextQuestion}
-                  disabled={!answered}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg ${
-                    !answered
-                      ? "bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-500 cursor-not-allowed"
-                      : "bg-blue-500 text-white hover:bg-blue-600"
-                  }`}
-                >
-                  <span>Next</span>
-                  <ArrowRight className="w-5 h-5" />
-                </motion.button>
-              </>
-            ) : (
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={handleSubmit}
-                className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600"
-              >
-                <span>Submit Quiz</span>
-                <Zap className="w-5 h-5" />
-              </motion.button>
-            )}
           </div>
         </div>
       </div>

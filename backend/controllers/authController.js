@@ -59,7 +59,10 @@ const GoogleLogin = async (req, res) => {
         .json({ success: false, message: "Missing fields" });
     }
 
-    let user = await userModel.findOne({ email });
+    let user = await userModel
+      .findOne({ email })
+      .populate("generatedQuizzes")
+      .populate("attemptedQuizzes");
 
     if (!user) {
       user = new userModel({
@@ -87,8 +90,6 @@ const GoogleLogin = async (req, res) => {
 
     delete userObj.password;
     delete userObj.__v;
-    delete userObj.updatedAt;
-    delete userObj.createdAt;
     delete userObj.verifyOtp;
     delete userObj.verifyOtpExpireAt;
     delete userObj.resetPassOtp;

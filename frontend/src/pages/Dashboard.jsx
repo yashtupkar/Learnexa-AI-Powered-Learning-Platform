@@ -34,6 +34,8 @@ import waveAnimation from "../assets/waveCartoon.json";
 import Lottie from "lottie-react";
 import { useSelector } from "react-redux";
 import AllQuizes from "../components/AllQuizes";
+import CurrentAffairs from "../components/CurrentAffairsSlider";
+import CurrentAffairsSlider from "../components/CurrentAffairsSlider";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -229,7 +231,7 @@ const Dashboard = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50 dark:bg-black">
+      <div className="min-h-screen p-6 bg-gray-50 dark:bg-black">
         <div className="max-w-7xl mx-auto ">
           <div className="flex flex-col md:flex-row gap-8 items-center mb-10 animate-fadeIn">
             <div className="relative group">
@@ -374,6 +376,7 @@ const Dashboard = () => {
                       </p>
                     </div>
                     </div>
+                    <CurrentAffairsSlider/>
                     
                     <AllQuizes/>
 

@@ -1,79 +1,32 @@
-
-import React from "react";
-import { Search, Bell, Plus, Menu, Settings, User, HelpCircle, LogOut } from "lucide-react";
+import React, { useState } from "react";
+import { Search, Plus, Menu } from "lucide-react";
 import { ThemeToggle } from "./ThemeTogler";
 import { useNavigate } from "react-router-dom";
 import Avatar from "boring-avatars";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/authSlice";
+import Notifications from "./Notification";
+import { DropdownMenu } from "./ProfileDropDown";
 
 
 export default function DashboardNav({
   activeTab,
   toggleSidebar,
   notifications,
-  showNotifications,
-  setShowNotifications,
   markAllAsRead,
   searchQuery,
   setSearchQuery,
-  pageTitle 
+  pageTitle,
 }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useSelector((state) => state.auth);
+
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/login"); // Optional: redirect to login or home page after logout
+    navigate("/login");
   };
-
-  const dummyNotifications = [
-    {
-      id: 1,
-      text: "🎉 New quiz 'JavaScript Fundamentals' has been completed by 25 students!",
-      time: "2 minutes ago",
-      read: false,
-    },
-    {
-      id: 2,
-      text: "📊 Weekly performance report is now available for download",
-      time: "1 hour ago",
-      read: false,
-    },
-    {
-      id: 3,
-      text: "👥 Sarah Johnson joined your 'React Advanced Concepts' quiz",
-      time: "3 hours ago",
-      read: false,
-    },
-    {
-      id: 4,
-      text: "⭐ Your quiz received a 5-star rating from Alex Thompson",
-      time: "5 hours ago",
-      read: true,
-    },
-    {
-      id: 5,
-      text: "🔔 Reminder: 'Database Design' quiz ends in 2 hours",
-      time: "Yesterday",
-      read: true,
-    },
-    {
-      id: 6,
-      text: "🏆 Congratulations! You've reached 1000 total quiz completions",
-      time: "2 days ago",
-      read: true,
-    },
-    {
-      id: 7,
-      text: "💡 New feature: AI-powered question suggestions are now available",
-      time: "3 days ago",
-      read: true,
-    },
-  ];
-
-  // Use dummy data if notifications is not provided
-  const notificationsToShow = notifications || dummyNotifications;
+  const [showNotifications, setShowNotifications] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-700/50 shadow-sm">
@@ -124,124 +77,23 @@ export default function DashboardNav({
               <ThemeToggle />
             </div>
 
-            {/* Notifications */}
-            <div className="relative">
-              <button
-                className="group relative p-2 rounded-lg cursor-pointer dark:bg-zinc-800 hover:bg-zinc-700 dark:hover:bg-gray-800/80 transition-all duration-200 "
-                onClick={() => setShowNotifications(!showNotifications)}
-              >
-                <Bell
-                  size={18}
-                  className="text-gray-600 dark:text-gray-400 group-hover:text-gray-800 dark:group-hover:text-gray-200 transition-colors duration-200"
-                />
-                {notifications?.filter((n) => !n.read).length > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center animate-pulse shadow-lg">
-                    {notifications.filter((n) => !n.read).length}
-                  </span>
-                )}
-              </button>
+            {/* Notifications Component */}
+            <Notifications
+              notifications={notifications}
+              showNotifications={showNotifications}
+              onToggle={() => setShowNotifications(!showNotifications)}
+              markAllAsRead={markAllAsRead}
+            />
 
-              {showNotifications && (
-                <div className="absolute right-0 mt-3 w-96 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-2xl shadow-2xl z-50 border border-gray-200/50 dark:border-gray-700/50 overflow-hidden animate-in slide-in-from-top-2 duration-200">
-                  <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100/80 dark:border-gray-700/80 bg-gradient-to-r from-gray-50/50 to-gray-100/50 dark:from-gray-900/50 dark:to-gray-800/50">
-                    <h3 className="font-semibold text-gray-800 dark:text-gray-200 text-lg">
-                      Notifications
-                    </h3>
-                    <button
-                      className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium transition-colors duration-200 hover:underline"
-                      onClick={markAllAsRead}
-                    >
-                      Mark all read
-                    </button>
-                  </div>
-                  <div className="max-h-80 overflow-y-auto">
-                    {notificationsToShow.length > 0 ? (
-                      notificationsToShow.map((notification) => (
-                        <div
-                          key={notification.id}
-                          className={`px-6 py-4 hover:bg-gray-50/50 dark:hover:bg-gray-700/30 transition-all duration-200 border-l-4 ${
-                            !notification.read
-                              ? "bg-indigo-50/30 dark:bg-indigo-900/10 border-l-indigo-500"
-                              : "border-l-transparent"
-                          }`}
-                        >
-                          <p className="text-sm text-gray-800 dark:text-gray-200 leading-relaxed">
-                            {notification.text}
-                          </p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 font-medium">
-                            {notification.time}
-                          </p>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="px-6 py-12 text-center">
-                        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                          <Bell size={24} className="text-gray-400" />
-                        </div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
-                          No notifications yet
-                        </p>
-                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-                          We'll notify you when something happens
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                  <div className="border-t border-gray-100/80 dark:border-gray-700/80 px-6 py-3 bg-gradient-to-r from-gray-50/30 to-gray-100/30 dark:from-gray-900/30 dark:to-gray-800/30">
-                    <button className="text-sm text-center w-full text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium transition-colors duration-200 py-1 hover:underline">
-                      View all notifications
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* New Quiz Button */}
-            <button
-              onClick={() => navigate("/create-quiz")}
-              className="hidden md:flex items-center cursor-pointer space-x-2 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 hover:shadow-xl hover:shadow-indigo-500/25 hover:scale-[1.02] transform-gpu"
-            >
-              <Plus size={18} className="text-white" />
-              <span>New Quiz</span>
-            </button>
-
-            {/* Mobile New Quiz Button */}
-            <button
-              onClick={() => navigate("/create-quiz")}
-              className="md:hidden p-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-105"
-            >
-              <Plus size={18} className="text-white" />
-            </button>
+          
 
             {/* User Avatar */}
-            <div className="relative group">
-              <div className="ring-2 ring-transparent group-hover:ring-indigo-500/30 rounded-full transition-all duration-200 p-0.5">
-                <Avatar name={user?.name} size={42} variant="bean" />
-              </div>
+            <div className="mt-2">
+           <DropdownMenu name={user?.name} email={user?.email} /> 
             </div>
+            
 
-            {/* Logout Button */}
-            <button
-              onClick={() => handleLogout()}
-              className="group relative p-2.5 bg-red-500/10 hover:bg-red-500 text-red-600 hover:text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-red-500/25 hover:scale-105 transform-gpu"
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                />
-              </svg>
-              <span className="absolute -bottom-8 cursor-pointer left-1/2 transform -translate-x-1/2 bg-gray-900 dark:bg-gray-700 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
-                Logout
-              </span>
-            </button>
+          
           </div>
         </div>
       </div>

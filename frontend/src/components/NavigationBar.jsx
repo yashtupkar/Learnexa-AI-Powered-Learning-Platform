@@ -98,7 +98,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full fixed top-0 left-0 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-lg border-b border-gray-200/50 dark:border-gray-700/50 z-50 transition-all duration-300">
+    <nav className="w-full fixed top-0 left-0  backdrop-blur-lg  z-50 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo Section */}

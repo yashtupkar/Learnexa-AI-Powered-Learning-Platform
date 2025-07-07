@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import {
   Home,
@@ -16,10 +16,14 @@ import {
   User,
   PanelLeftOpen,
   PanelLeftClose,
+  Globe,
+  Youtube,
 } from "lucide-react";
 import { ThemeToggle } from "./ThemeTogler";
 import Avatar from "boring-avatars";
 import { useSelector } from "react-redux";
+import { AppContext } from "../context/AppContext";
+import axios from "axios";
 
 export function SidebarItem({
   icon,
@@ -95,12 +99,12 @@ export function RecentTopicItem({ label, count, icon }) {
         ) : (
           <Book
             size={14}
-            className="text-gray-500 dark:text-gray-400 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors duration-200"
+            className="text-gray-500 dark:text-gray-400 group-hover:text-indigo-500 dark:group-hover:text-indigo-400  duration-200"
           />
         )}
-        <span className="truncate">{label}</span>
+        <span className="truncate max-w-[150px]">{label}</span>
       </div>
-      <span className="text-xs bg-gray-100 dark:bg-gray-700/40 text-gray-500 dark:text-gray-300 rounded-full px-2 py-0.5 min-w-[20px] text-center transition-colors duration-200 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-900/30 group-hover:text-indigo-600 dark:group-hover:text-indigo-300">
+      <span className="text-xs bg-gray-100 dark:bg-gray-700/40 text-gray-500 dark:text-gray-300 rounded-full px-2 py-0.5 min-w-[20px] text-center  duration-200 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-900/30 group-hover:text-indigo-600 dark:group-hover:text-indigo-300">
         {count}
       </span>
     </button>
@@ -109,9 +113,39 @@ export function RecentTopicItem({ label, count, icon }) {
 
 export default function Sidebar({ isCollapsed, toggleSidebar }) {
   const [showContent, setShowContent] = useState(false);
+  const [generatedQuizzes, setGeneratedQuizzes] = useState([]);
   const location = useLocation();
 
+
   const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const userId = user?._id;
+
+  const { backend_URL } = useContext(AppContext);
+
+  const fetchGeneratedQuizzes = async () => {
+    try {
+      const response = await axios.get(
+        `${backend_URL}/api/quiz/get-user-generated-quiz/${userId}`
+      );
+      setGeneratedQuizzes(
+        response.data.map((item) => ({
+          ...item.quiz,
+          _id: item._id,
+          type: "generated",
+          createdAt: item.createdAt,
+          status: "generated",
+        }))
+      );
+    } catch (error) {
+      console.error("Error fetching generated quizzes:", error);
+    }
+  };
+
+  useEffect(() => {
+   
+      fetchGeneratedQuizzes();
+    
+  }, []);
 
   useEffect(() => {
     if (!isCollapsed) {
@@ -173,6 +207,12 @@ export default function Sidebar({ isCollapsed, toggleSidebar }) {
               collapsed={isCollapsed}
             />
             <SidebarItem
+              icon={<Youtube />}
+              label="StudyTube"
+              to="/study-tube"
+              collapsed={isCollapsed}
+            />
+            <SidebarItem
               icon={<Zap />}
               label="Create Quiz"
               to="/create-quiz"
@@ -185,9 +225,9 @@ export default function Sidebar({ isCollapsed, toggleSidebar }) {
               collapsed={isCollapsed}
             />
             <SidebarItem
-              icon={<BarChart2 />}
-              label="Analytics"
-              to="/analytics"
+              icon={<Globe />}
+              label="Current Affairs"
+              to="/current-affairs"
               collapsed={isCollapsed}
             />
             <SidebarItem
@@ -206,44 +246,6 @@ export default function Sidebar({ isCollapsed, toggleSidebar }) {
           </div>
 
           {/* Recent Topics & Templates */}
-          {showContent && (
-            <div className="mt-8">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
-                  Recent Topics
-                </h3>
-                <button className="text-xs text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors duration-200">
-                  Clear
-                </button>
-              </div>
-              <div className="mt-2 space-y-1.5">
-                <RecentTopicItem label="JavaScript Basics" count={4} />
-                <RecentTopicItem label="React Hooks" count={2} />
-                <RecentTopicItem label="Data Structures" count={5} />
-              </div>
-
-              <div className="flex items-center justify-between mt-6 mb-3">
-                <h3 className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
-                  Saved Templates
-                </h3>
-                <button className="text-xs text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors duration-200">
-                  View All
-                </button>
-              </div>
-              <div className="mt-2 space-y-1.5">
-                <RecentTopicItem
-                  label="Coding Interview"
-                  count={10}
-                  icon={<BookmarkPlus />}
-                />
-                <RecentTopicItem
-                  label="Weekly Review"
-                  count={15}
-                  icon={<BookmarkPlus />}
-                />
-              </div>
-            </div>
-          )}
         </nav>
 
         {/* Footer */}
