@@ -16,6 +16,8 @@ import StudyTube from "./pages/StudyTube";
 import StudyTubeLayout from "./components/layouts/studyTubeLayout";
 import VideoPage from "./components/studyTubeComponents/VideoPage";
 import SearchResults from "./components/studyTubeComponents/SearchResultPage";
+import StudyTubeAdvanced from "./pages/StudyTubeAdvanced";
+import HRInterviewPage from "./pages/HRInterviewPage";
 
 // Protected route component
 
@@ -35,6 +37,7 @@ const App = () => {
       <Route path="/my-quizzes" element={<MyQuizzes />} />
       <Route path="/challenge/:id" element={<ChallengeFriendPage />} />
       <Route path="/current-affairs" element={<CurrentAffairs />} />
+      <Route path="/interview" element={<HRInterviewPage />} />
       <Route path="/study-tube/search=:query" element={<SearchResults />} />
       <Route
         path="/video/:videoId"

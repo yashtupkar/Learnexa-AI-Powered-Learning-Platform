@@ -828,9 +828,12 @@ import {
   ArrowLeft,
   ExternalLink,
   Loader2,
+  Youtube,
+  Trash2,
 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ThemeToggle } from "../components/ThemeTogler";
+import { FaYoutube, FaYoutubeSquare } from "react-icons/fa";
 
 const StudyTube = () => {
   const [videos, setVideos] = useState([]);
@@ -904,7 +907,101 @@ const StudyTube = () => {
     return savedVideos.some((v) => v.id.videoId === videoId);
   };
 
-  // AI-powered study relevance check using OpenRouter Gemini
+  const STUDY_KEYWORDS = [
+    // Academic subjects
+    "math",
+    "mathematics",
+    "algebra",
+    "calculus",
+    "geometry",
+    "trigonometry",
+    "science",
+    "physics",
+    "chemistry",
+    "biology",
+    "astronomy",
+    "geology",
+    "history",
+    "world history",
+    "us history",
+    "european history",
+    "geography",
+    "social studies",
+    "economics",
+    "psychology",
+    "sociology",
+    "philosophy",
+    "literature",
+    "english",
+    "grammar",
+    "writing",
+    "reading",
+    "computer science",
+    "programming",
+    "coding",
+    "algorithm",
+    "data structure",
+    "engineering",
+    "electrical",
+    "mechanical",
+    "civil",
+    "chemical",
+    "medicine",
+    "anatomy",
+    "physiology",
+    "biochemistry",
+
+    // Study-related terms
+    "study",
+    "learn",
+    "tutorial",
+    "lecture",
+    "course",
+    "class",
+    "education",
+    "homework",
+    "assignment",
+    "exam",
+    "test",
+    "quiz",
+    "review",
+    "notes",
+    "textbook",
+    "research",
+    "theory",
+    "concept",
+    "principle",
+    "formula",
+    "equation",
+    "proof",
+    "theorem",
+    "experiment",
+    "lab","interview",
+    "demonstration",
+
+    // Common educational topics
+    "quantum",
+    "thermodynamics",
+    "organic chemistry",
+    "cell biology",
+    "calculus",
+    "linear algebra",
+    "probability",
+    "statistics",
+    "machine learning",
+    "artificial intelligence",
+    "neural networks",
+    "world war",
+    "renaissance",
+    "industrial revolution",
+    "ancient civilization",
+    "shakespeare",
+    "poetry",
+    "essay",
+    "thesis",
+    "dissertation",
+  ];
+
   const checkStudyRelevance = async (query) => {
     setIsAiAnalyzing(true);
     const fallbackResponse = {
@@ -915,6 +1012,22 @@ const StudyTube = () => {
     };
 
     try {
+      // First check for keywords in the query
+      const lowerQuery = query.toLowerCase();
+      const hasKeyword = STUDY_KEYWORDS.some((keyword) =>
+        lowerQuery.includes(keyword.toLowerCase())
+      );
+
+      if (hasKeyword) {
+        return {
+          isStudyRelated: true,
+          confidenceScore: 90, // High confidence for keyword matches
+          suggestedQuery: query,
+          reason: "Contains known study-related keywords",
+        };
+      }
+
+      // If no keywords found, proceed with AI analysis
       const response = await fetch(
         "https://openrouter.ai/api/v1/chat/completions",
         {
@@ -944,9 +1057,9 @@ const StudyTube = () => {
                 content: `Analyze this search query: "${query}"`,
               },
             ],
-            temperature: 0.3, // Lower temperature for more consistent responses
+            temperature: 0.3,
             max_tokens: 150,
-            response_format: { type: "json_object" }, // Request JSON format
+            response_format: { type: "json_object" },
           }),
         }
       );
@@ -988,6 +1101,91 @@ const StudyTube = () => {
       setIsAiAnalyzing(false);
     }
   };
+
+  // AI-powered study relevance check using OpenRouter Gemini
+  // const checkStudyRelevance = async (query) => {
+  //   setIsAiAnalyzing(true);
+  //   const fallbackResponse = {
+  //     isStudyRelated: true,
+  //     confidenceScore: 50,
+  //     suggestedQuery: query,
+  //     reason: "API unavailable - proceeding with search",
+  //   };
+
+  //   try {
+  //     const response = await fetch(
+  //       "https://openrouter.ai/api/v1/chat/completions",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+  //           "HTTP-Referer": window.location.href,
+  //           "X-Title": "StudyTube",
+  //         },
+  //         body: JSON.stringify({
+  //           model: "deepseek/deepseek-r1:free",
+  //           messages: [
+  //             {
+  //               role: "system",
+  //               content: `You are an educational content analyzer. Respond STRICTLY with ONLY a valid JSON object in this exact format:
+  // {
+  //   "isStudyRelated": boolean,
+  //   "confidenceScore": number,
+  //   "suggestedQuery": "string",
+  //   "reason": "string"
+  // }
+  // DO NOT include any markdown formatting, additional text, or explanations. ONLY the JSON object.`,
+  //             },
+  //             {
+  //               role: "user",
+  //               content: `Analyze this search query: "${query}"`,
+  //             },
+  //           ],
+  //           temperature: 0.3, // Lower temperature for more consistent responses
+  //           max_tokens: 150,
+  //           response_format: { type: "json_object" }, // Request JSON format
+  //         }),
+  //       }
+  //     );
+
+  //     if (!response.ok) {
+  //       console.error("API error:", response.status, await response.text());
+  //       return fallbackResponse;
+  //     }
+
+  //     const data = await response.json();
+
+  //     if (data.choices?.[0]?.message?.content) {
+  //       let content = data.choices[0].message.content;
+
+  //       // Clean the response if it includes markdown formatting
+  //       if (content.startsWith("```json")) {
+  //         content = content.replace(/```json|```/g, "").trim();
+  //       }
+
+  //       try {
+  //         const result = JSON.parse(content);
+  //         return {
+  //           isStudyRelated: result.isStudyRelated ?? true,
+  //           confidenceScore: result.confidenceScore ?? 50,
+  //           suggestedQuery: result.suggestedQuery || query,
+  //           reason: result.reason || "Analyzed by DeepSeek R1",
+  //         };
+  //       } catch (e) {
+  //         console.error("Parsing failed. Raw content:", content);
+  //         return fallbackResponse;
+  //       }
+  //     }
+
+  //     return fallbackResponse;
+  //   } catch (error) {
+  //     console.error("API request failed:", error);
+  //     return fallbackResponse;
+  //   } finally {
+  //     setIsAiAnalyzing(false);
+  //   }
+  // };
 
   const fetchVideos = async () => {
     if (!searchTerm.trim()) return;
@@ -1031,7 +1229,10 @@ const StudyTube = () => {
           `videoDuration=medium&` + // Filters out shorts
           `videoEmbeddable=true&` +
           `videoSyndicated=true&` +
+          `videoDefinition=high&` + // Prefer HD
+          `videoCaption=closedCaption&` +
           `relevanceLanguage=en&` +
+          `topicId=/m/01k8wb&` +
           `key=${YOUTUBE_API_KEY}`
       );
 
@@ -1239,7 +1440,6 @@ const StudyTube = () => {
     "React.js Fundamentals",
     "Data Structures",
     "Quantum Physics",
-    "Financial Analysis",
   ];
 
   // If we have a selected video, render the single video view
@@ -1718,67 +1918,83 @@ const StudyTube = () => {
         </>
       ) : (
         <main className="container mx-auto px-4">
-          <div className="flex flex-col items-center justify-center min-h-screen">
-            <div className="text-center max-w-4xl">
-              <div className="mb-12">
+          <div className="flex relative flex-col items-center justify-center min-h-screen py-8">
+            <div className="text-center max-w-4xl w-full">
+              {/* Hero Section */}
+              <div className="mb-8">
                 <h1 className="text-6xl font-bold mb-6 dark:text-white">
-                  <span className="bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r text-4xl from-red-500 to-pink-500 bg-clip-text text-transparent animate-gradient-x">
                     Distraction Free
                   </span>
                   <br />
-                  YouTube
+                  <span className="flex items-center gap-3 justify-center mt-2">
+                    <div className="bg-gradient-to-r from-red-500 to-pink-500 py-2 px-4 rounded-lg hover:scale-105 transition-transform duration-200 shadow-lg">
+                      <Play className="text-white" size={35} />
+                    </div>
+                    <span className="line-through text-gray-400">YouTube</span>StudyTube
+
+                  </span>
                 </h1>
-                <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-                  AI-powered educational content filtering for focused learning.
+                <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+                  AI-powered educational content filtering for{" "}
+                  <span className="font-medium text-red-500 dark:text-pink-400">
+                    focused learning
+                  </span>
                 </p>
               </div>
 
-              <div className="relative w-full max-w-2xl mx-auto mb-8">
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  onKeyPress={(e) => e.key === "Enter" && fetchVideos()}
-                  placeholder="What would you like to learn today?"
-                  className="w-full p-6 pl-14 text-lg rounded-2xl border-2 border-gray-300 dark:border-gray-600 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm focus:outline-none focus:ring-4 focus:ring-red-500/30 focus:border-red-500 shadow-2xl dark:text-white transition-all"
-                />
-                <Search
-                  className="absolute left-5 top-7 text-gray-400"
-                  size={24}
-                />
-                <button
-                  onClick={fetchVideos}
-                  disabled={isLoading || isAiAnalyzing}
-                  className={`absolute right-3 top-3 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-8 py-3 rounded-xl transition-all transform hover:scale-105 shadow-lg ${
-                    isLoading || isAiAnalyzing
-                      ? "opacity-50 cursor-not-allowed"
-                      : ""
-                  }`}
-                >
-                  {isAiAnalyzing ? "Analyzing..." : "Search"}
-                </button>
+              {/* Search Bar */}
+              <div className="relative w-full max-w-2xl mx-auto mb-8 group">
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-red-500 to-pink-500 rounded-2xl opacity-20 blur-sm group-hover:opacity-30 transition-all"></div>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onKeyPress={(e) => e.key === "Enter" && fetchVideos()}
+                    placeholder="What would you like to learn today?"
+                    className="w-full p-6 pl-14 text-lg rounded-2xl border-2 border-gray-300 dark:border-gray-600 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm focus:outline-none focus:ring-4 focus:ring-red-500/30 focus:border-red-500 shadow-lg dark:text-white transition-all duration-200"
+                  />
+                  <Search
+                    className="absolute left-5 top-7 text-gray-500 dark:text-gray-400"
+                    size={24}
+                  />
+                  <button
+                    onClick={fetchVideos}
+                    disabled={isLoading || isAiAnalyzing}
+                    className={`absolute right-3 top-3 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-8 py-3 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-red-500/20 ${
+                      isLoading || isAiAnalyzing
+                        ? "opacity-70 cursor-not-allowed"
+                        : ""
+                    }`}
+                  >
+                    {isAiAnalyzing ? "Analyzing..." : "Search"}
+                  </button>
+                </div>
               </div>
 
+              {/* Loading/Analyzing State */}
               {(isLoading || isAiAnalyzing) && (
                 <div className="mb-8">
-                  <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-gray-200 dark:border-gray-700 inline-block">
+                  <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-gray-200 dark:border-gray-700 inline-block">
                     <div className="flex items-center space-x-3">
                       {isAiAnalyzing ? (
                         <>
-                          <Brain
-                            className="text-purple-500 animate-pulse"
-                            size={20}
-                          />
+                          <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-1.5 rounded-full">
+                            <Brain
+                              className="text-white animate-pulse"
+                              size={20}
+                            />
+                          </div>
                           <span className="text-gray-700 dark:text-gray-300">
                             Analyzing search for study relevance...
                           </span>
                         </>
                       ) : (
                         <>
-                          <Loader2
-                            className="text-red-500 animate-spin"
-                            size={20}
-                          />
+                          <div className="bg-gradient-to-r from-red-500 to-pink-500 p-1.5 rounded-full animate-spin">
+                            <Loader2 className="text-white" size={20} />
+                          </div>
                           <span className="text-gray-700 dark:text-gray-300">
                             Finding the best educational content...
                           </span>
@@ -1789,72 +2005,76 @@ const StudyTube = () => {
                 </div>
               )}
 
+              {/* Quick Search Terms */}
               <div className="mb-12">
-                <h3 className="text-lg font-semibold mb-4 dark:text-white">
-                  Quick Search Suggestions
-                </h3>
-                <div className="flex flex-wrap gap-2 justify-center">
+                <div className="flex flex-wrap gap-3 justify-center">
                   {quickSearchTerms.map((term, index) => (
                     <button
                       key={index}
                       onClick={() => setSearchTerm(term)}
-                      className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-600 transition-all transform hover:scale-105 shadow-md"
+                      className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-600 transition-all duration-200 transform hover:scale-105 shadow-sm hover:shadow-md"
                     >
                       {term}
                     </button>
                   ))}
                 </div>
               </div>
-              {watchedVideos.length > 0 && !hasSearched && (
-                <div className="mb-12 w-full">
-                  <h3 className="text-lg font-semibold mb-4 dark:text-white flex items-center justify-between">
-                    Continue Watching
-                    <button
-                      onClick={() => {
-                        setWatchedVideos([]);
-                        localStorage.removeItem("studyTubeWatchedVideos");
-                      }}
-                      className="text-xs bg-red-100 dark:bg-red-900/50 hover:bg-red-200 dark:hover:bg-red-900 text-red-600 dark:text-red-300 px-3 py-1 rounded-full transition-all"
-                    >
-                      Clear History
-                    </button>
-                  </h3>
-                  <div className="relative">
-                    <div className="flex space-x-4 overflow-x-auto pb-4 scrollbar-hide">
-                      {watchedVideos.map((video, index) => (
-                        <div
-                          key={`watched-${video.id.videoId}-${index}`}
-                          className="flex-shrink-0 w-64 cursor-pointer group"
-                          onClick={() => handleVideoClick(video)}
-                        >
-                          <div className="relative rounded-xl overflow-hidden mb-2">
-                            <img
-                              src={video.snippet.thumbnails.medium.url}
-                              alt={video.snippet.title}
-                              className="w-full h-36 object-cover group-hover:opacity-80 transition-opacity"
-                            />
-                            <div className="absolute bottom-2 right-2 bg-black/70 text-white px-1.5 py-0.5 rounded text-xs">
-                              {formatDuration(video.contentDetails?.duration)}
-                            </div>
-                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                              <div className="bg-black/50 rounded-full p-3">
-                                <Play className="text-white" size={20} />
+
+              {/* Continue Watching Section */}
+              <div className="absolute bottom-4 left-0 right-0 mx-auto w-full max-w-4xl px-4">
+                {watchedVideos.length > 0 && !hasSearched && (
+                  <div className="bg-gradient-to-r from-red-500/5 to-pink-500/5 backdrop-blur-sm rounded-xl p-6 border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-lg font-semibold dark:text-white flex items-center gap-2">
+                        <History size={20} className="text-red-500" />
+                        Continue Watching
+                      </h3>
+                      <button
+                        onClick={() => {
+                          setWatchedVideos([]);
+                          localStorage.removeItem("studyTubeWatchedVideos");
+                        }}
+                        className="text-xs bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-800 text-red-600 dark:text-red-300 px-3 py-1 rounded-full transition-all flex items-center gap-1"
+                      >
+                        <Trash2 size={14} />
+                        Clear History
+                      </button>
+                    </div>
+                    <div className="relative">
+                      <div className="flex space-x-4 overflow-x-auto pb-4 scrollbar-hide">
+                        {watchedVideos.map((video, index) => (
+                          <div
+                            key={`watched-${video.id.videoId}-${index}`}
+                            className="flex-shrink-0 w-44 cursor-pointer group transition-transform duration-200 hover:-translate-y-1"
+                            onClick={() => handleVideoClick(video)}
+                          >
+                            <div className="relative rounded-xl overflow-hidden mb-2 shadow-md group-hover:shadow-lg transition-shadow">
+                              <img
+                                src={video.snippet.thumbnails.medium.url}
+                                alt={video.snippet.title}
+                                className="w-full h-24 object-cover group-hover:opacity-90 transition-opacity"
+                              />
+                              <div className="absolute bottom-2 right-2 bg-black/80 text-white px-1.5 py-1 rounded text-xs">
+                                {formatDuration(video.contentDetails?.duration)}
+                              </div>
+                              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div className="bg-red-500 rounded-full p-3 shadow-lg transform group-hover:scale-110 transition-transform">
+                                  <Play className="text-white" size={20} />
+                                </div>
                               </div>
                             </div>
                           </div>
-                          <h4 className="font-medium text-sm line-clamp-2 dark:text-white group-hover:text-red-500 transition-colors">
-                            {video.snippet.title}
-                          </h4>
-                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                            {video.snippet.channelTitle}
-                          </p>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
+
+            {/* Decorative elements */}
+            <div className="absolute top-20 left-10 w-32 h-32 bg-red-500/10 rounded-full blur-3xl -z-10"></div>
+            <div className="absolute bottom-20 right-10 w-40 h-40 bg-pink-500/10 rounded-full blur-3xl -z-10"></div>
           </div>
         </main>
       )}

@@ -1145,7 +1145,7 @@ const CurrentAffairs = () => {
           <div className="text-center max-w-4xl">
             <div className="mb-4">
               <h1 className="text-6xl font-bold mb-6 dark:text-white">
-                <span className="bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r text-4xl from-red-500 to-pink-500 bg-clip-text text-transparent">
                   World Wide
                 </span>
                 <br />
