@@ -381,12 +381,12 @@ const AllQuizes = () => {
 
                       {/* Grade */}
                       <div className="flex items-center gap-2">
-                        <div className="flex w-fit capitalize bg-amber-500 dark:bg-amber-900/50 items-center text-xs text-white dark:text-amber-400 py-1 px-2 rounded dark:border border-amber-500">
+                        <div className="flex w-fit capitalize bg-gray-100 dark:bg-gray-800 items-center text-xs text-gray-500 dark:text-white py-1 px-2 rounded ">
                           <BookOpen size={14} className="mr-1" />
                           {quizWithDefaults.grade} Level
                         </div>
                         {quizWithDefaults.question_type && (
-                          <div className="flex uppercase w-fit  bg-fuchsia-500 dark:bg-fuchsia-900/50 items-center text-xs text-white dark:text-fuchsia-400 py-1 px-2 rounded dark:border border-fuchsia-500">
+                          <div className="flex uppercase w-fit  bg-gray-100 dark:bg-gray-800 items-center text-xs text-gray-500 dark:text-white py-1 px-2 rounded ">
                             <BarChart2 size={14} className="mr-1" />
                             {quizWithDefaults.question_type}
                           </div>

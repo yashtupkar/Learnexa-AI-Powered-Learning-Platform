@@ -1687,7 +1687,7 @@ const StudyTube = () => {
       className={`min-h-screen transition-all duration-300 ${
         hasSearched
           ? "bg-white dark:bg-black"
-          : "bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-indigo-950"
+          : "bg-white dark:bg-black"
       }`}
     >
       {showWarning && (
@@ -1922,8 +1922,8 @@ const StudyTube = () => {
             <div className="text-center max-w-4xl w-full">
               {/* Hero Section */}
               <div className="mb-8">
-                <h1 className="text-6xl font-bold mb-6 dark:text-white">
-                  <span className="bg-gradient-to-r text-4xl from-red-500 to-pink-500 bg-clip-text text-transparent animate-gradient-x">
+                <h1 className="text-5xl font-bold mb-6 dark:text-white">
+                  <span className="bg-gradient-to-r text-xl from-red-500 to-pink-500 bg-clip-text text-transparent animate-gradient-x">
                     Distraction Free
                   </span>
                   <br />
@@ -1931,7 +1931,7 @@ const StudyTube = () => {
                     <div className="bg-gradient-to-r from-red-500 to-pink-500 py-2 px-4 rounded-lg hover:scale-105 transition-transform duration-200 shadow-lg">
                       <Play className="text-white" size={35} />
                     </div>
-                    <span className="line-through text-gray-400">YouTube</span>StudyTube
+                    StudyTube
 
                   </span>
                 </h1>
@@ -2006,7 +2006,7 @@ const StudyTube = () => {
               )}
 
               {/* Quick Search Terms */}
-              <div className="mb-12">
+              <div className="mb-4">
                 <div className="flex flex-wrap gap-3 justify-center">
                   {quickSearchTerms.map((term, index) => (
                     <button
@@ -2021,7 +2021,7 @@ const StudyTube = () => {
               </div>
 
               {/* Continue Watching Section */}
-              <div className="absolute bottom-4 left-0 right-0 mx-auto w-full max-w-4xl px-4">
+              <div className="mx-auto w-full max-w-4xl px-4">
                 {watchedVideos.length > 0 && !hasSearched && (
                   <div className="bg-gradient-to-r from-red-500/5 to-pink-500/5 backdrop-blur-sm rounded-xl p-6 border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
                     <div className="flex items-center justify-between mb-4">

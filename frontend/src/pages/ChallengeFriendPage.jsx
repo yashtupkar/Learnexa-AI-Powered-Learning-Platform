@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Share2, Users, Award, Clock, ChevronRight } from "lucide-react";
 
 // Mock data for the quiz
@@ -190,14 +189,12 @@ const ChallengeFriendPage = () => {
               <h2 className="text-xl font-bold text-gray-800">
                 Room: {roomId}
               </h2>
-              <CopyToClipboard
-                text={`${window.location.origin}/join/${roomId}`}
-              >
+           
                 <button className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-lg transition duration-200">
                   <Share2 size={16} />
                   Share Link
                 </button>
-              </CopyToClipboard>
+             
             </div>
 
             <div className="flex gap-6">

@@ -18,6 +18,9 @@ import {
   PanelLeftClose,
   Globe,
   Youtube,
+  ChartPie,
+  ChartSpline,
+  BookA,
 } from "lucide-react";
 import { ThemeToggle } from "./ThemeTogler";
 import Avatar from "boring-avatars";
@@ -212,10 +215,17 @@ export default function Sidebar({ isCollapsed, toggleSidebar }) {
               to="/study-tube"
               collapsed={isCollapsed}
             />
+
+            <SidebarItem
+              icon={<Globe />}
+              label="Current Affairs"
+              to="/current-affairs"
+              collapsed={isCollapsed}
+            />
             <SidebarItem
               icon={<Zap />}
               label="Create Quiz"
-              to="/create-quiz"
+              to="/create?tab=quiz"
               collapsed={isCollapsed}
             />
             <SidebarItem
@@ -224,24 +234,42 @@ export default function Sidebar({ isCollapsed, toggleSidebar }) {
               to="/my-quizzes"
               collapsed={isCollapsed}
             />
+
+            <hr className="text-gray-200 dark:text-gray-700" />
             <SidebarItem
-              icon={<Globe />}
-              label="Current Affairs"
-              to="/current-affairs"
-              collapsed={isCollapsed}
-            />
-            <SidebarItem
-              icon={<Calendar />}
-              label="Study Plan"
-              to="/study-plan"
-              collapsed={isCollapsed}
-            />
-            <SidebarItem
-              icon={<Lightbulb />}
-              label="AI Insights"
-              to="/ai-insights"
+              icon={<ChartSpline />}
+              label="Aptitude"
+              to="/aptitude"
               collapsed={isCollapsed}
               isNew={true}
+            />
+            <SidebarItem
+              icon={<ChartPie />}
+              label="Logical Reasoning"
+              to="/logical-reasoning"
+              collapsed={isCollapsed}
+              isNew={true}
+            />
+            <SidebarItem
+              icon={<BookA />}
+              label="Verbal Reasoning"
+              to="/verbal-reasoning"
+              collapsed={isCollapsed}
+              isNew={true}
+            />
+            <hr className="text-gray-200 dark:text-gray-700" />
+
+            <SidebarItem
+              icon={<Users />}
+              label="HR Interview"
+              to="/interview"
+              collapsed={isCollapsed}
+            />
+            <SidebarItem
+              icon={<Users />}
+              label="Technical Interview"
+              to="/interview"
+              collapsed={isCollapsed}
             />
           </div>
 

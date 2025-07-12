@@ -110,7 +110,7 @@
 
 // module.exports = getTopicSuggestions;
 
-const fetch = require("node-fetch");
+// const fetch = require("node-fetch");
 
 const getTopicSuggestions = async (input) => {
   const prompt = `Suggest 5 specific quiz topics based on: "${input}". Return them in a clean JSON array like ["Topic 1", "Topic 2", ...].`;

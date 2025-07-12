@@ -7,6 +7,9 @@ const  authRouter  = require("./routes/authRoutes");
 const userRouter = require("./routes/userRoutes");
 const quizRouter = require("./routes/quizRoutes");
 const newsRouter = require("./routes/newsRoute");
+const interviewRouter = require("./routes/interviewRoute");
+const indiabixRouter = require("./routes/indiaBixRoute");
+
 
 const app = express();
 
@@ -46,6 +49,8 @@ app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use('/api/quiz', quizRouter);
 app.use('/api/news', newsRouter);
+app.use('/api/interview', interviewRouter);
+app.use('/api/indiabix', indiabixRouter);
 
 // Start the server
 app.listen(PORT, () => {

@@ -11,13 +11,14 @@ import EmailVerify from "./pages/EmailVerify";
 import ResetPassword from "./pages/ResetPassword";
 import ChallengeFriendPage from "./pages/ChallengeFriendPage";
 import CurrentAffairs from "./pages/CurrentAffairs";
-
 import StudyTube from "./pages/StudyTube";
 import StudyTubeLayout from "./components/layouts/studyTubeLayout";
-import VideoPage from "./components/studyTubeComponents/VideoPage";
 import SearchResults from "./components/studyTubeComponents/SearchResultPage";
-import StudyTubeAdvanced from "./pages/StudyTubeAdvanced";
 import HRInterviewPage from "./pages/HRInterviewPage";
+import HRQuestionDetailPage from "./pages/HRQuestionDetailPage";
+import QuestionsPage from "./pages/QuestionsPage";
+import SubjectTopicsPage from "./pages/SubjectTopicsPage";
+import QuestionEditPage from "./pages/QuestionsEditPage";
 
 // Protected route component
 
@@ -32,13 +33,21 @@ const App = () => {
       <Route path="/reset-password" element={<ResetPassword />} />
 
       <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/create-quiz" element={<CreateQuiz />} />
+      <Route path="/create" element={<CreateQuiz />} />
       <Route path="/quiz/:quizId" element={<QuizPage />} />
       <Route path="/my-quizzes" element={<MyQuizzes />} />
       <Route path="/challenge/:id" element={<ChallengeFriendPage />} />
       <Route path="/current-affairs" element={<CurrentAffairs />} />
       <Route path="/interview" element={<HRInterviewPage />} />
+      <Route
+        path="/hr-interview/question/:id"
+        element={<HRQuestionDetailPage />}
+      />
+      <Route path="/:subject/:topic" element={<QuestionsPage />} />
+      <Route path="/:subject/:topic/edit" element={<QuestionEditPage />} />
+
       <Route path="/study-tube/search=:query" element={<SearchResults />} />
+      <Route path="/:subject" element={<SubjectTopicsPage />} />
       <Route
         path="/video/:videoId"
         element={

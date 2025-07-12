@@ -8,18 +8,21 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Provider } from 'react-redux'
 import store from './redux/store.js'
 import { AppThemeProvider } from './context/AppThemeContext.jsx'
+import { ModalProvider } from './context/ModalContext.jsx'
 
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
-    <AppThemeProvider>
-      <Provider store={store}>
-        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-          <AppContextProvider>
-            <App />
-          </AppContextProvider>
-        </GoogleOAuthProvider>
-      </Provider>
-    </AppThemeProvider>
+    <ModalProvider>
+      <AppThemeProvider>
+        <Provider store={store}>
+          <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+            <AppContextProvider>
+              <App />
+            </AppContextProvider>
+          </GoogleOAuthProvider>
+        </Provider>
+      </AppThemeProvider>
+    </ModalProvider>
   </BrowserRouter>
 );

@@ -28,6 +28,8 @@ import {
   Bell,
   Settings,
   Play,
+  Sparkle,
+  Sparkles,
 
 
 } from "lucide-react";
@@ -39,6 +41,13 @@ import AllQuizes from "../components/AllQuizes";
 import CurrentAffairs from "../components/CurrentAffairsSlider";
 import CurrentAffairsSlider from "../components/CurrentAffairsSlider";
 import FriendsImage from "../assets/referal.png";
+import UpgradePopup from "../components/modal/UpgradeModal";
+import InviteModal from "../components/modal/InviteModal";
+import StreakModal from "../components/modal/StreakModal";
+import GenerateModal from "../components/modal/GenerateModal";
+import { useModal } from "../hooks/useModal";
+import { useNavigate } from "react-router-dom";
+import UpgradeBanner from "../components/banners/UpgradeBanner";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -47,8 +56,15 @@ const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [stats, setStats] = useState(null);
   const [recentActivity, setRecentActivity] = useState([]);
+  const { openModal, closeModal, MODAL_TYPES } = useModal();
+  const [showInviteModal, setShowInviteModal] = useState(false);
+  const [showStreakModal, setShowStreakModal] = useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [showGenerateModal, setShowGenerateModal] = useState(false);
+  const navigate = useNavigate();
 
   const { isAuthenticated, user } = useSelector((state) => state.auth);
+  
 
   // Mock data
   useEffect(() => {
@@ -170,18 +186,7 @@ const Dashboard = () => {
     }
   };
 
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case "completed":
-        return <CheckCircle className="w-4 h-4 text-green-500" />;
-      case "generating":
-        return <RotateCw className="w-4 h-4 text-blue-500 animate-spin" />;
-      case "failed":
-        return <AlertCircle className="w-4 h-4 text-red-500" />;
-      default:
-        return <FileText className="w-4 h-4 text-gray-400" />;
-    }
-  };
+ 
 
   const getStatusText = (status) => {
     switch (status) {
@@ -232,6 +237,30 @@ const Dashboard = () => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+  const handleOpenInviteModal = () => {
+    openModal(MODAL_TYPES.INVITE, {
+      isOpen: true,
+      onClose: () => setShowInviteModal(false),
+      referralCode: "FRIEND2023",
+    });
+  };
+  const handleOpenStreakModal = () => {
+    openModal(MODAL_TYPES.STREAK, {
+      isOpen: true,
+      onClose: () => setShowStreakModal(false),
+    });
+  };
+  const handleOpenGenerateModal = () => {
+    openModal(MODAL_TYPES.GENERATE, {
+      isOpen: true,
+      onClose: () => setShowGenerateModal(false),
+     });
+  };
+
+
+
+
+
   return (
     <Layout>
       <div className="min-h-screen p-6 bg-gray-50 dark:bg-black">
@@ -270,7 +299,10 @@ const Dashboard = () => {
             </div>
             <div className="w-2/5 h-fit flex flex-col gap-4 items-center border-l-2 border-gray-200 dark:border-zinc-800 px-4">
               <div className="flex items-center gap-4 rounded-xl p-4 dark:bg-zinc-900 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-orange-50 dark:hover:bg-orange-900/30 cursor-pointer group">
-                <div className="flex flex-col gap-2">
+                <div
+                  onClick={handleOpenStreakModal}
+                  className="flex flex-col gap-2"
+                >
                   <h1 className="text-lg font-semibold text-gray-800 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
                     Start your streak
                   </h1>
@@ -287,16 +319,22 @@ const Dashboard = () => {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <defs>
-                    <linearGradient id="flameGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" style={{stopColor: '#FF4D4D'}} />
-                      <stop offset="50%" style={{stopColor: '#FF9900'}} />
-                      <stop offset="100%" style={{stopColor: '#FFCC00'}} />
+                    <linearGradient
+                      id="flameGradient"
+                      x1="0%"
+                      y1="0%"
+                      x2="100%"
+                      y2="100%"
+                    >
+                      <stop offset="0%" style={{ stopColor: "#FF4D4D" }} />
+                      <stop offset="50%" style={{ stopColor: "#FF9900" }} />
+                      <stop offset="100%" style={{ stopColor: "#FFCC00" }} />
                     </linearGradient>
                     <filter id="glow">
-                      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                      <feGaussianBlur stdDeviation="2" result="coloredBlur" />
                       <feMerge>
-                        <feMergeNode in="coloredBlur"/>
-                        <feMergeNode in="SourceGraphic"/>
+                        <feMergeNode in="coloredBlur" />
+                        <feMergeNode in="SourceGraphic" />
                       </feMerge>
                     </filter>
                   </defs>
@@ -317,7 +355,10 @@ const Dashboard = () => {
               </div>
 
               <div className="flex items-center gap-4 rounded-xl p-4 dark:bg-zinc-900 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-blue-50 dark:hover:bg-blue-900/30 cursor-pointer group">
-                <div className="flex flex-col gap-2">
+                <div
+                  onClick={handleOpenInviteModal}
+                  className="flex flex-col gap-2"
+                >
                   <h1 className="text-lg font-semibold text-gray-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                     Invite your friends
                   </h1>
@@ -351,7 +392,10 @@ const Dashboard = () => {
               ))}
             </div>
           </div>
-
+          {/* <UpgradePopup isOpen={true}/> */}
+          {/* <InviteModal isOpen={true}/> */}
+          {/* <StreakModal isOpen={true}/> */}
+          {/* <GenerateModal isOpen={true}/> */}
           {isLoading ? (
             <div className="grid place-items-center py-20">
               <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
@@ -360,15 +404,20 @@ const Dashboard = () => {
             <>
               {activeTab === "overview" && (
                 <div className="space-y-6">
-                    {/* Stats Cards */}
-                    <h1 className="text-gray-600 text-2xl ml-2 dark:text-gray-300 ">Quick Links</h1>
+                  {/* Stats Cards */}
+                  <h1 className="text-gray-600 text-2xl ml-2 dark:text-gray-300 ">
+                    Quick Links
+                  </h1>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-                    <div className="group bg-white dark:bg-zinc-900 rounded-xl p-5 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:bg-blue-50 dark:hover:bg-blue-900/30 relative overflow-hidden">
+                    <div
+                      onClick={handleOpenGenerateModal}
+                      className="group bg-white dark:bg-zinc-900 rounded-xl p-5 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:bg-blue-50 dark:hover:bg-blue-900/30 relative overflow-hidden"
+                    >
                       <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       <div className="flex items-center justify-between relative">
                         <div>
-                          <div className="p-3 w-fit my-2 text-white bg-blue-50 dark:bg-blue-500 rounded-lg group-hover:scale-110 group-hover:rotate-3 transition-transform">
-                            <FileText className="group-hover:animate-pulse" />
+                          <div className="p-3 w-fit my-2 text-white bg-blue-500 rounded-lg group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                            <Sparkles className="group-hover:animate-pulse" />
                           </div>
                           <p className="text-xl text-gray-500 dark:text-gray-300 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">
                             Generate Quiz
@@ -383,16 +432,23 @@ const Dashboard = () => {
                       </div>
                       <p className="text-xs text-blue-500 mt-3 flex items-center group-hover:font-medium">
                         Click to generate new quiz
-                        <span className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                        <span className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          →
+                        </span>
                       </p>
                       <div className="absolute bottom-0 left-0 w-full h-1 bg-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
                     </div>
 
-                    <div className="group bg-white dark:bg-zinc-900 rounded-xl p-5 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:bg-green-50 dark:hover:bg-green-900/30 relative overflow-hidden">
+                    <div
+                      onClick={() => {
+                        navigate("/current-affairs");
+                      }}
+                      className="group bg-white dark:bg-zinc-900 rounded-xl p-5 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:bg-green-50 dark:hover:bg-green-900/30 relative overflow-hidden"
+                    >
                       <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       <div className="flex items-center justify-between relative">
                         <div>
-                          <div className="p-3 w-fit my-2 text-white bg-green-50 dark:bg-green-500 rounded-lg group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                          <div className="p-3 w-fit my-2 text-white bg-green-500 rounded-lg group-hover:scale-110 group-hover:rotate-3 transition-transform">
                             <Globe className="group-hover:animate-pulse" />
                           </div>
                           <p className="text-xl text-gray-500 dark:text-gray-300 group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors">
@@ -411,16 +467,23 @@ const Dashboard = () => {
                       </div>
                       <p className="text-xs text-green-500 mt-3 flex items-center group-hover:font-medium">
                         Daily current affairs quiz
-                        <span className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                        <span className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          →
+                        </span>
                       </p>
                       <div className="absolute bottom-0 left-0 w-full h-1 bg-green-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
                     </div>
 
-                    <div className="group bg-white dark:bg-zinc-900 rounded-xl p-5 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:bg-red-50 dark:hover:bg-red-900/30 relative overflow-hidden">
+                    <div
+                      onClick={() => {
+                        navigate("/study-tube");
+                      }}
+                      className="group bg-white dark:bg-zinc-900 rounded-xl p-5 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:bg-red-50 dark:hover:bg-red-900/30 relative overflow-hidden"
+                    >
                       <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       <div className="flex items-center justify-between relative">
                         <div>
-                          <div className="p-3 w-fit my-2 text-white bg-red-50 dark:bg-red-500 rounded-lg group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                          <div className="p-3 w-fit my-2 text-white bg-red-500 rounded-lg group-hover:scale-110 group-hover:rotate-3 transition-transform">
                             <Play className="group-hover:animate-pulse" />
                           </div>
                           <p className="text-xl text-gray-500 dark:text-gray-300 group-hover:text-red-700 dark:group-hover:text-red-300 transition-colors">
@@ -439,17 +502,24 @@ const Dashboard = () => {
                       </div>
                       <p className="text-xs text-red-500 mt-3 flex items-center group-hover:font-medium">
                         Focus mode YouTube
-                        <span className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                        <span className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          →
+                        </span>
                       </p>
                       <div className="absolute bottom-0 left-0 w-full h-1 bg-red-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
                     </div>
 
-                    <div className="group bg-white dark:bg-zinc-900 rounded-xl p-5 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:bg-amber-50 dark:hover:bg-amber-900/30 relative overflow-hidden">
+                    <div
+                      onClick={() => {
+                        navigate("/interview");
+                      }}
+                      className="group bg-white dark:bg-zinc-900 rounded-xl p-5 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:bg-amber-50 dark:hover:bg-amber-900/30 relative overflow-hidden"
+                    >
                       <div className="absolute inset-0 bg-gradient-to-r from-amber-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       <div className="flex items-center justify-between relative">
                         <div>
-                          <div className="p-3 w-fit my-2 text-white bg-amber-50 dark:bg-amber-500 rounded-lg group-hover:scale-110 group-hover:rotate-3 transition-transform">
-                            <FileText className="group-hover:animate-pulse" />
+                          <div className="p-3 w-fit my-2 text-white bg-amber-500 rounded-lg group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                            <Users className="group-hover:animate-pulse" />
                           </div>
                           <p className="text-xl text-gray-500 dark:text-gray-300 group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors">
                             Interview Prep
@@ -467,11 +537,14 @@ const Dashboard = () => {
                       </div>
                       <p className="text-xs text-amber-500 mt-3 flex items-center group-hover:font-medium">
                         AI interview simulator
-                        <span className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                        <span className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          →
+                        </span>
                       </p>
                       <div className="absolute bottom-0 left-0 w-full h-1 bg-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
                     </div>
-                  </div>
+                    </div>
+                    <UpgradeBanner/>
                   <CurrentAffairsSlider />
 
                   <AllQuizes />

@@ -1,121 +1,4 @@
-// import React, { useState } from "react";
-// import Layout from "../components/layouts/layout";
-// import {
-//   ChevronDown,
-//   ChevronRight,
-//   RotateCw,
-//   Zap,
-//   HelpCircle,
-//   Image,
-//   BookOpen,
-//   Clock,
-//   Tag,
-//   Sliders,
-//   Sparkles,
-//   BarChart2,
-//   Award,
-//   Plus,
-//   X,
-// } from "lucide-react";
-// import QuizGeneration from "../components/Quiz/QuizGenerator";
-// import CodingTestGeneration from "../components/Quiz/CodingTestGenerator";
-// import PdfQuizGeneration from "../components/Quiz/PdfQuizGenerator";
-
-// const CreateQuiz = () => {
-//   const [activeTab, setActiveTab] = useState("quiz");
-
-
-
-
-//   return (
-//     <Layout>
-//       <div className="p-6 max-w-7xl mx-auto">
-//         <div className="flex items-center justify-between mb-8">
-//           <div>
-//             <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-//               {activeTab === "quiz"
-//                 ? "Create New Quiz"
-//                 : activeTab === "coding"
-//                 ? "Generate New Coding Test"
-//                 : "Generate Quiz From PDF"}
-//             </h2>
-//             <p className="text-gray-500 dark:text-gray-400 mt-1">
-//               {activeTab === "quiz"
-//                 ? "Generate a customized quiz tailored to your needs"
-//                 : activeTab === "coding"
-//                 ? "Prepare coding assessments based on skill level"
-//                 : "Extract questions from uploaded PDF to auto-generate a quiz"}
-//             </p>
-//           </div>
-
-//           <div className="mt-5   rounded-2xl p-5">
-//             <h4 className="text-sm font-bold text-blue-800 dark:text-blue-100 flex items-center gap-2">
-//               <Sparkles size={16} /> Pro Tip
-//             </h4>
-//             <p className="text-sm text-blue-700 dark:text-blue-300 mt-2">
-//               Be specific with your topic for better results. For example:
-//               <br />
-//               <strong className="text-blue-800 dark:text-blue-100">
-//                 "JavaScript ES6 arrow functions"
-//               </strong>{" "}
-//               instead of just{" "}
-//               <strong className="text-blue-800 dark:text-blue-100">
-//                 "JavaScript"
-//               </strong>
-//               .
-//             </p>
-//           </div>
-//         </div>
-
-//         {/* Tab System */}
-//         <div className="mb-6">
-//           <div className="flex border-b border-gray-200 dark:border-gray-700">
-//             <button
-//               className={`py-2 px-4 font-medium text-sm border-b-2 ${
-//                 activeTab === "quiz"
-//                   ? "border-indigo-500 text-indigo-600 dark:text-indigo-400"
-//                   : "border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
-//               }`}
-//               onClick={() => setActiveTab("quiz")}
-//             >
-//               Standard Quiz
-//             </button>
-//             <button
-//               className={`py-2 px-4 font-medium text-sm border-b-2 ${
-//                 activeTab === "coding"
-//                   ? "border-indigo-500 text-indigo-600 dark:text-indigo-400"
-//                   : "border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
-//               }`}
-//               onClick={() => setActiveTab("coding")}
-//             >
-//               Coding Test
-//             </button>
-//             <button
-//               className={`py-2 px-4 font-medium text-sm border-b-2 ${
-//                 activeTab === "pdf"
-//                   ? "border-indigo-500 text-indigo-600 dark:text-indigo-400"
-//                   : "border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
-//               }`}
-//               onClick={() => setActiveTab("pdf")}
-//             >
-//               PDF Quiz
-//             </button>
-//           </div>
-//         </div>
-
-//         {/* Tab Content */}
-//         <div>
-//           {activeTab === "quiz" && <QuizGeneration />}
-//           {activeTab === "coding" && <CodingTestGeneration />}
-//           {activeTab === "pdf" && <PdfQuizGeneration />}
-//         </div>
-//       </div>
-//     </Layout>
-//   );
-// };
-
-// export default CreateQuiz;
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../components/layouts/layout";
 import {
   ChevronDown,
@@ -137,9 +20,25 @@ import {
 import QuizGeneration from "../components/Quiz/QuizGenerator";
 import CodingTestGeneration from "../components/Quiz/CodingTestGenerator";
 import PdfQuizGeneration from "../components/Quiz/PdfQuizGenerator";
+import { useSearchParams } from "react-router-dom";
 
 const CreateQuiz = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState("quiz");
+
+  useEffect(() => {
+    const tab = searchParams.get("tab");
+    if (tab) {
+      setActiveTab(tab);
+    }
+  }, [searchParams]);
+
+  const handleTabChange = (tabName) => {
+    setSearchParams({ tabs: tabName });
+    setActiveTab(tabName);
+  };
+
+
 
   return (
     <Layout>
@@ -198,7 +97,7 @@ const CreateQuiz = () => {
                   ? "border-indigo-600 text-indigo-600 dark:text-indigo-400 dark:border-indigo-400"
                   : "border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300"
               }`}
-              onClick={() => setActiveTab("quiz")}
+              onClick={() => handleTabChange("quiz")}
             >
               <div className="flex items-center gap-2">
                 <BookOpen size={16} />
@@ -211,7 +110,7 @@ const CreateQuiz = () => {
                   ? "border-indigo-600 text-indigo-600 dark:text-indigo-400 dark:border-indigo-400"
                   : "border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300"
               }`}
-              onClick={() => setActiveTab("coding")}
+              onClick={() => handleTabChange("coding")}
             >
               <div className="flex items-center gap-2">
                 <Zap size={16} />
@@ -224,7 +123,7 @@ const CreateQuiz = () => {
                   ? "border-indigo-600 text-indigo-600 dark:text-indigo-400 dark:border-indigo-400"
                   : "border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300"
               }`}
-              onClick={() => setActiveTab("pdf")}
+              onClick={() => handleTabChange("pdf")}
             >
               <div className="flex items-center gap-2">
                 <Image size={16} />
