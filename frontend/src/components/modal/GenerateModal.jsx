@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
+import React from "react";
 import {
   X,
   Upload,
@@ -312,89 +313,92 @@ const GenerateModal = ({ isOpen, onClose }) => {
     },
   ];
 
-  return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="fixed inset-0 bg-black/60 dark:bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-      >
-        <motion.div
-          initial={{ scale: 0.95, y: 20, opacity: 0 }}
-          animate={{ scale: 1, y: 0, opacity: 1 }}
-          exit={{ scale: 0.95, opacity: 0 }}
-          transition={{
-            type: "spring",
-            damping: 20,
-            stiffness: 300,
-            delay: 0.1,
-          }}
-          className="relative bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-700/50 rounded-2xl shadow-xl overflow-hidden w-full max-w-3xl"
-        >
-          <div className="relative p-6">
-            <button
-              onClick={onClose}
-              className="absolute cursor-pointer top-5 right-5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white transition-colors p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
-            >
-              <X className="w-5 h-5" />
-            </button>
+ return (
+   <AnimatePresence>
+     <motion.div
+       initial={{ opacity: 0 }}
+       animate={{ opacity: 1 }}
+       exit={{ opacity: 0 }}
+       transition={{ duration: 0.3, ease: "easeInOut" }}
+       className="fixed inset-0 bg-black/60 dark:bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+     >
+       <motion.div
+         initial={{ scale: 0.95, y: 20, opacity: 0 }}
+         animate={{ scale: 1, y: 0, opacity: 1 }}
+         exit={{ scale: 0.95, opacity: 0 }}
+         transition={{
+           type: "spring",
+           damping: 20,
+           stiffness: 300,
+           delay: 0.1,
+         }}
+         className="relative bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-700/50 rounded-2xl shadow-xl overflow-hidden w-full max-w-md md:max-w-2xl lg:max-w-3xl"
+       >
+         <div className="relative p-4 sm:p-6">
+           <button
+             onClick={onClose}
+             className="absolute cursor-pointer top-3 right-3 sm:top-4 sm:right-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white transition-colors p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
+           >
+             <X className="w-5 h-5" />
+           </button>
 
-            <div className="mb-6 flex flex-col items-center">
-              <h3 className="text-3xl flex items-center gap-2 text-gray-700 dark:text-white mb-2">
-                Generate with AI <Sparkles className="text-yellow-400"/>
-              </h3>
-              <p className="text-gray-600 font-light dark:text-gray-400">
-                Start by choosing your input method below:
-              </p>
-            </div>
+           <div className="mb-4 sm:mb-6 flex flex-col items-center">
+             <h3 className="text-xl sm:text-2xl lg:text-3xl flex items-center gap-2 text-gray-700 dark:text-white mb-1 sm:mb-2">
+               Generate with AI{" "}
+               <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400" />
+             </h3>
+             <p className="text-sm sm:text-base text-gray-600 font-light dark:text-gray-400 text-center">
+               Start by choosing your input method below:
+             </p>
+           </div>
 
-            <div className="mb-6 p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg flex justify-between items-center">
-              <p className="text-sm font-light text-orange-800 dark:text-orange-200">
-                You're out of lessons for this month. Upgrade to get more!
-              </p>
-              <button
-                onClick={() => navigate("/pricing")}
-                className="text-sm font-light text-orange-600 dark:text-orange-300 hover:text-orange-700 dark:hover:text-orange-200 px-3 py-1 rounded-md bg-orange-100 dark:bg-orange-900/30 hover:bg-orange-200 dark:hover:bg-orange-900/40 transition-colors"
-              >
-                Upgrade
-              </button>
-            </div>
+           <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4">
+             <p className="text-xs sm:text-sm font-light text-orange-800 dark:text-orange-200 text-center sm:text-left">
+               You're out of lessons for this month. Upgrade to get more!
+             </p>
+             <button
+               onClick={() => navigate("/pricing")}
+               className="text-xs sm:text-sm font-light text-orange-600 dark:text-orange-300 hover:text-orange-700 dark:hover:text-orange-200 px-2 py-1 sm:px-3 sm:py-1 rounded-md bg-orange-100 dark:bg-orange-900/30 hover:bg-orange-200 dark:hover:bg-orange-900/40 transition-colors whitespace-nowrap"
+             >
+               Upgrade
+             </button>
+           </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {inputMethods.map((method, index) => (
-                <motion.button
-                  key={index}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-onClick={() => {
-    navigate(method.url);
-    onClose();
-}}
-                  className="p-4 border border-gray-200 hover:border-blue-500 cursor-pointer dark:border-gray-700 rounded-lg text-left hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-300">
-                      {method.icon}
-                    </div>
-                    <div>
-                      <h4 className=" text-gray-900 dark:text-white">
-                        {method.name}
-                      </h4>
-                      <p className="text-sm font-light text-gray-600 dark:text-gray-400">
-                        {method.description}
-                      </p>
-                    </div>
-                  </div>
-                </motion.button>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
-  );
+           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+             {inputMethods.map((method, index) => (
+               <motion.button
+                 key={index}
+                 whileHover={{ scale: 1.02 }}
+                 whileTap={{ scale: 0.98 }}
+                 onClick={() => {
+                   navigate(method.url);
+                   onClose();
+                 }}
+                 className="p-3 sm:p-4 border border-gray-200 hover:border-blue-500 cursor-pointer dark:border-gray-700 rounded-lg text-left hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+               >
+                 <div className="flex items-start gap-2 sm:gap-3">
+                   <div className="p-1 sm:p-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-300">
+                     {React.cloneElement(method.icon, {
+                       className: "w-4 h-4 sm:w-5 sm:h-5",
+                     })}
+                   </div>
+                   <div>
+                     <h4 className="text-sm sm:text-base text-gray-900 dark:text-white">
+                       {method.name}
+                     </h4>
+                     <p className="text-xs sm:text-sm font-light text-gray-600 dark:text-gray-400">
+                       {method.description}
+                     </p>
+                   </div>
+                 </div>
+               </motion.button>
+             ))}
+           </div>
+         </div>
+       </motion.div>
+     </motion.div>
+   </AnimatePresence>
+ );
 };
 
 export default GenerateModal;

@@ -54,7 +54,7 @@ export function DropdownMenu({ name, email }) {
         >
           <div className="relative group">
             <div className="ring-2 ring-transparent group-hover:ring-indigo-500/30 rounded-full transition-all duration-200 p-0.5">
-              <Avatar name={name} size={42} variant="bean" />
+              <Avatar name={name} size={36} variant="bean" />
               
             </div>
           </div>

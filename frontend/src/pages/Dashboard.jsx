@@ -30,8 +30,6 @@ import {
   Play,
   Sparkle,
   Sparkles,
-
-
 } from "lucide-react";
 import Layout from "../components/layouts/layout";
 import waveAnimation from "../assets/waveCartoon.json";
@@ -64,7 +62,6 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   const { isAuthenticated, user } = useSelector((state) => state.auth);
-  
 
   // Mock data
   useEffect(() => {
@@ -186,8 +183,6 @@ const Dashboard = () => {
     }
   };
 
- 
-
   const getStatusText = (status) => {
     switch (status) {
       case "completed":
@@ -254,24 +249,20 @@ const Dashboard = () => {
     openModal(MODAL_TYPES.GENERATE, {
       isOpen: true,
       onClose: () => setShowGenerateModal(false),
-     });
+    });
   };
-
-
-
-
 
   return (
     <Layout>
-      <div className="min-h-screen p-6 bg-gray-50 dark:bg-black">
+      <div className="min-h-screen p-3 md:p-6 bg-gray-50 dark:bg-black">
         <div className="max-w-7xl mx-auto ">
-          <div className="flex items-center">
-            <div className="flex flex-col w-full md:flex-row gap-8 items-center mb-10 animate-fadeIn">
+          <div className="flex flex-col md:flex-row items-center">
+            <div className="flex flex-row w-full gap-4 sm:gap-8 items-center mb-4 md:mb-10 animate-fadeIn">
               <div className="relative group">
                 <Lottie
                   animationData={waveAnimation}
                   loop
-                  className="w-48 h-48 md:w-58 md:h-58 transition-all duration-300 group-hover:scale-110"
+                  className="w-40 h-40 sm:w-48 sm:h-48 md:w-58 md:h-58 transition-all duration-300 group-hover:scale-110"
                 />
                 <div className="absolute -bottom-2 left-0 right-0 text-center opacity-0 group-hover:opacity-100 transition-opacity">
                   <span className="text-sm bg-blue-100 dark:bg-blue-900 rounded-full px-3 py-1">
@@ -280,38 +271,28 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              <div className="text-center pt-10 md:text-left">
-                <h1 className="text-4xl md:text-5xl  mb-4 dark:text-white relative inline-block">
+              <div className="text-center sm:text-left pt-4 sm:pt-10">
+                <h1 className="text-2xl sm:text-3xl md:text-5xl mb-2 sm:mb-4 dark:text-white relative inline-block">
                   <span className="relative">
-                    <span className="">Hi,</span> <span>{user?.name}</span>
+                    <span>Hi,</span> <span>{user?.name}</span>
                   </span>
                 </h1>
-                <p className="dark:text-white text-lg mb-4">
+                <p className="dark:text-white text-base sm:text-lg mb-3 sm:mb-4">
                   Welcome to{" "}
                   <span className="font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
-                    Quizly AI
+                    Learnexa
                   </span>
                 </p>
-                <button className="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <button className="px-4 sm:px-6 py-1 sm:py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-sm sm:text-base">
                   Let's Get Started
                 </button>
               </div>
             </div>
-            <div className="w-2/5 h-fit flex flex-col gap-4 items-center border-l-2 border-gray-200 dark:border-zinc-800 px-4">
-              <div className="flex items-center gap-4 rounded-xl p-4 dark:bg-zinc-900 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-orange-50 dark:hover:bg-orange-900/30 cursor-pointer group">
-                <div
-                  onClick={handleOpenStreakModal}
-                  className="flex flex-col gap-2"
-                >
-                  <h1 className="text-lg font-semibold text-gray-800 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
-                    Start your streak
-                  </h1>
-                  <p className="text-gray-500 text-sm dark:text-gray-300 font-light group-hover:text-orange-500 dark:group-hover:text-orange-300 transition-colors">
-                    Take daily quizzes to build your knowledge
-                  </p>
-                </div>
+
+            <div className="w-full md:w-2/5 mb-6 h-fit flex flex-col sm:flex-row md:flex-col gap-4 items-center md:border-l-2 border-gray-200 dark:border-zinc-800 px-2 sm:px-4">
+              <div className="flex items-center gap-4 w-full sm:w-1/2 md:w-full rounded-xl p-3 sm:p-4 dark:bg-zinc-900 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-orange-50 dark:hover:bg-orange-900/30 cursor-pointer group">
                 <svg
-                  className="w-12 h-12 group-hover:scale-110 group-hover:rotate-12 transition-transform"
+                  className="w-10 h-10 sm:w-12 sm:h-12 group-hover:scale-110 group-hover:rotate-12 transition-transform"
                   width="48"
                   height="49"
                   viewBox="0 0 48 49"
@@ -352,25 +333,36 @@ const Dashboard = () => {
                     opacity="0.6"
                   ></path>
                 </svg>
-              </div>
-
-              <div className="flex items-center gap-4 rounded-xl p-4 dark:bg-zinc-900 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-blue-50 dark:hover:bg-blue-900/30 cursor-pointer group">
                 <div
-                  onClick={handleOpenInviteModal}
-                  className="flex flex-col gap-2"
+                  onClick={handleOpenStreakModal}
+                  className="flex flex-col gap-1 sm:gap-2"
                 >
-                  <h1 className="text-lg font-semibold text-gray-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                    Invite your friends
+                  <h1 className="text-base sm:text-lg font-semibold text-gray-800 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
+                    Start your streak
                   </h1>
-                  <p className="text-gray-500 text-sm dark:text-gray-300 font-light group-hover:text-blue-500 dark:group-hover:text-blue-300 transition-colors">
-                    Learning together is double the progress and double the fun!
+                  <p className="text-gray-500 text-xs sm:text-sm dark:text-gray-300 font-light group-hover:text-orange-500 dark:group-hover:text-orange-300 transition-colors">
+                    Take daily quizzes to build your knowledge
                   </p>
                 </div>
+              </div>
+
+              <div className="flex items-center gap-4 w-full sm:w-1/2 md:w-full rounded-xl p-3 sm:p-4 dark:bg-zinc-900 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-blue-50 dark:hover:bg-blue-900/30 cursor-pointer group">
                 <img
                   src={FriendsImage}
                   alt="Friends"
-                  className="w-14 h-14 object-cover rounded-lg group-hover:scale-110 group-hover:rotate-12 transition-transform"
+                  className="w-12 h-12 sm:w-14 sm:h-14 object-cover rounded-lg group-hover:scale-110 group-hover:rotate-12 transition-transform"
                 />
+                <div
+                  onClick={handleOpenInviteModal}
+                  className="flex flex-col gap-1 sm:gap-2"
+                >
+                  <h1 className="text-base sm:text-lg font-semibold text-gray-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                    Invite your friends
+                  </h1>
+                  <p className="text-gray-500 text-xs sm:text-sm dark:text-gray-300 font-light group-hover:text-blue-500 dark:group-hover:text-blue-300 transition-colors">
+                    Learning together is double the progress and double the fun!
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -405,146 +397,144 @@ const Dashboard = () => {
               {activeTab === "overview" && (
                 <div className="space-y-6">
                   {/* Stats Cards */}
-                  <h1 className="text-gray-600 text-2xl ml-2 dark:text-gray-300 ">
+                  <h1 className="text-gray-600 text-xl sm:text-2xl ml-2 dark:text-gray-300">
                     Quick Links
                   </h1>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                  <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
+                    {/* Generate Quiz Card */}
                     <div
                       onClick={handleOpenGenerateModal}
-                      className="group bg-white dark:bg-zinc-900 rounded-xl p-5 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:bg-blue-50 dark:hover:bg-blue-900/30 relative overflow-hidden"
+                      className="group bg-white dark:bg-zinc-900 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:bg-blue-50 dark:hover:bg-blue-900/20 relative overflow-hidden border border-gray-100 dark:border-zinc-800"
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       <div className="flex items-center justify-between relative">
                         <div>
-                          <div className="p-3 w-fit my-2 text-white bg-blue-500 rounded-lg group-hover:scale-110 group-hover:rotate-3 transition-transform">
-                            <Sparkles className="group-hover:animate-pulse" />
+                          <div className="p-2 sm:p-3 w-fit my-1 sm:my-2 text-white bg-blue-500 rounded-md sm:rounded-lg group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                            <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 group-hover:animate-pulse" />
                           </div>
-                          <p className="text-xl text-gray-500 dark:text-gray-300 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">
+                          <p className="text-lg sm:text-xl text-gray-700 dark:text-gray-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                             Generate Quiz
                           </p>
-                          <h3 className="text-sm font-medium mt-1 dark:text-white">
+                          <h3 className="text-xs sm:text-sm font-medium mt-1 text-gray-500 dark:text-gray-400">
                             Create AI-powered quizzes
                           </h3>
                         </div>
                         <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                          <ChevronRight className="w-5 h-5 text-blue-500" />
+                          <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" />
                         </div>
                       </div>
-                      <p className="text-xs text-blue-500 mt-3 flex items-center group-hover:font-medium">
+                      <p className="text-xs text-blue-500 mt-2 sm:mt-3 flex items-center group-hover:font-medium">
                         Click to generate new quiz
                         <span className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity">
                           →
                         </span>
                       </p>
-                      <div className="absolute bottom-0 left-0 w-full h-1 bg-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+                      <div className="absolute bottom-0 left-0 w-full h-0.5 sm:h-1 bg-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
                     </div>
 
+                    {/* Current Affairs Card */}
                     <div
-                      onClick={() => {
-                        navigate("/current-affairs");
-                      }}
-                      className="group bg-white dark:bg-zinc-900 rounded-xl p-5 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:bg-green-50 dark:hover:bg-green-900/30 relative overflow-hidden"
+                      onClick={() => navigate("/current-affairs")}
+                      className="group bg-white dark:bg-zinc-900 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:bg-green-50 dark:hover:bg-green-900/20 relative overflow-hidden border border-gray-100 dark:border-zinc-800"
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       <div className="flex items-center justify-between relative">
                         <div>
-                          <div className="p-3 w-fit my-2 text-white bg-green-500 rounded-lg group-hover:scale-110 group-hover:rotate-3 transition-transform">
-                            <Globe className="group-hover:animate-pulse" />
+                          <div className="p-2 sm:p-3 w-fit my-1 sm:my-2 text-white bg-green-500 rounded-md sm:rounded-lg group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                            <Globe className="w-4 h-4 sm:w-5 sm:h-5 group-hover:animate-pulse" />
                           </div>
-                          <p className="text-xl text-gray-500 dark:text-gray-300 group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors">
+                          <p className="text-lg sm:text-xl text-gray-700 dark:text-gray-200 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
                             Current Affairs
                           </p>
-                          <h3 className="text-sm font-medium mt-1 dark:text-white">
+                          <h3 className="text-xs sm:text-sm font-medium mt-1 text-gray-500 dark:text-gray-400">
                             Stay updated with news
                           </h3>
-                          <span className="inline-block px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <span className="inline-block px-1.5 py-0.5 sm:px-2 sm:py-1 text-[0.6rem] xs:text-xs bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200 rounded-full mt-1 sm:mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
                             Updated daily
                           </span>
                         </div>
                         <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                          <ChevronRight className="w-5 h-5 text-green-500" />
+                          <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
                         </div>
                       </div>
-                      <p className="text-xs text-green-500 mt-3 flex items-center group-hover:font-medium">
+                      <p className="text-xs text-green-500 mt-2 sm:mt-3 flex items-center group-hover:font-medium">
                         Daily current affairs quiz
                         <span className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity">
                           →
                         </span>
                       </p>
-                      <div className="absolute bottom-0 left-0 w-full h-1 bg-green-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+                      <div className="absolute bottom-0 left-0 w-full h-0.5 sm:h-1 bg-green-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
                     </div>
 
+                    {/* StudyTube Card */}
                     <div
-                      onClick={() => {
-                        navigate("/study-tube");
-                      }}
-                      className="group bg-white dark:bg-zinc-900 rounded-xl p-5 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:bg-red-50 dark:hover:bg-red-900/30 relative overflow-hidden"
+                      onClick={() => navigate("/study-tube")}
+                      className="group bg-white dark:bg-zinc-900 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:bg-red-50 dark:hover:bg-red-900/20 relative overflow-hidden border border-gray-100 dark:border-zinc-800"
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       <div className="flex items-center justify-between relative">
                         <div>
-                          <div className="p-3 w-fit my-2 text-white bg-red-500 rounded-lg group-hover:scale-110 group-hover:rotate-3 transition-transform">
-                            <Play className="group-hover:animate-pulse" />
+                          <div className="p-2 sm:p-3 w-fit my-1 sm:my-2 text-white bg-red-500 rounded-md sm:rounded-lg group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                            <Play className="w-4 h-4 sm:w-5 sm:h-5 group-hover:animate-pulse" />
                           </div>
-                          <p className="text-xl text-gray-500 dark:text-gray-300 group-hover:text-red-700 dark:group-hover:text-red-300 transition-colors">
+                          <p className="text-lg sm:text-xl text-gray-700 dark:text-gray-200 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
                             StudyTube
                           </p>
-                          <h3 className="text-sm font-medium mt-1 dark:text-white">
+                          <h3 className="text-xs sm:text-sm font-medium mt-1 text-gray-500 dark:text-gray-400">
                             Distraction-free learning
                           </h3>
-                          <span className="inline-block px-2 py-1 text-xs bg-red-100 text-red-800 rounded-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <span className="inline-block px-1.5 py-0.5 sm:px-2 sm:py-1 text-[0.6rem] xs:text-xs bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200 rounded-full mt-1 sm:mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
                             Beta feature
                           </span>
                         </div>
                         <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                          <ChevronRight className="w-5 h-5 text-red-500" />
+                          <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-red-500" />
                         </div>
                       </div>
-                      <p className="text-xs text-red-500 mt-3 flex items-center group-hover:font-medium">
+                      <p className="text-xs text-red-500 mt-2 sm:mt-3 flex items-center group-hover:font-medium">
                         Focus mode YouTube
                         <span className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity">
                           →
                         </span>
                       </p>
-                      <div className="absolute bottom-0 left-0 w-full h-1 bg-red-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+                      <div className="absolute bottom-0 left-0 w-full h-0.5 sm:h-1 bg-red-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
                     </div>
 
+                    {/* Interview Prep Card */}
                     <div
-                      onClick={() => {
-                        navigate("/interview");
-                      }}
-                      className="group bg-white dark:bg-zinc-900 rounded-xl p-5 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:bg-amber-50 dark:hover:bg-amber-900/30 relative overflow-hidden"
+                      onClick={() => navigate("/interview")}
+                      className="group bg-white dark:bg-zinc-900 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:bg-amber-50 dark:hover:bg-amber-900/20 relative overflow-hidden border border-gray-100 dark:border-zinc-800"
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-amber-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       <div className="flex items-center justify-between relative">
                         <div>
-                          <div className="p-3 w-fit my-2 text-white bg-amber-500 rounded-lg group-hover:scale-110 group-hover:rotate-3 transition-transform">
-                            <Users className="group-hover:animate-pulse" />
+                          <div className="p-2 sm:p-3 w-fit my-1 sm:my-2 text-white bg-amber-500 rounded-md sm:rounded-lg group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                            <Users className="w-4 h-4 sm:w-5 sm:h-5 group-hover:animate-pulse" />
                           </div>
-                          <p className="text-xl text-gray-500 dark:text-gray-300 group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors">
+                          <p className="text-lg sm:text-xl text-gray-700 dark:text-gray-200 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
                             Interview Prep
                           </p>
-                          <h3 className="text-sm font-medium mt-1 dark:text-white">
+                          <h3 className="text-xs sm:text-sm font-medium mt-1 text-gray-500 dark:text-gray-400">
                             Practice interviews
                           </h3>
-                          <span className="inline-block px-2 py-1 text-xs bg-amber-100 text-amber-800 rounded-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <span className="inline-block px-1.5 py-0.5 sm:px-2 sm:py-1 text-[0.6rem] xs:text-xs bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200 rounded-full mt-1 sm:mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
                             AI powered
                           </span>
                         </div>
                         <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                          <ChevronRight className="w-5 h-5 text-amber-500" />
+                          <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500" />
                         </div>
                       </div>
-                      <p className="text-xs text-amber-500 mt-3 flex items-center group-hover:font-medium">
+                      <p className="text-xs text-amber-500 mt-2 sm:mt-3 flex items-center group-hover:font-medium">
                         AI interview simulator
                         <span className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity">
                           →
                         </span>
                       </p>
-                      <div className="absolute bottom-0 left-0 w-full h-1 bg-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+                      <div className="absolute bottom-0 left-0 w-full h-0.5 sm:h-1 bg-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
                     </div>
-                    </div>
-                    <UpgradeBanner/>
+                  </div>
+                  <UpgradeBanner />
                   <CurrentAffairsSlider />
 
                   <AllQuizes />

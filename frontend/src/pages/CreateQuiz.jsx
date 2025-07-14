@@ -46,7 +46,7 @@ const CreateQuiz = () => {
         {/* Header Section */}
         <div className="flex flex-col md:flex-row gap-6 justify-between">
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold text-gray-800 dark:text-white">
+            <h2 className="text-3xl  text-gray-800 dark:text-white">
               {activeTab === "quiz"
                 ? "Create New Quiz"
                 : activeTab === "coding"

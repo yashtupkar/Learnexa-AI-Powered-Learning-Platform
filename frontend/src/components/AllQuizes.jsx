@@ -259,280 +259,275 @@ const AllQuizes = () => {
     );
   }
 
-  return (
-    <div className="container mx-auto px-4 py-8">
-      {/* Header */}
-     
-      <div className="flex flex-col items-center justify-center mt-10">
-        <div className="text-center max-w-4xl">
-          <div className="mb-4">
-            <h1 className="text-6xl font-bold mb-6 dark:text-white">
-              <span className="bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">
-                Descover & Master
-              </span>
-              <br />
-              Interactive Quizes
-            </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-              Discover community-created quizzes crafted by users like you.
-              Join our growing collection of knowledge-sharing enthusiasts.
-            </p>
-          </div>
-
-          <div className="relative w-full max-w-2xl mx-auto mb-4">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                setCurrentPage(1);
-              }}
-              placeholder="Search Quizes..."
-              className="w-full p-6 pl-14 text-lg rounded-2xl border-2 border-gray-300 dark:border-gray-600 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm focus:outline-none focus:ring-4 focus:ring-red-500/30 focus:border-red-500 shadow-2xl dark:text-white transition-all"
-            />
-            <Search className="absolute left-5 top-7 text-gray-400" size={24} />
-          </div>
-          <p className="text-gray-600 m-4 dark:text-gray-400 mt-1">
-            {paginationData.totalItems} quiz
-            {paginationData.totalItems !== 1 ? "es" : ""} available
+return (
+  <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
+    {/* Header */}
+    <div className="flex flex-col items-center justify-center mt-6 sm:mt-10">
+      <div className="text-center max-w-4xl">
+        <div className="mb-4">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 sm:mb-6 dark:text-white">
+            <span className="bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">
+              Discover & Master
+            </span>
+            <br />
+            Interactive Quizzes
+          </h1>
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto">
+            Discover community-created quizzes crafted by users like you. Join
+            our growing collection of knowledge-sharing enthusiasts.
           </p>
         </div>
+
+        <div className="relative w-full max-w-2xl mx-auto mb-4">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setCurrentPage(1);
+            }}
+            placeholder="Search Quizzes..."
+            className="w-full p-4 sm:p-5 md:p-6 pl-12 sm:pl-14 text-base sm:text-lg rounded-xl sm:rounded-2xl border-2 border-gray-300 dark:border-gray-600 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm focus:outline-none focus:ring-4 focus:ring-red-500/30 focus:border-red-500 shadow-lg sm:shadow-2xl dark:text-white transition-all"
+          />
+          <Search
+            className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
+            size={20}
+          />
+        </div>
+        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
+          {paginationData.totalItems} quiz
+          {paginationData.totalItems !== 1 ? "es" : ""} available
+        </p>
       </div>
+    </div>
 
-      {paginationData.currentQuizzes.length > 0 ? (
-        <>
-          {/* Quiz Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 mb-8">
-            {paginationData.currentQuizzes
-              .slice()
-              .reverse()
-              .map((quiz, index) => {
-                const quizWithDefaults = {
-                  quiz_title: "Untitled Quiz",
-                  topic: "General",
-                  grade: "Beginner",
-                  quiz_timer: 0,
-                  questions: [],
-                  rating: 4.5,
-                  completions: 0,
-                  tags: [],
-                  ...quiz,
-                };
+    {paginationData.currentQuizzes.length > 0 ? (
+      <>
+        {/* Quiz Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
+          {paginationData.currentQuizzes
+            .slice()
+            .reverse()
+            .map((quiz, index) => {
+              const quizWithDefaults = {
+                quiz_title: "Untitled Quiz",
+                topic: "General",
+                grade: "Beginner",
+                quiz_timer: 0,
+                questions: [],
+                rating: 4.5,
+                completions: 0,
+                tags: [],
+                ...quiz,
+              };
 
-                const handleCardClick = () => {
-                  setSelectedQuiz(quizWithDefaults);
-                  setIsModalOpen(true);
-                };
+              const handleCardClick = () => {
+                setSelectedQuiz(quizWithDefaults);
+                setIsModalOpen(true);
+              };
 
-                return (
-                  <motion.div
-                    key={quiz._id || `${currentPage}-${index}`}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
-                    whileHover={{ y: -4 }}
-                    className="group relative bg-white dark:bg-zinc-900 rounded-xl shadow-md hover:shadow-lg border border-gray-100 dark:border-zinc-700 cursor-pointer overflow-hidden"
-                    onClick={handleCardClick}
-                  >
-                    {/* Image Header with Overlay */}
-                    <div className="relative h-48 overflow-hidden">
-                      <img
-                        src={getTopicImage(quizWithDefaults.topic)}
-                        alt={quizWithDefaults.topic}
-                        loading="lazy"
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        onError={(e) => {
-                          e.target.src = TOPIC_IMAGES.default;
-                          e.target.className =
-                            "w-full h-full object-cover bg-gray-200 dark:bg-zinc-700";
-                        }}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              return (
+                <motion.div
+                  key={quiz._id || `${currentPage}-${index}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.05 }}
+                  whileHover={{ y: -4 }}
+                  className="group relative bg-white dark:bg-zinc-900 rounded-lg sm:rounded-xl shadow-md hover:shadow-lg border border-gray-100 dark:border-zinc-700 cursor-pointer overflow-hidden"
+                  onClick={handleCardClick}
+                >
+                  {/* Image Header with Overlay */}
+                  <div className="relative h-40 sm:h-48 overflow-hidden">
+                    <img
+                      src={getTopicImage(quizWithDefaults.topic)}
+                      alt={quizWithDefaults.topic}
+                      loading="lazy"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      onError={(e) => {
+                        e.target.src = TOPIC_IMAGES.default;
+                        e.target.className =
+                          "w-full h-full object-cover bg-gray-200 dark:bg-zinc-700";
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
-                      {/* Source/Difficulty Badge */}
-                      <div className="absolute bottom-4 left-4">
-                        <span
-                          className={`text-xs px-2 py-1 rounded-md capitalize font-medium ${
-                            quizWithDefaults.difficultyLevel === "beginner"
-                              ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                              : quizWithDefaults.difficultyLevel ===
-                                "intermediate"
-                              ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-                              : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
-                          }`}
-                        >
-                          {quizWithDefaults.difficultyLevel || "Medium"}
+                    {/* Source/Difficulty Badge */}
+                    <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4">
+                      <span
+                        className={`text-xs px-2 py-1 rounded-md capitalize font-medium ${
+                          quizWithDefaults.difficultyLevel === "beginner"
+                            ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                            : quizWithDefaults.difficultyLevel ===
+                              "intermediate"
+                            ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+                            : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+                        }`}
+                      >
+                        {quizWithDefaults.difficultyLevel || "Medium"}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Content Area */}
+                  <div className="p-4 sm:p-5">
+                    {/* Date */}
+                    <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-2">
+                      <Calendar size={12} className="mr-1" />
+                      {formatDate(quizWithDefaults.createdAt)}
+                    </div>
+
+                    {/* Title */}
+                    <h2 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white mb-2 sm:mb-3 line-clamp-2">
+                      {quizWithDefaults.quiz_title}
+                    </h2>
+
+                    {/* Grade */}
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <div className="flex w-fit capitalize bg-gray-100 dark:bg-gray-800 items-center text-xs text-gray-500 dark:text-white py-1 px-2 rounded">
+                        <BookOpen size={12} className="mr-1" />
+                        {quizWithDefaults.grade} Level
+                      </div>
+                      {quizWithDefaults.question_type && (
+                        <div className="flex uppercase w-fit bg-gray-100 dark:bg-gray-800 items-center text-xs text-gray-500 dark:text-white py-1 px-2 rounded">
+                          <BarChart2 size={12} className="mr-1" />
+                          {quizWithDefaults.question_type}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Stats */}
+                    <div className="flex mt-3 sm:mt-4 justify-between items-center flex-wrap gap-2">
+                      <div className="flex items-center gap-2">
+                        <Avatar
+                          name={quizWithDefaults.created_by?.name || "Unknown"}
+                          size={24}
+                        />
+                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                          {quizWithDefaults.created_by?.name || "Unknown"}
                         </span>
                       </div>
-                    </div>
 
-                    {/* Content Area */}
-                    <div className="p-5">
-                      {/* Date */}
-                      <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-2">
-                        <Calendar size={14} className="mr-1" />
-                        {formatDate(quizWithDefaults.createdAt)}
-                      </div>
-
-                      {/* Title */}
-                      <h2 className="text-xl truncate font-semibold text-gray-800 dark:text-white mb-3 line-clamp-2">
-                        {quizWithDefaults.quiz_title}
-                      </h2>
-
-                      {/* Grade */}
                       <div className="flex items-center gap-2">
-                        <div className="flex w-fit capitalize bg-gray-100 dark:bg-gray-800 items-center text-xs text-gray-500 dark:text-white py-1 px-2 rounded ">
-                          <BookOpen size={14} className="mr-1" />
-                          {quizWithDefaults.grade} Level
+                        <div className="flex bg-green-500 dark:bg-green-900/50 items-center text-xs text-white dark:text-green-500 py-1 px-2 rounded dark:border border-green-500">
+                          <Clock size={12} className="mr-1" />
+                          {quizWithDefaults.quiz_timer === 0
+                            ? "No Timer"
+                            : quizWithDefaults.quiz_timer + "min"}
                         </div>
-                        {quizWithDefaults.question_type && (
-                          <div className="flex uppercase w-fit  bg-gray-100 dark:bg-gray-800 items-center text-xs text-gray-500 dark:text-white py-1 px-2 rounded ">
-                            <BarChart2 size={14} className="mr-1" />
-                            {quizWithDefaults.question_type}
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Stats */}
-                      <div className="flex mt-4 justify-between items-center">
-                        <div className="flex items-center gap-2">
-                          <Avatar
-                            name={
-                              quizWithDefaults.created_by?.name || "Unknown"
-                            }
-                            size={30}
-                          />
-                          <span className="text-xs text-gray-500 dark:text-gray-400">
-                            {quizWithDefaults.created_by?.name || "Unknown"}
-                          </span>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <div className="flex bg-green-500 dark:bg-green-900/50  items-center text-xs text-white dark:text-green-500 py-1 px-2 rounded dark:border border-green-500 ">
-                            <Clock size={14} className="mr-1" />
-                            {quizWithDefaults.quiz_timer === 0
-                              ? "No Timer"
-                              : quizWithDefaults.quiz_timer + "min"}
-                          </div>
-                          <div className="flex bg-purple-500 dark:bg-purple-900/50  items-center text-xs text-white dark:text-purple-500 py-1 px-2 rounded dark:border border-purple-500">
-                            Q.
-                            {quizWithDefaults.questions.length}
-                          </div>
-                          <div className="flex bg-blue-500 dark:bg-blue-900/50  items-center text-xs text-white dark:text-blue-500 py-1 px-2 rounded dark:border border-blue-500">
-                            <Users size={14} className="mr-1" />
-                            {quizWithDefaults.attempts?.length}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Hover Action Indicator */}
-                      <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="flex items-center gap-1 bg-green-600 text-white border border-green-500  px-2 py-1 rounded shadow-md">
-                          Start
-                          <Play size={16} />
+                        <div className="flex bg-purple-500 dark:bg-purple-900/50 items-center text-xs text-white dark:text-purple-500 py-1 px-2 rounded dark:border border-purple-500">
+                          Q.{quizWithDefaults.questions.length}
                         </div>
                       </div>
                     </div>
 
-                    {/* Bottom Accent Bar */}
-                    <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-                  </motion.div>
-                );
-              })}
-          </div>
+                    {/* Hover Action Indicator */}
+                    <div className="absolute top-3 sm:top-4 right-3 sm:right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="flex items-center gap-1 bg-green-600 text-white border border-green-500 px-2 py-1 rounded shadow-md text-xs sm:text-sm">
+                        Start
+                        <Play size={14} />
+                      </div>
+                    </div>
+                  </div>
 
-          {/* Pagination */}
-          {paginationData.totalPages > 1 && (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              {/* Results info */}
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Showing {paginationData.startIndex + 1}-
-                {Math.min(paginationData.endIndex, paginationData.totalItems)}{" "}
-                of {paginationData.totalItems} quizzes
-              </div>
-
-              {/* Pagination controls */}
-              <div className="flex items-center gap-2">
-                {/* Previous button */}
-                <button
-                  onClick={() => handlePageChange(currentPage - 1)}
-                  disabled={paginationData.isFirstPage}
-                  className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                  <FiChevronLeft className="w-4 h-4" />
-                  Previous
-                </button>
-
-                {/* Page numbers */}
-                <div className="flex items-center gap-1">
-                  {generatePageNumbers().map((page, index) => (
-                    <button
-                      key={index}
-                      onClick={() =>
-                        typeof page === "number" && handlePageChange(page)
-                      }
-                      disabled={typeof page !== "number"}
-                      className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
-                        page === currentPage
-                          ? "text-blue-600 bg-blue-50 border border-blue-300 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800"
-                          : typeof page === "number"
-                          ? "text-gray-500 bg-white border border-gray-300 hover:bg-gray-50 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                          : "text-gray-400 cursor-default"
-                      }`}
-                    >
-                      {page}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Next button */}
-                <button
-                  onClick={() => handlePageChange(currentPage + 1)}
-                  disabled={paginationData.isLastPage}
-                  className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                  Next
-                  <FiChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          )}
-        </>
-      ) : (
-        <div className="text-center py-12">
-          <div className="max-w-md mx-auto">
-            <FiSearch className="mx-auto text-4xl text-gray-400 mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-              No quizzes found
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400">
-              {searchQuery.trim()
-                ? `No quizzes match your search for "${searchQuery}". Try a different search term.`
-                : "There are currently no quizzes available. Please check back later."}
-            </p>
-            {searchQuery.trim() && (
-              <button
-                onClick={() => setSearchQuery("")}
-                className="mt-4 px-4 py-2 text-blue-500 hover:text-blue-700 dark:hover:text-blue-400"
-              >
-                Clear search
-              </button>
-            )}
-          </div>
+                  {/* Bottom Accent Bar */}
+                  <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                </motion.div>
+              );
+            })}
         </div>
-      )}
 
-      {/* Modal */}
-      <QuizOpenModal
-        quiz={selectedQuiz}
-        isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-          setSelectedQuiz(null);
-        }}
-      />
-    </div>
-  );
+        {/* Pagination */}
+        {paginationData.totalPages > 1 && (
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
+            {/* Results info */}
+            <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+              Showing {paginationData.startIndex + 1}-
+              {Math.min(paginationData.endIndex, paginationData.totalItems)} of{" "}
+              {paginationData.totalItems} quizzes
+            </div>
+
+            {/* Pagination controls */}
+            <div className="flex items-center gap-1 sm:gap-2">
+              {/* Previous button */}
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={paginationData.isFirstPage}
+                className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              >
+                <FiChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span className="hidden sm:inline">Previous</span>
+              </button>
+
+              {/* Page numbers */}
+              <div className="flex items-center gap-1">
+                {generatePageNumbers().map((page, index) => (
+                  <button
+                    key={index}
+                    onClick={() =>
+                      typeof page === "number" && handlePageChange(page)
+                    }
+                    disabled={typeof page !== "number"}
+                    className={`px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-sm font-medium rounded-lg transition-colors ${
+                      page === currentPage
+                        ? "text-blue-600 bg-blue-50 border border-blue-300 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800"
+                        : typeof page === "number"
+                        ? "text-gray-500 bg-white border border-gray-300 hover:bg-gray-50 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                        : "text-gray-400 cursor-default"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+              </div>
+
+              {/* Next button */}
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={paginationData.isLastPage}
+                className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              >
+                <span className="hidden sm:inline">Next</span>
+                <FiChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
+              </button>
+            </div>
+          </div>
+        )}
+      </>
+    ) : (
+      <div className="text-center py-8 sm:py-12">
+        <div className="max-w-md mx-auto">
+          <FiSearch className="mx-auto text-3xl sm:text-4xl text-gray-400 mb-3 sm:mb-4" />
+          <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white mb-1 sm:mb-2">
+            No quizzes found
+          </h3>
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
+            {searchQuery.trim()
+              ? `No quizzes match your search for "${searchQuery}". Try a different search term.`
+              : "There are currently no quizzes available. Please check back later."}
+          </p>
+          {searchQuery.trim() && (
+            <button
+              onClick={() => setSearchQuery("")}
+              className="mt-3 sm:mt-4 px-3 sm:px-4 py-1 sm:py-2 text-blue-500 hover:text-blue-700 dark:hover:text-blue-400 text-sm sm:text-base"
+            >
+              Clear search
+            </button>
+          )}
+        </div>
+      </div>
+    )}
+
+    {/* Modal */}
+    <QuizOpenModal
+      quiz={selectedQuiz}
+      isOpen={isModalOpen}
+      onClose={() => {
+        setIsModalOpen(false);
+        setSelectedQuiz(null);
+      }}
+    />
+  </div>
+);
 };
 
 export default AllQuizes;

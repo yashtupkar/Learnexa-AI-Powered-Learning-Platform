@@ -22,7 +22,6 @@ const PORT = process.env.PORT || 3000;
 const allowedOrigins = [
   "http://localhost:5173",
   "https://learnexa.vercel.app",
-  "https://aidriverlearningplatform-yash-tupkars-projects-1419dce4.vercel.app",
 ];
 // Middleware
 app.use(express.json());

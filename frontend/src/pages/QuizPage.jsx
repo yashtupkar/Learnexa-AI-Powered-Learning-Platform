@@ -432,39 +432,55 @@ const QuizInterface = () => {
     >
       <div className="flex h-screen overflow-hidden">
         {/* Sidebar Container - Fixed */}
-        <motion.div
-          animate={{ width: sidebarOpen ? 320 : 0 }}
-          className="h-full flex-shrink-0 overflow-hidden"
-        >
-          {/* Sidebar toggle button - Fixed position */}
-       
-            <motion.div
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="h-8 w-8 fixed top-8 left-8 bg-white/95 dark:bg-black backdrop-blur-lg rounded-xl shadow-lg shadow-black/20 flex items-center justify-center cursor-pointer "
-            >
-              <PanelLeftOpen
-                size={20}
-                className="text-black dark:text-gray-300"
-              />
-            </motion.div>
-          
-         
-
-          {/* Sidebar Content */}
+        <AnimatePresence>
+          {/* Mobile Toggle Button */}
           <motion.div
-            initial={{ x: -400 }}
-            animate={{ x: sidebarOpen ? 0 : -400 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="h-full w-80 bg-white/95 dark:bg-black backdrop-blur-xl shadow-2xl border-r border-gray-200 dark:border-zinc-600 fixed"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="h-8 w-8 fixed top-4 left-4 z-30 bg-white/95 dark:bg-black backdrop-blur-lg rounded-xl shadow-lg shadow-black/20 flex items-center justify-center cursor-pointer "
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
           >
-            <div className="p-6 h-full flex flex-col">
+            <PanelLeftOpen
+              size={20}
+              className="text-black dark:text-gray-300"
+            />
+          </motion.div>
+
+          {/* Black Overlay for Mobile */}
+          {sidebarOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSidebarOpen(false)}
+              className="fixed inset-0 z-40 bg-black md:hidden"
+            />
+          )}
+
+          {/* Sidebar Container */}
+          <motion.div
+            key="sidebar"
+            initial={{ x: -400 }}
+            animate={{
+              x: sidebarOpen ? 0 : -400,
+              opacity: sidebarOpen ? 1 : 0.9,
+            }}
+            exit={{ x: -400 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="h-full w-80 bg-white/95 dark:bg-black backdrop-blur-xl shadow-2xl border-r border-gray-200 dark:border-zinc-600 fixed z-50 md:z-40"
+            style={{
+              width: "85vw",
+              maxWidth: "320px",
+            }}
+          >
+            <div className="p-4 md:p-6 h-full flex flex-col overflow-y-auto">
               {/* Sidebar Header */}
-              <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center justify-between mb-6 md:mb-8">
                 <div>
-                  <h3 className="text-xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                  <h3 className="text-lg md:text-xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
                     Quiz Info
                   </h3>
-                  <p className="text-sm dark:text-gray-400 text-gray-500 mt-1">
+                  <p className="text-xs md:text-sm dark:text-gray-400 text-gray-500 mt-1">
                     Track your progress
                   </p>
                 </div>
@@ -472,29 +488,33 @@ const QuizInterface = () => {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setSidebarOpen(false)}
-                  className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-zinc-700 cursor-pointer transition-colors duration-200"
+                  className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-zinc-700 cursor-pointer transition-colors duration-200 "
                 >
-                  <PanelRightOpen className="w-5 h-5 text-gray-400" />
+                  <PanelRightOpen className="w-4 h-4 md:w-5 md:h-5 text-gray-400" />
                 </motion.button>
               </div>
 
               {/* Quiz Stats */}
-              <div className="grid grid-cols-2 gap-4 mb-8">
-                <div className="bg-gradient-to-br from-violet-500 to-purple-600 p-4 rounded-xl text-white">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <Target className="w-5 h-5" />
-                    <span className="text-sm font-medium">Progress</span>
+              <div className="grid grid-cols-2 gap-3 md:gap-4 mb-6 md:mb-8">
+                <div className="bg-gradient-to-br from-violet-500 to-purple-600 p-3 md:p-4 rounded-xl text-white">
+                  <div className="flex items-center space-x-1 md:space-x-2 mb-1 md:mb-2">
+                    <Target className="w-4 h-4 md:w-5 md:h-5" />
+                    <span className="text-xs md:text-sm font-medium">
+                      Progress
+                    </span>
                   </div>
-                  <div className="text-2xl font-bold">
+                  <div className="text-xl md:text-2xl font-bold">
                     {Math.round(progress)}%
                   </div>
                 </div>
-                <div className="bg-gradient-to-br from-emerald-500 to-teal-600 p-4 rounded-xl text-white">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <Timer className="w-5 h-5" />
-                    <span className="text-sm font-medium">Time Left</span>
+                <div className="bg-gradient-to-br from-emerald-500 to-teal-600 p-3 md:p-4 rounded-xl text-white">
+                  <div className="flex items-center space-x-1 md:space-x-2 mb-1 md:mb-2">
+                    <Timer className="w-4 h-4 md:w-5 md:h-5" />
+                    <span className="text-xs md:text-sm font-medium">
+                      Time Left
+                    </span>
                   </div>
-                  <div className="text-2xl font-bold">
+                  <div className="text-xl md:text-2xl font-bold">
                     {formatTime(timeLeft)}
                   </div>
                 </div>
@@ -502,11 +522,11 @@ const QuizInterface = () => {
 
               {/* Question Grid */}
               <div className="flex-1 overflow-y-auto">
-                <h4 className="font-semibold text-gray-700 dark:text-gray-400 mb-4 flex items-center space-x-2">
-                  <Hash className="w-4 h-4" />
+                <h4 className="font-semibold text-sm md:text-base text-gray-700 dark:text-gray-400 mb-3 md:mb-4 flex items-center space-x-2">
+                  <Hash className="w-3 h-3 md:w-4 md:h-4" />
                   <span>Questions</span>
                 </h4>
-                <div className="grid grid-cols-4 gap-3 mb-6 p-3">
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 gap-2 md:gap-3 mb-6 p-2 md:p-3">
                   {quizData.questions.map((_, index) => (
                     <motion.button
                       key={index}
@@ -514,8 +534,11 @@ const QuizInterface = () => {
                       whileTap={{ scale: 0.95 }}
                       onClick={() => {
                         setCurrentQuestion(index);
+                        if (window.innerWidth < 768) {
+                          setSidebarOpen(false);
+                        }
                       }}
-                      className={`relative p-3 rounded-xl flex flex-col items-center justify-center transition-all duration-300 shadow-sm ${
+                      className={`relative p-2 md:p-3 rounded-lg md:rounded-xl flex flex-col items-center justify-center transition-all duration-300 shadow-sm ${
                         quizMode === "practice"
                           ? currentQuestion === index
                             ? "bg-gradient-to-br from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25 cursor-pointer"
@@ -525,20 +548,23 @@ const QuizInterface = () => {
                               : "bg-gradient-to-br from-red-400 to-pink-500 text-white shadow-lg shadow-red-500/25 cursor-pointer"
                             : "bg-gradient-to-br from-gray-100 to-gray-200 text-gray-600 dark:from-gray-500 dark:to-gray-600 dark:text-gray-200 hover:from-gray-200 hover:to-gray-300 dark:hover:from-gray-400 dark:hover:to-gray-500 cursor-pointer"
                           : currentQuestion === index
-                          ? "bg-gradient-to-br from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25 cursor-pointer": answers[index] !== undefined
+                          ? "bg-gradient-to-br from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25 cursor-pointer"
+                          : answers[index] !== undefined
                           ? "bg-gradient-to-br from-emerald-400 to-green-500 text-white shadow-lg shadow-emerald-500/25 cursor-pointer"
                           : "bg-gradient-to-br from-gray-100 to-gray-200 text-gray-600 dark:from-gray-500 dark:to-gray-600 dark:text-gray-200"
                       }`}
                     >
-                      <span className="text-sm font-bold">Q{index + 1}</span>
+                      <span className="text-xs md:text-sm font-bold">
+                        Q{index + 1}
+                      </span>
 
                       {/* Status indicators */}
                       <div className="absolute -top-1 -right-1 flex space-x-1">
                         {flaggedQuestions.includes(index) && (
-                          <div className="w-3 h-3 bg-red-500 rounded-full border-2 border-white" />
+                          <div className="w-2 h-2 md:w-3 md:h-3 bg-red-500 rounded-full border border-white" />
                         )}
                         {bookmarkedQuestions.includes(index) && (
-                          <div className="w-3 h-3 bg-yellow-500 rounded-full border-2 border-white" />
+                          <div className="w-2 h-2 md:w-3 md:h-3 bg-yellow-500 rounded-full border border-white" />
                         )}
                       </div>
 
@@ -547,9 +573,9 @@ const QuizInterface = () => {
                         answers[index] !== undefined && (
                           <div className="absolute -bottom-1 -right-1">
                             {isAnswerCorrect(index) ? (
-                              <CheckCircle className="w-4 h-4 text-green-600 dark:text-white" />
+                              <CheckCircle className="w-3 h-3 md:w-4 md:h-4 text-green-600 dark:text-white" />
                             ) : (
-                              <XCircle className="w-4 h-4 text-red-600 dark:text-white" />
+                              <XCircle className="w-3 h-3 md:w-4 md:h-4 text-red-600 dark:text-white" />
                             )}
                           </div>
                         )}
@@ -559,15 +585,15 @@ const QuizInterface = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="space-y-4 pt-6 border-t border-gray-200 dark:border-zinc-700">
-                <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+              <div className="space-y-3 md:space-y-4 pt-4 md:pt-6 border-t border-gray-200 dark:border-zinc-700">
+                <div className="grid grid-cols-2 gap-2 md:gap-3 text-xs md:text-sm">
+                  <div className="flex items-center justify-between p-2 md:p-3 bg-blue-50 rounded-lg">
                     <span className="text-blue-700 font-medium">Answered</span>
                     <span className="text-blue-900 font-bold">
                       {Object.keys(answers).length}/{quizData.questions.length}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
+                  <div className="flex items-center justify-between p-2 md:p-3 bg-purple-50 rounded-lg">
                     <span className="text-purple-700 font-medium">
                       Bookmarked
                     </span>
@@ -581,18 +607,19 @@ const QuizInterface = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={handleSubmit}
-                  className="w-full bg-gradient-to-r from-violet-500 to-purple-600 text-white py-3 rounded-xl font-semibold shadow-lg shadow-violet-500/25 hover:from-violet-600 hover:to-purple-700 transition-all duration-300"
+                  className="w-full bg-gradient-to-r from-violet-500 to-purple-600 text-white py-2 md:py-3 rounded-lg md:rounded-xl font-semibold shadow-lg shadow-violet-500/25 hover:from-violet-600 hover:to-purple-700 transition-all duration-300"
                 >
                   <div className="flex items-center justify-center space-x-2">
-                    <Zap className="w-5 h-5" />
-                    <span>Submit Quiz</span>
+                    <Zap className="w-4 h-4 md:w-5 md:h-5" />
+                    <span className="text-sm md:text-base">Submit Quiz</span>
                   </div>
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => {
-                    handleSubmit, setQuizStarted(false);
+                    handleSubmit();
+                    setQuizStarted(false);
                     setCurrentQuestion(0);
                     setAnswers({});
                     setSidebarOpen(false);
@@ -600,17 +627,22 @@ const QuizInterface = () => {
                       quizData?.quiz_timer ? quizData.quiz_timer * 60 : 0
                     );
                   }}
-                  className="w-full bg-gradient-to-r from-red-500 to-red-600 text-white py-3 rounded-xl font-semibold shadow-lg shadow-violet-500/25 hover:from-red-600 hover:to-red-700 transition-all duration-300"
+                  className="w-full bg-gradient-to-r from-red-500 to-red-600 text-white py-2 md:py-3 rounded-lg md:rounded-xl font-semibold shadow-lg shadow-violet-500/25 hover:from-red-600 hover:to-red-700 transition-all duration-300"
                 >
                   <div className="flex items-center justify-center space-x-2">
-                    <span>Exit Quiz</span>
+                    <span className="text-sm md:text-base">Exit Quiz</span>
                   </div>
                 </motion.button>
 
-                <div className="flex items-center space-x-3 pt-4 border-t border-gray-200 dark:border-zinc-700">
-                  <Avatar name={user?.name} size={40} variant="bean" />
+                <div className="flex items-center space-x-2 md:space-x-3 pt-3 md:pt-4 border-t border-gray-200 dark:border-zinc-700">
+                  <Avatar
+                    name={user?.name}
+                    size={32}
+                    mdSize={40}
+                    variant="bean"
+                  />
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-700 dark:text-gray-200 truncate">
+                    <p className="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-200 truncate">
                       {user?.name}
                     </p>
                     <p className="text-xs text-gray-400 dark:text-gray-500 truncate">
@@ -622,11 +654,11 @@ const QuizInterface = () => {
               </div>
             </div>
           </motion.div>
-        </motion.div>
+        </AnimatePresence>
 
         {/* Main Content - Scrollable */}
         <div className="flex-1 overflow-y-auto">
-          <div className="max-w-5xl w-full mx-auto px-4 py-8">
+          <div className="max-w-3xl w-full mx-auto px-4 py-8">
             {/* Header */}
 
             {/* Enhanced Progress Bar */}
@@ -740,7 +772,7 @@ const QuizInterface = () => {
                 }`}
               >
                 <ArrowLeft className="w-5 h-5" />
-                <span>Previous</span>
+                <span className="hidden md:block">Previous</span>
               </motion.button>
 
               <div className="flex space-x-3">
@@ -755,8 +787,8 @@ const QuizInterface = () => {
                         : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                     }`}
                   >
-                    <HelpCircle className="w-5 h-5" />
-                    <span>
+                    <BookOpen className="w-5 h-5" />
+                    <span className="hidden md:block">
                       {showExplanation
                         ? "Hide Explanation"
                         : "Show Explanation"}
@@ -785,7 +817,7 @@ const QuizInterface = () => {
                           : "bg-blue-500 text-white hover:bg-blue-600"
                       }`}
                     >
-                      <span>Next</span>
+                      <span className="hidden md:block">Next</span>
                       <ArrowRight className="w-5 h-5" />
                     </motion.button>
                   </>

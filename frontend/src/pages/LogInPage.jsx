@@ -62,7 +62,7 @@ const LogInPage = () => {
         localStorage.setItem("token", data.token);
          toast.success(data.message)
         dispatch(loginSuccess(data.user));
-        navigate("/");
+        navigate("/dashboard");
       } else {
         dispatch(loginFailure(data.message));
         toast.error(data.message);
@@ -75,9 +75,9 @@ const LogInPage = () => {
 
   return (
     <>
-      <Navbar />
-      <div className="min-h-screen  bg-gray-50 dark:bg-black flex flex-col lg:flex-row items-center justify-center p-4 gap-8">
-        <div className="flex md:mt-5 bg-white dark:bg-zinc-900 rounded-2xl shadow-lg">
+      
+      <div className="min-h-screen  bg-gray-50 dark:bg-black flex flex-col lg:flex-row items-center justify-center p-2 md:p-4 md:gap-8">
+        <div className="flex md:mt-5 bg-white dark:bg-zinc-900 md:rounded-2xl md:shadow-lg">
           <div className="hidden h-full lg:block lg:w-[500px]">
             <img
               src={bgImage}
@@ -85,7 +85,7 @@ const LogInPage = () => {
               className="w-full h-[80vh] object-cover rounded-xl shadow-lg"
             />
           </div>
-          <div className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-2xl shadow-lg p-8">
+          <div className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-2xl md:shadow-lg p-4 md:p-8">
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
                 Log In

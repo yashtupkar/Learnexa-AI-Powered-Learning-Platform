@@ -47,7 +47,7 @@ const GoogleAuth = () => {
 
           setIsGoogleLoading(false);
           toast.success(data.message);
-          navigate("/");
+          navigate("/dashboard");
         } else {
           toast.error(data.message);
         }
