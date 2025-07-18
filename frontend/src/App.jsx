@@ -19,6 +19,7 @@ import HRQuestionDetailPage from "./pages/HRQuestionDetailPage";
 import QuestionsPage from "./pages/QuestionsPage";
 import SubjectTopicsPage from "./pages/SubjectTopicsPage";
 import QuestionEditPage from "./pages/QuestionsEditPage";
+import Layout from "./components/layouts/layout";
 
 // Protected route component
 
@@ -51,17 +52,17 @@ const App = () => {
       <Route
         path="/video/:videoId"
         element={
-          <StudyTubeLayout>
+          <Layout>
             <StudyTube />
-          </StudyTubeLayout>
+          </Layout>
         }
       />
       <Route
         path="/study-tube"
         element={
-          <StudyTubeLayout>
+          <Layout>
             <StudyTube />
-          </StudyTubeLayout>
+          </Layout>
         }
       />
     </Routes>

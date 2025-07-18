@@ -1,538 +1,549 @@
-// import React, { useState } from "react";
-// import { useSelector } from "react-redux";
-// import { motion, AnimatePresence } from "framer-motion";
-// import { Brain, Zap, Target, BarChart3 } from "lucide-react";
+// import React from "react";
+// import { Star, Sparkles, Code, Target, Sun } from "lucide-react";
+// import { motion } from "framer-motion";
 
-// const HeroHeader = () => {
-//   const { isAuthenticated, user } = useSelector((state) => state?.auth || {});
-//   const [currentFeature, setCurrentFeature] = useState(0);
-
-//   const features = [
-//     { text: "AI-Powered", icon: Brain },
-//     { text: "Instant", icon: Zap },
-//     { text: "Adaptive", icon: Target },
-//     { text: "Smart", icon: BarChart3 },
-//   ];
-
-//   // Auto-rotate features
-//   React.useEffect(() => {
-//     const interval = setInterval(() => {
-//       setCurrentFeature((prev) => (prev + 1) % features.length);
-//     }, 2500);
-//     return () => clearInterval(interval);
-//   }, []);
-
-//   const CurrentIcon = features[currentFeature].icon;
-
+// function HeroHeader() {
 //   return (
-//     <div className="min-h-screen flex items-center pt-18 justify-center px-6 py-12 bg-gray-50 dark:bg-gray-950">
-      
-//       <div className="max-w-5xl mx-auto text-center">
-//         {/* AI Badge */}
-//         <motion.div
-//           className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-full mb-8"
-//           initial={{ opacity: 0, y: 20 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.5 }}
-//         >
-//           <Brain className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-//           <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
-//             Powered by AI
-//           </span>
-//         </motion.div>
+//     <motion.div 
+//       initial={{ opacity: 0 }}
+//       animate={{ opacity: 1 }}
+//       transition={{ duration: 0.5 }}
+//       className="min-h-screen bg-white dark:bg-black overflow-hidden"
+//     >
+//       {/* Main Hero Section */}
+//       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+//         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-screen py-12">
+//           {/* Left Content */}
+//           <motion.div 
+//             initial={{ x: -100, opacity: 0 }}
+//             animate={{ x: 0, opacity: 1 }}
+//             transition={{ duration: 0.8, delay: 0.2 }}
+//             className="space-y-8"
+//           >
+//             <div className="space-y-6">
+//               <motion.h1 
+//                 initial={{ y: 20, opacity: 0 }}
+//                 animate={{ y: 0, opacity: 1 }}
+//                 transition={{ duration: 0.6 }}
+//                 className="text-4xl sm:text-5xl lg:text-6xl text-gray-900 dark:text-white leading-tight"
+//               >
+//                 Ace Your Career with
+//                 <motion.span 
+//                   whileHover={{ scale: 1.05 }}
+//                   className="inline-flex bg-gradient-to-br from-indigo-600 to-indigo-400 bg-clip-text text-transparent items-center gap-2"
+//                 >
+//                   Learnexa
+//                 </motion.span>
+//               </motion.h1>
 
-//         {/* Greeting */}
-//         <motion.p
-//           className="mb-6 text-lg text-gray-600 dark:text-gray-400"
-//           initial={{ opacity: 0, y: 20 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.5, delay: 0.1 }}
-//         >
-//           {isAuthenticated
-//             ? `Welcome back, ${user?.name || "learner"}!`
-//             : "Transform any content into quizzes"}
-//         </motion.p>
+//               <motion.p 
+//                 initial={{ y: 20, opacity: 0 }}
+//                 animate={{ y: 0, opacity: 1 }}
+//                 transition={{ duration: 0.6, delay: 0.3 }}
+//                 className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-lg leading-relaxed"
+//               >
+//                 Master competitive exams and placement preparations with expert-led courses, 
+//                 mock tests, and comprehensive study materials
+//               </motion.p>
+//             </div>
 
-//         {/* Main Headline */}
-//         <motion.h1
-//           className="text-5xl md:text-7xl font-bold mb-8 leading-tight text-gray-900 dark:text-white"
-//           initial={{ opacity: 0, y: 20 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.5, delay: 0.2 }}
-//         >
-//           <AnimatePresence mode="wait">
-//             <motion.span
-//               key={currentFeature}
-//               initial={{ opacity: 0, y: 20, scale: 0.9 }}
-//               animate={{ opacity: 1, y: 0, scale: 1 }}
-//               exit={{ opacity: 0, y: -20, scale: 0.9 }}
-//               transition={{ duration: 0.4 }}
-//               className="inline-flex items-center gap-4 text-blue-600 dark:text-blue-400"
+//             {/* CTA Buttons */}
+//             <motion.div 
+//               initial={{ y: 20, opacity: 0 }}
+//               animate={{ y: 0, opacity: 1 }}
+//               transition={{ duration: 0.6, delay: 0.4 }}
+//               className="flex flex-col sm:flex-row gap-4"
 //             >
-//               <CurrentIcon className="w-12 h-12" />
-//               {features[currentFeature].text}
-//             </motion.span>
-//           </AnimatePresence>
-//           <br />
-//           <span className="text-gray-700 dark:text-gray-300">
-//             Quiz Generation
-//           </span>
-//         </motion.h1>
+//               <motion.button 
+//                 whileHover={{ scale: 1.05 }}
+//                 whileTap={{ scale: 0.95 }}
+//                 className="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl"
+//               >
+//                 Practice Tests
+//               </motion.button>
+//               <motion.button 
+//                 whileHover={{ scale: 1.05 }}
+//                 whileTap={{ scale: 0.95 }}
+//                 className="bg-white border-2 border-gray-300 text-gray-700 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:border-gray-400 hover:bg-gray-50"
+//               >
+//                 Study Materials
+//               </motion.button>
+//             </motion.div>
 
-//         {/* Subtitle */}
-//         <motion.p
-//           className="text-xl mb-12 text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed"
-//           initial={{ opacity: 0, y: 20 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.5, delay: 0.3 }}
-//         >
-//           Upload your content, paste text, or describe a topic. Our AI instantly
-//           creates personalized quizzes that adapt to your learning style and
-//           track your progress.
-//         </motion.p>
+//             {/* Rating Section */}
+//             <motion.div 
+//               initial={{ y: 20, opacity: 0 }}
+//               animate={{ y: 0, opacity: 1 }}
+//               transition={{ duration: 0.6, delay: 0.5 }}
+//               className="flex items-center gap-3 pt-4"
+//             >
+//               <motion.div 
+//                 whileHover={{ scale: 1.1 }}
+//                 className="flex items-center gap-1"
+//               >
+//                 <Star className="w-6 h-6 text-purple-600 fill-current" />
+//                 <span className="text-2xl font-bold text-gray-900">4.8/5</span>
+//               </motion.div>
+//               <span className="text-gray-600">
+//                 Ratings from over <span className="font-semibold">2000+</span>{" "}
+//                 reviews
+//               </span>
+//             </motion.div>
+//           </motion.div>
 
-//         {/* Quick Stats */}
-//         <motion.div
-//           className="flex justify-center gap-8 mb-12 text-sm text-gray-500 dark:text-gray-500"
-//           initial={{ opacity: 0, y: 20 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.5, delay: 0.4 }}
-//         >
-//           <div>⚡ Generate in seconds</div>
-//           <div>📚 Any subject</div>
-//           <div>🎯 Adaptive difficulty</div>
-//           <div>📊 Progress tracking</div>
-//         </motion.div>
-
-//         {/* Action Buttons */}
-//         <motion.div
-//           className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
-//           initial={{ opacity: 0, y: 20 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.5, delay: 0.5 }}
-//         >
-//           <motion.button
-//             whileHover={{ scale: 1.02, y: -2 }}
-//             whileTap={{ scale: 0.98 }}
-//             className="group px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+//           {/* Right Content - Image with Floating Elements */}
+//           <motion.div 
+//             initial={{ x: 100, opacity: 0 }}
+//             animate={{ x: 0, opacity: 1 }}
+//             transition={{ duration: 0.8, delay: 0.2 }}
+//             className="relative"
 //           >
-//             <span className="flex items-center gap-2 justify-center">
-//               <Zap className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-//               Generate Quiz Now
-//             </span>
-//           </motion.button>
+//             {/* Main Image Container */}
+//             <motion.div 
+//               whileHover={{ rotate: 0, scale: 1.02 }}
+//               initial={{ rotate: 2 }}
+//               className="relative bg-gradient-to-br from-indigo-600 to-indigo-400 rounded-3xl p-6 shadow-2xl"
+//             >
+//               <div className="bg-white rounded-2xl overflow-hidden">
+//                 <img
+//                   src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800"
+//                   alt="Team collaborating on learning"
+//                   className="w-full h-48 xs:h-64 sm:h-80 lg:h-96 object-cover"
+//                 />
+//               </div>
 
-//           <motion.button
-//             whileHover={{ scale: 1.02, y: -2 }}
-//             whileTap={{ scale: 0.98 }}
-//             className="px-8 py-4 border-2 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-900 transition-all duration-300 text-gray-700 dark:text-gray-300"
-//           >
-//             Try Demo Quiz
-//           </motion.button>
-//         </motion.div>
+//               {/* Bottom Text Overlay */}
+//               <motion.div 
+//                 initial={{ y: 20, opacity: 0 }}
+//                 animate={{ y: 0, opacity: 1 }}
+//                 transition={{ delay: 0.5 }}
+//                 className="absolute bottom-8 left-8 right-8 bg-gradient-to-br from-indigo-600 to-indigo-400 bg-opacity-90 backdrop-blur-sm rounded-2xl p-4"
+//               >
+//                 <div className="flex items-center gap-3">
+//                   <motion.div 
+//                     whileHover={{ rotate: 180 }}
+//                     transition={{ duration: 0.3 }}
+//                     className="w-10 h-10 bg-white rounded-full flex items-center justify-center"
+//                   >
+//                     <Sun className="w-5 h-5 text-purple-600" />
+//                   </motion.div>
+//                   <p className="text-white text-sm sm:text-base">
+//                     Illuminate your future with AI-powered learning at learnexa
+//                   </p>
+//                 </div>
+//               </motion.div>
+//             </motion.div>
 
-//         {/* How it works */}
-//         <motion.div
-//           className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto"
-//           initial={{ opacity: 0, y: 20 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.5, delay: 0.6 }}
-//         >
-//           <div className="text-center p-6 rounded-2xl bg-white dark:bg-gray-900 shadow-sm border border-gray-100 dark:border-gray-800">
-//             <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mx-auto mb-4">
-//               <span className="text-2xl">📝</span>
-//             </div>
-//             <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">
-//               1. Upload Content
-//             </h3>
-//             <p className="text-sm text-gray-600 dark:text-gray-400">
-//               Paste text, upload documents, or describe any topic you want to
-//               learn
-//             </p>
-//           </div>
+//             {/* Floating Badges */}
+//             <motion.div 
+//               animate={{ 
+//                 rotate: [12, 6, 12],
+//                 y: [-5, 5, -5]
+//               }}
+//               transition={{ 
+//                 repeat: Infinity,
+//                 duration: 3
+//               }}
+//               className="absolute -top-4 -right-4 bg-yellow-100 rounded-full px-4 py-2 shadow-lg"
+//             >
+//               <div className="flex items-center gap-2">
+//                 <Sparkles className="w-4 h-4 text-yellow-600" />
+//                 <span className="text-sm font-semibold text-gray-700">
+//                   Competitive Exams
+//                 </span>
+//               </div>
+//             </motion.div>
 
-//           <div className="text-center p-6 rounded-2xl bg-white dark:bg-gray-900 shadow-sm border border-gray-100 dark:border-gray-800">
-//             <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center mx-auto mb-4">
-//               <Brain className="w-6 h-6 text-green-600 dark:text-green-400" />
-//             </div>
-//             <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">
-//               2. AI Generates
-//             </h3>
-//             <p className="text-sm text-gray-600 dark:text-gray-400">
-//               Our AI creates personalized questions tailored to your learning
-//               level
-//             </p>
-//           </div>
+//             <motion.div 
+//               animate={{ 
+//                 rotate: [-6, 0, -6],
+//                 x: [-5, 5, -5]
+//               }}
+//               transition={{ 
+//                 repeat: Infinity,
+//                 duration: 4
+//               }}
+//               className="absolute top-1/4 -right-8 bg-green-100 rounded-full px-4 py-2 shadow-lg"
+//             >
+//               <div className="flex items-center gap-2">
+//                 <Code className="w-4 h-4 text-green-600" />
+//                 <span className="text-sm font-semibold text-gray-700">
+//                   Development
+//                 </span>
+//               </div>
+//             </motion.div>
 
-//           <div className="text-center p-6 rounded-2xl bg-white dark:bg-gray-900 shadow-sm border border-gray-100 dark:border-gray-800">
-//             <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center mx-auto mb-4">
-//               <BarChart3 className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-//             </div>
-//             <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">
-//               3. Learn & Track
-//             </h3>
-//             <p className="text-sm text-gray-600 dark:text-gray-400">
-//               Take quizzes, get instant feedback, and monitor your progress
-//             </p>
-//           </div>
-//         </motion.div>
+//             <motion.div 
+//               animate={{ 
+//                 rotate: [12, 6, 12],
+//                 x: [-5, 5, -5]
+//               }}
+//               transition={{ 
+//                 repeat: Infinity,
+//                 duration: 3.5
+//               }}
+//               className="absolute bottom-1/4 -left-8 bg-pink-100 rounded-full px-4 py-2 shadow-lg"
+//             >
+//               <div className="flex items-center gap-2">
+//                 <Target className="w-4 h-4 text-pink-600" />
+//                 <span className="text-sm font-semibold text-gray-700">
+//                   Placement Preparation
+//                 </span>
+//               </div>
+//             </motion.div>
 
-//         {/* Scroll indicator */}
-//         <motion.div
-//           className="mt-20"
-//           initial={{ opacity: 0 }}
-//           animate={{ opacity: 1 }}
-//           transition={{ delay: 1, duration: 0.5 }}
-//         >
-//           <motion.div
-//             animate={{ y: [0, 8, 0] }}
-//             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-//             className="w-6 h-10 border-2 border-gray-300 dark:border-gray-600 rounded-full flex justify-center mx-auto opacity-60"
-//           >
-//             <motion.div
-//               animate={{ y: [0, 6, 0] }}
-//               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-//               className="w-1 h-2 bg-gray-400 dark:bg-gray-500 rounded-full mt-2"
+//             {/* Decorative Elements */}
+//             <motion.div 
+//               animate={{ 
+//                 scale: [1, 1.2, 1],
+//                 opacity: [0.5, 0.8, 0.5]
+//               }}
+//               transition={{ 
+//                 repeat: Infinity,
+//                 duration: 3
+//               }}
+//               className="absolute -top-8 left-1/4 w-16 h-16 bg-purple-200 rounded-full"
+//             />
+//             <motion.div 
+//               animate={{ 
+//                 scale: [1, 1.2, 1],
+//                 opacity: [0.4, 0.7, 0.4]
+//               }}
+//               transition={{ 
+//                 repeat: Infinity,
+//                 duration: 4
+//               }}
+//               className="absolute -bottom-6 right-1/4 w-12 h-12 bg-yellow-200 rounded-full"
+//             />
+//             <motion.div 
+//               animate={{ 
+//                 scale: [1, 1.2, 1],
+//                 opacity: [0.3, 0.6, 0.3]
+//               }}
+//               transition={{ 
+//                 repeat: Infinity,
+//                 duration: 3.5
+//               }}
+//               className="absolute top-1/2 -left-4 w-8 h-8 bg-green-200 rounded-full"
 //             />
 //           </motion.div>
-//         </motion.div>
+//         </div>
 //       </div>
-//     </div>
+
+//       {/* Background Decorative Elements */}
+//       <motion.div className="absolute inset-0 pointer-events-none">
+//         <motion.div 
+//           animate={{ 
+//             scale: [1, 1.2, 1],
+//             opacity: [0.3, 0.5, 0.3]
+//           }}
+//           transition={{ 
+//             repeat: Infinity,
+//             duration: 5
+//           }}
+//           className="absolute top-1/4 left-1/4 w-64 h-64 bg-purple-100 rounded-full mix-blend-multiply filter blur-xl"
+//         />
+//         <motion.div 
+//           animate={{ 
+//             scale: [1, 1.2, 1],
+//             opacity: [0.2, 0.4, 0.2]
+//           }}
+//           transition={{ 
+//             repeat: Infinity,
+//             duration: 6
+//           }}
+//           className="absolute top-3/4 right-1/4 w-72 h-72 bg-yellow-100 rounded-full mix-blend-multiply filter blur-xl"
+//         />
+//         <motion.div 
+//           animate={{ 
+//             scale: [1, 1.2, 1],
+//             opacity: [0.25, 0.45, 0.25]
+//           }}
+//           transition={{ 
+//             repeat: Infinity,
+//             duration: 5.5
+//           }}
+//           className="absolute bottom-1/4 left-1/3 w-48 h-48 bg-green-100 rounded-full mix-blend-multiply filter blur-xl"
+//         />
+//       </motion.div>
+//     </motion.div>
 //   );
-// };
+// }
 
 // export default HeroHeader;
-import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Brain,
-  BookOpen,
-  Youtube,
-  Newspaper,
-  Users,
-  Target,
-  Zap,
-  Trophy,
-  ChevronRight,
-  Sparkles,
-  Code,
-  MessageCircle,
-  BarChart3,
-} from "lucide-react";
+import React from "react";
+import { Star, Sparkles, Code, Target, Sun } from "lucide-react";
+import { motion } from "framer-motion";
 
-const HeroHeader = () => {
-  const [currentCard, setCurrentCard] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
-
-  const features = [
-    {
-      icon: <Brain className="w-8 h-8" />,
-      title: "AI Quiz Generator",
-      description: "Generate personalized quizzes with AI for any topic",
-      color: "from-blue-500 to-cyan-500",
-      bgColor: "bg-blue-500/10",
-      tags: ["Reliable", "Smart", "Adaptive"],
-    },
-    {
-      icon: <Youtube className="w-8 h-8" />,
-      title: "Study Tube",
-      description: "Distraction-free YouTube learning experience",
-      color: "from-red-500 to-pink-500",
-      bgColor: "bg-red-500/10",
-      tags: ["Focused", "Clean", "Efficient"],
-    },
-    {
-      icon: <Newspaper className="w-8 h-8" />,
-      title: "Current Affairs",
-      description: "Stay updated with latest current affairs & news",
-      color: "from-green-500 to-emerald-500",
-      bgColor: "bg-green-500/10",
-      tags: ["Updated", "Relevant", "Comprehensive"],
-    },
-    {
-      icon: <Users className="w-8 h-8" />,
-      title: "HR Interview Prep",
-      description: "Master HR interviews with AI-powered practice",
-      color: "from-purple-500 to-violet-500",
-      bgColor: "bg-purple-500/10",
-      tags: ["Interactive", "Realistic", "Effective"],
-    },
-    {
-      icon: <Target className="w-8 h-8" />,
-      title: "Aptitude Training",
-      description: "Sharpen quantitative and logical reasoning skills",
-      color: "from-orange-500 to-amber-500",
-      bgColor: "bg-orange-500/10",
-      tags: ["Precise", "Challenging", "Progressive"],
-    },
-    {
-      icon: <MessageCircle className="w-8 h-8" />,
-      title: "Verbal Reasoning",
-      description: "Enhance communication and verbal skills",
-      color: "from-teal-500 to-cyan-500",
-      bgColor: "bg-teal-500/10",
-      tags: ["Articulate", "Clear", "Confident"],
-    },
-  ];
-
-  const stats = [
-    { number: "10K+", label: "Students" },
-    { number: "95%", label: "Success Rate" },
-    { number: "500+", label: "Companies" },
-    { number: "50K+", label: "Questions" },
-  ];
-
-  useEffect(() => {
-    setIsVisible(true);
-    const interval = setInterval(() => {
-      setCurrentCard((prev) => (prev + 1) % features.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 50, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 15,
-      },
-    },
-  };
-
-  const cardVariants = {
-    hidden: {
-      opacity: 0,
-      scale: 0.8,
-      rotateY: -15,
-    },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      rotateY: 0,
-      transition: {
-        type: "spring",
-        stiffness: 120,
-        damping: 20,
-      },
-    },
-  };
-
+function HeroHeader() {
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-gray-900 dark:text-white relative overflow-hidden px-4 sm:px-6 lg:px-8">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-green-500/20 to-cyan-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-full blur-3xl animate-pulse delay-500"></div>
-      </div>
-
-      <div className="relative z-10 container mx-auto py-16 lg:py-24 max-w-7xl">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center px-4 sm:px-6 lg:px-8">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen bg-white pt-16 lg:pt-0 dark:bg-black overflow-hidden"
+    >
+      {/* Main Hero Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex  flex-col lg:flex-row lg:gap-12 items-center min-h-[90vh] md:min-h-screen py-12 md:py-16 lg:py-20">
           {/* Left Content */}
           <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate={isVisible ? "visible" : "hidden"}
-            className="space-y-8"
+            initial={{ x: -100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="space-y-6 lg:w-1/2 sm:space-y-8 order-2 "
           >
-            <motion.div variants={itemVariants} className="space-y-4">
-              <motion.div
-                className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full border border-blue-500/30 dark:border-blue-400/30"
-                whileHover={{ scale: 1.05 }}
+            <div className="space-y-4 sm:space-y-6">
+              <motion.h1
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.6 }}
+                className="text-3xl xs:text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-gray-900 dark:text-white leading-tight"
               >
-                <Sparkles className="w-4 h-4 text-blue-500 dark:text-blue-400" />
-                <span className="text-sm font-medium text-blue-600 dark:text-blue-300">
-                  AI-Powered Learning
-                </span>
-              </motion.div>
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-gray-900 dark:text-white">
-                Placement prep has never{" "}
-                <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 bg-clip-text text-transparent">
-                  looked so good
-                </span>
-              </h1>
-
-              <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
-                Master your placement preparation with{" "}
-                <span className="font-semibold text-gray-900 dark:text-white">
+                Ace Your Career with
+                <motion.span
+                  whileHover={{ scale: 1.05 }}
+                  className="inline-flex bg-gradient-to-br from-indigo-600 to-indigo-400 bg-clip-text text-transparent items-center gap-2"
+                >
                   Learnexa
-                </span>{" "}
-                - The AI-powered platform that transforms how you learn and
-                succeed.
-              </p>
-            </motion.div>
+                </motion.span>
+              </motion.h1>
 
+              <motion.p
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="text-sm xs:text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-lg leading-relaxed"
+              >
+                Master competitive exams and placement preparations with
+                expert-led courses, mock tests, and comprehensive study
+                materials
+              </motion.p>
+            </div>
+
+            {/* CTA Buttons */}
             <motion.div
-              variants={itemVariants}
-              className="flex flex-wrap gap-4"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="flex flex-col sm:flex-row gap-3 sm:gap-4"
             >
               <motion.button
-                className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl font-semibold text-white shadow-lg hover:shadow-xl transition-all duration-300"
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: "0 20px 40px rgba(59, 130, 246, 0.3)",
-                }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Start Learning
-                <ChevronRight className="inline w-5 h-5 ml-2" />
-              </motion.button>
-
-              <motion.button
-                className="px-8 py-4 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl font-semibold text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                className="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 rounded-full font-medium sm:font-semibold text-sm sm:text-base md:text-lg shadow-lg hover:shadow-xl"
               >
-                Watch Demo
+                Practice Tests
               </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-200 px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 rounded-full font-medium sm:font-semibold text-sm sm:text-base md:text-lg hover:border-gray-400 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
+              >
+                Study Materials
+              </motion.button>
+            </motion.div>
+
+            {/* Rating Section */}
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="flex items-center gap-2 sm:gap-3 pt-2 sm:pt-4"
+            >
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                className="flex items-center gap-1"
+              >
+                <Star className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600 fill-current" />
+                <span className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+                  4.8/5
+                </span>
+              </motion.div>
+              <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                Ratings from over <span className="font-semibold">2000+</span>{" "}
+                reviews
+              </span>
             </motion.div>
           </motion.div>
 
-          {/* Right - Animated Cards */}
+          {/* Right Content - Image with Floating Elements */}
           <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate={isVisible ? "visible" : "hidden"}
-            className="relative h-96 lg:h-[500px] perspective-1000"
+            initial={{ x: 100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="relative order-1 lg:order-2 mb-8 lg:mb-0"
           >
-            <div className="absolute inset-0 flex items-center justify-center">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentCard}
-                  variants={cardVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                  className="w-full max-w-lg mx-auto"
-                >
-                  <div className="relative">
-                    {/* Main Card */}
-                    <motion.div
-                      className="bg-white/80 h-[60vh] transform rotate-4 translate-x-2 translate-y-2 dark:bg-black backdrop-blur-xl border border-white-300 dark:border-white rounded-2xl p-8 shadow-2xl"
-                      whileHover={{
-                        y: -10,
-                        rotateY: 5,
-                        boxShadow: "0 25px 50px rgba(0, 0, 0, 0.1)",
-                      }}
-                    >
-                      <div
-                        className={`${features[currentCard].bgColor} rounded-2xl p-6 mb-6`}
-                      >
-                        <div
-                          className={`text-white bg-gradient-to-r ${features[currentCard].color} w-16 h-16 rounded-xl flex items-center justify-center mb-4`}
-                        >
-                          {features[currentCard].icon}
-                        </div>
-                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                          {features[currentCard].title}
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                          {features[currentCard].description}
-                        </p>
-                      </div>
-
-                      {/* Feature Tags */}
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {features[currentCard].tags.map((tag, index) => (
-                          <span
-                            key={index}
-                            className="px-3 py-1 bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-full text-xs font-medium text-gray-700 dark:text-gray-300"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* Progress Indicator */}
-                      <div className="flex justify-center space-x-2 mt-6">
-                        {features.map((_, index) => (
-                          <div
-                            key={index}
-                            className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                              index === currentCard
-                                ? "bg-blue-500 w-6"
-                                : "bg-gray-300 dark:bg-gray-600"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                    </motion.div>
-
-                    <div className="absolute inset-0 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-2xl -z-10 transform rotate-6 translate-x-2 translate-y-2" />
-                    <div className="absolute inset-0 bg-gray-100 dark:bg-gray-600 border border-gray-200 dark:border-gray-500 rounded-2xl -z-20 transform rotate-8 translate-x-4 translate-y-4" />
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* Floating Elements
+            {/* Main Image Container */}
             <motion.div
-              className="absolute top-10 right-10 w-12 h-12 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center"
-              animate={{
-                y: [0, -10, 0],
-                rotate: [0, 5, 0],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
+              whileHover={{ rotate: 0, scale: 1.02 }}
+              initial={{ rotate: 2 }}
+              className="relative bg-gradient-to-br from-indigo-600 to-indigo-400 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl sm:shadow-2xl"
             >
-              <Trophy className="w-6 h-6 text-white" />
-            </motion.div> */}
+              <div className="bg-white dark:bg-gray-700 rounded-xl sm:rounded-2xl overflow-hidden">
+                <img
+                  src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800"
+                  alt="Team collaborating on learning"
+                  className="w-full h-48 xs:h-56 sm:h-64 md:h-72 lg:h-80 xl:h-96 object-cover"
+                />
+              </div>
 
-            {/* <motion.div
-              className="absolute bottom-10 left-10 w-10 h-10 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center"
+              {/* Bottom Text Overlay */}
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="absolute bottom-4 hidden md:flex m-2 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 bg-gradient-to-br from-indigo-600 to-indigo-400 bg-opacity-90 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4"
+              >
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <motion.div
+                    whileHover={{ rotate: 180 }}
+                    transition={{ duration: 0.3 }}
+                    className="w-8 h-8 sm:w-10 sm:h-10 bg-white rounded-full flex items-center justify-center"
+                  >
+                    <Sun className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
+                  </motion.div>
+                  <p className="text-white text-xs sm:text-sm md:text-base">
+                    Illuminate your future with AI-powered learning at learnexa
+                  </p>
+                </div>
+              </motion.div>
+            </motion.div>
+
+            {/* Floating Badges - Responsive Positioning */}
+            <motion.div
               animate={{
-                y: [0, -8, 0],
-                rotate: [0, -5, 0],
+                rotate: [12, 6, 12],
+                y: [-5, 5, -5],
               }}
               transition={{
-                duration: 2.5,
                 repeat: Infinity,
-                ease: "easeInOut",
-                delay: 1,
+                duration: 3,
               }}
+              className="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 bg-yellow-100  rounded-full px-3 py-1 sm:px-4 sm:py-2 shadow-lg"
             >
-              <Code className="w-5 h-5 text-white" />
+              <div className="flex items-center gap-1 sm:gap-2">
+                <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-600 " />
+                <span className="text-xs sm:text-sm font-semibold text-gray-700 ">
+                  Competitive Exams
+                </span>
+              </div>
             </motion.div>
 
             <motion.div
-              className="absolute top-1/2 left-0 w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center"
               animate={{
-                x: [0, 10, 0],
-                y: [0, -5, 0],
+                rotate: [-6, 0, -6],
+                x: [-5, 5, -5],
               }}
               transition={{
-                duration: 4,
                 repeat: Infinity,
-                ease: "easeInOut",
-                delay: 0.5,
+                duration: 4,
               }}
+              className="absolute top-1/4 -right-4 sm:-right-6 md:-right-8 bg-green-100  rounded-full px-3 py-1 sm:px-4 sm:py-2 shadow-lg"
             >
-              <BarChart3 className="w-4 h-4 text-white" />
-            </motion.div> */}
+              <div className="flex items-center gap-1 sm:gap-2">
+                <Code className="w-3 h-3 sm:w-4 sm:h-4 text-green-600 " />
+                <span className="text-xs sm:text-sm font-semibold text-gray-700 ">
+                  Development
+                </span>
+              </div>
+            </motion.div>
+
+            <motion.div
+              animate={{
+                rotate: [12, 6, 12],
+                x: [-5, 5, -5],
+              }}
+              transition={{
+                repeat: Infinity,
+                duration: 3.5,
+              }}
+              className="absolute bottom-1/4 -left-4 sm:-left-6 md:-left-8 bg-pink-100 rounded-full px-3 py-1 sm:px-4 sm:py-2 shadow-lg"
+            >
+              <div className="flex items-center gap-1 sm:gap-2">
+                <Target className="w-3 h-3 sm:w-4 sm:h-4 text-pink-600 " />
+                <span className="text-xs sm:text-sm font-semibold text-gray-700 ">
+                  Placement Preparation
+                </span>
+              </div>
+            </motion.div>
+
+            {/* Decorative Elements */}
+            <motion.div
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.5, 0.8, 0.5],
+              }}
+              transition={{
+                repeat: Infinity,
+                duration: 3,
+              }}
+              className="absolute -top-6 sm:-top-8 left-1/4 w-12 h-12 sm:w-16 sm:h-16 bg-purple-200  rounded-full"
+            />
+            <motion.div
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.4, 0.7, 0.4],
+              }}
+              transition={{
+                repeat: Infinity,
+                duration: 4,
+              }}
+              className="absolute -bottom-4 sm:-bottom-6 right-1/4 w-10 h-10 sm:w-12 sm:h-12 bg-yellow-200  rounded-full"
+            />
+            <motion.div
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.6, 0.3],
+              }}
+              transition={{
+                repeat: Infinity,
+                duration: 3.5,
+              }}
+              className="absolute top-1/2 -left-3 sm:-left-4 w-6 h-6 sm:w-8 sm:h-8 bg-green-200  rounded-full"
+            />
           </motion.div>
         </div>
       </div>
-    </div>
+
+      {/* Background Decorative Elements */}
+      <motion.div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            repeat: Infinity,
+            duration: 5,
+          }}
+          className="absolute top-1/4 left-1/4 w-40 h-40 sm:w-64 sm:h-64 bg-purple-100 dark:bg-purple-900/30 rounded-full mix-blend-multiply filter blur-xl"
+        />
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.2, 0.4, 0.2],
+          }}
+          transition={{
+            repeat: Infinity,
+            duration: 6,
+          }}
+          className="absolute top-3/4 right-1/4 w-48 h-48 sm:w-72 sm:h-72 bg-yellow-100 dark:bg-yellow-900/30 rounded-full mix-blend-multiply filter blur-xl"
+        />
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.25, 0.45, 0.25],
+          }}
+          transition={{
+            repeat: Infinity,
+            duration: 5.5,
+          }}
+          className="absolute bottom-1/4 left-1/3 w-32 h-32 sm:w-48 sm:h-48 bg-green-100 dark:bg-green-900/30 rounded-full mix-blend-multiply filter blur-xl"
+        />
+      </motion.div>
+    </motion.div>
   );
-};
+}
 
 export default HeroHeader;

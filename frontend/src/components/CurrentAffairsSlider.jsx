@@ -99,15 +99,20 @@ const CurrentAffairsSlider = () => {
   }
 
   return (
-    <div className="w-full">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold dark:text-white">Latest Updates</h2>
+    <div className="w-full  bg-gray-100 dark:bg-zinc-900 p-4 sm:p-6 rounded-xl">
+      <div className="flex justify-between items-center mb-4 sm:mb-6 gap-3">
+        <h2 className="text-xl sm:text-2xl  text-gray-600 dark:text-gray-100 tracking-tight text-center sm:text-left">
+          Current Affairs
+        </h2>
         <a
-          href="/current-affairs" // Link to your full news page
-          className="text-blue-600 dark:text-blue-400 hover:underline flex items-center"
+          href="/current-affairs"
+          className="flex items-center px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-all duration-300 text-sm sm:text-base"
         >
           See All
-          <ChevronRight className="ml-1" size={18} />
+          <ChevronRight
+            className="ml-1 transition-transform group-hover:translate-x-1"
+            size={16}
+          />
         </a>
       </div>
 
@@ -115,74 +120,84 @@ const CurrentAffairsSlider = () => {
         {/* Slider Navigation Arrows */}
         <button
           onClick={prevSlide}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 dark:bg-zinc-800/90 p-2 rounded-full shadow-lg hover:bg-white dark:hover:bg-zinc-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="absolute cursor-pointer -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-10 bg-white/95 dark:bg-gray-800/95 p-2 sm:p-3 rounded-full shadow-lg hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
           aria-label="Previous slide"
         >
-          <ChevronLeft size={24} className="text-blue-600 dark:text-blue-400" />
+          <ChevronLeft size={20} className="text-blue-600 dark:text-blue-400" />
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 dark:bg-zinc-800/90 p-2 rounded-full shadow-lg hover:bg-white dark:hover:bg-zinc-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="absolute cursor-pointer -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-10 bg-white/95 dark:bg-gray-800/95 p-2 sm:p-3 rounded-full shadow-lg hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
           aria-label="Next slide"
         >
-          <ChevronRight size={24} className="text-blue-600 dark:text-blue-400" />
+          <ChevronRight
+            size={20}
+            className="text-blue-600 dark:text-blue-400"
+          />
         </button>
 
         {/* Slider Container */}
-        <div 
-          className="relative overflow-hidden w-full"
+        <div
+          className="relative overflow-hidden w-full px-2 sm:px-4"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          <div 
-            className="flex transition-transform duration-500 ease-in-out"
-            style={{ transform: `translateX(-${currentSlide * (100/visibleItems)}%)` }}
+          <div
+            className="flex transition-transform duration-500 ease-out"
+            style={{
+              transform: `translateX(-${currentSlide * (100 / visibleItems)}%)`,
+            }}
           >
-          {news.map((item, index) => (
-            <div
-              key={item._id || index}
-              style={{ width: `${100/visibleItems}%`, minWidth: `${100/visibleItems}%` }}
-              className={`transition-all flex  justify-center px-2 duration-300  ${
-                index >= currentSlide && index < currentSlide + visibleItems ? "scale-100" : "scale-95 opacity-80"
-              }`}
-            >
-              <a
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block group w-full max-w-xs mx-auto hover:no-underline"
+            {news.map((item, index) => (
+              <div
+                key={item._id || index}
+                style={{
+                  width: `${100 / visibleItems}%`,
+                  minWidth: `${100 / visibleItems}%`,
+                }}
+                className={`transition-all flex justify-center px-2 sm:px-3 duration-500 ${
+                  index >= currentSlide && index < currentSlide + visibleItems
+                    ? "scale-100 opacity-100"
+                    : "scale-90 opacity-60"
+                }`}
               >
-                <div className="relative h-40 overflow-hidden rounded-lg shadow-md border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
-                  <img
-                    src={item.urlToImage || "/placeholder-news.jpg"}
-                    alt={item.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-3">
-                    <h3 className="text-white text-sm font-medium line-clamp-2">
-                      {item.title}
-                    </h3>
+                <a
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block group w-full max-w-sm mx-auto hover:no-underline transform transition-all duration-300 hover:-translate-y-1"
+                >
+                  <div className="relative h-50 sm:h-48 overflow-hidden rounded-xl shadow-md border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all duration-300 bg-white dark:bg-gray-800">
+                    <img
+                      src={item.urlToImage || "/placeholder-news.jpg"}
+                      alt={item.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-end p-3 sm:p-4">
+                      <h3 className="text-white text-sm sm:text-base font-semibold line-clamp-2 group-hover:text-blue-200 transition-colors duration-300">
+                        {item.title}
+                      </h3>
+                    </div>
+                    <div className="absolute top-2 sm:top-3 left-2 sm:left-3 bg-blue-600 dark:bg-blue-500 text-white text-xs font-medium px-2 sm:px-3 py-1 sm:py-1.5 rounded-full shadow-lg">
+                      {item.category ? item.category.split(" & ")[0] : "News"}
+                    </div>
                   </div>
-                  <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">
-                    {item.category ? item.category.split(" & ")[0] : "News"}
-                  </div>
-                </div>
-              </a>
-            </div>
-          ))}
+                </a>
+              </div>
+            ))}
           </div>
         </div>
 
         {/* Slider Indicators */}
-        <div className="flex justify-center mt-4 space-x-2">
+        <div className="flex justify-center mt-4 sm:mt-6 space-x-1.5 sm:space-x-2">
           {Array.from({ length: maxSlideIndex + 1 }).map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`w-2 h-2 rounded-full ${
+              className={`h-1.5 sm:h-2 rounded-full transition-all duration-300 ${
                 index === currentSlide
-                  ? "bg-blue-600 w-4"
-                  : "bg-gray-300 dark:bg-gray-600"
+                  ? "w-6 sm:w-8 bg-blue-600 dark:bg-blue-500"
+                  : "w-1.5 sm:w-2 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500"
               }`}
               aria-label={`Go to slide ${index + 1}`}
             />

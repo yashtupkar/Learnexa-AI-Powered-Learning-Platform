@@ -65,7 +65,8 @@ export default function Notifications({
         }}
       >
         <Bell
-          size={18}
+          sm:size={18}
+          size={16}
           className="text-gray-500 dark:text-gray-400 group-hover:text-gray-800 dark:group-hover:text-gray-200 transition-colors duration-200"
         />
         {notifications?.filter((n) => !n.read).length > 0 && (

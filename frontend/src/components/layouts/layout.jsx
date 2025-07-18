@@ -243,7 +243,7 @@ const Layout = ({ children }) => {
     "/verbal-reasoning": "Verbal Reasoning",
   };
 
-  const pageTitle = routeTitles[location.pathname] || "Page";
+  const pageTitle = routeTitles[location.pathname] || "Learnexa";
 
   // Desktop sidebar toggle function
   const toggleDesktopSidebar = () => {

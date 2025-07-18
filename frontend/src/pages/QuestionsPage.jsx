@@ -351,7 +351,7 @@ const QuestionsPage = () => {
             </div>
           )}
         </div>
-        <div className="w-1/3 hidden lg:block h-[85vh] mt-10 sticky top-10 shadow-lg rounded-xl bg-white dark:bg-zinc-800 p-6 overflow-y-auto">
+        <div className="w-1/2 hidden lg:block h-[85vh] mt-10 sticky top-10 shadow-lg rounded-xl bg-white dark:bg-zinc-800 p-6 overflow-y-auto">
           <div className=" dark:bg-zinc-800 mb-4 ">
             <h2 className="text-xl  text-gray-600 dark:text-zinc-200 mb-2">
               Quick Links

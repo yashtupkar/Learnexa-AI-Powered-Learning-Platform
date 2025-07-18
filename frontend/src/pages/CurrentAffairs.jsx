@@ -1060,19 +1060,64 @@ const CurrentAffairs = () => {
                       &laquo; Previous
                     </button>
 
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                      (number) => (
+                    {totalPages > 3 ? (
+                      <>
+                        {/* First page */}
                         <button
-                          key={number}
-                          onClick={() => paginate(number)}
+                          onClick={() => paginate(1)}
                           className={`px-3 py-1 rounded-md ${
-                            currentPage === number
+                            currentPage === 1
                               ? "bg-blue-600 text-white"
                               : "text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-zinc-700"
                           }`}
                         >
-                          {number}
+                          1
                         </button>
+
+                        {/* Ellipsis or number */}
+                        {currentPage > 2 && <span className="px-2">...</span>}
+
+                        {/* Current page and adjacent */}
+                        {currentPage !== 1 && currentPage !== totalPages && (
+                          <button
+                            onClick={() => paginate(currentPage)}
+                            className="px-3 py-1 rounded-md bg-blue-600 text-white"
+                          >
+                            {currentPage}
+                          </button>
+                        )}
+
+                        {/* Ellipsis or number */}
+                        {currentPage < totalPages - 1 && <span className="px-2">...</span>}
+
+                        {/* Last page */}
+                        <button
+                          onClick={() => paginate(totalPages)}
+                          className={`px-3 py-1 rounded-md ${
+                            currentPage === totalPages
+                              ? "bg-blue-600 text-white"
+                              : "text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-zinc-700"
+                          }`}
+                        >
+                          {totalPages}
+                        </button>
+                      </>
+                    ) : (
+                      // Show all pages if total pages <= 3
+                      Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                        (number) => (
+                          <button
+                            key={number}
+                            onClick={() => paginate(number)}
+                            className={`px-3 py-1 rounded-md ${
+                              currentPage === number
+                                ? "bg-blue-600 text-white"
+                                : "text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-zinc-700"
+                            }`}
+                          >
+                            {number}
+                          </button>
+                        )
                       )
                     )}
 
