@@ -231,6 +231,8 @@ import GoogleAuth from "../components/GoogleAuth";
 import { useDispatch } from "react-redux";
 import { loginStart, loginSuccess, loginFailure } from "../redux/authSlice";
 import bgImage from "../assets/bg-signup.jpg";
+import logo from "../assets/learnexa-logo.png";
+
 
 const LogInPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -286,6 +288,13 @@ const LogInPage = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/30 flex items-end p-8">
             <div>
+              <div className="w-12 h-12 mb-2 rounded-md bg-gradient-to-br from-indigo-600 to-indigo-400 flex items-center justify-center shadow">
+                <img
+                  src={logo}
+                  alt="Learnexa"
+                  className="w-full h-full object-contain"
+                />
+              </div>
               <h2 className="text-3xl font-bold text-white mb-2">
                 Welcome Back
               </h2>
@@ -299,7 +308,7 @@ const LogInPage = () => {
       </div>
 
       {/* Right Side - Form */}
-      <div className="w-full max-w-md lg:max-w-md sm:bg-white sm:dark:bg-zinc-800 rounded-2xl shadow-lg p-2 sm:p-8 md:p-10">
+      <div className="w-full max-w-md lg:max-w-md sm:bg-white sm:dark:bg-zinc-800 rounded-2xl md:shadow-lg p-2 sm:p-8 md:p-10">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center h-64">
             <div className="flex items-center space-x-2 mb-4">
@@ -317,8 +326,21 @@ const LogInPage = () => {
         ) : (
           <>
             <div className="text-center mb-8">
+              <div
+                onClick={() => navigate("/")}
+                className="w-10 h-10 mb-4 mx-auto lg:hidden rounded-md bg-gradient-to-br from-indigo-600 to-indigo-400 flex items-center justify-center md:shadow"
+              >
+                <img
+                  src={logo}
+                  alt="Learnexa"
+                  className="w-full h-full object-contain"
+                />
+              </div>
               <h1 className="text-3xl sm:text-4xl font-light  text-gray-800 dark:text-white mb-2">
-                Welcome to <span className="text-blue-600">Learnexa</span>
+                Welcome to{" "}
+                <span className="bg-gradient-to-br from-indigo-600 to-indigo-400 bg-clip-text text-transparent">
+                  Learnexa
+                </span>
               </h1>
               <p className="text-gray-600 dark:text-gray-300 font-light text-sm sm:text-base">
                 Sign in to your account to continue
@@ -422,7 +444,7 @@ const LogInPage = () => {
                 <button
                   type="button"
                   onClick={() => navigate("/reset-password")}
-                  className="text-sm text-blue-600 dark:text-blue-400 font-light hover:text-blue-800 dark:hover:text-blue-300 transition-colors duration-200 focus:outline-none"
+                  className="text-sm bg-gradient-to-br from-indigo-600 to-indigo-400 bg-clip-text text-transparent font-light hover:text-blue-800 dark:hover:text-blue-300 transition-colors duration-200 focus:outline-none"
                 >
                   Forgot Password?
                 </button>
@@ -432,7 +454,7 @@ const LogInPage = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full mt-6 flex items-center justify-center gap-2 font-light bg-blue-600 hover:bg-blue-700 text-white  py-3 px-4 rounded-lg shadow-md transition-all duration-200 hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full mt-6 flex items-center justify-center gap-2 font-light bg-gradient-to-br from-indigo-600 to-indigo-400  text-white  py-3 px-4 rounded-lg shadow-md transition-all duration-200 hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
                   <>

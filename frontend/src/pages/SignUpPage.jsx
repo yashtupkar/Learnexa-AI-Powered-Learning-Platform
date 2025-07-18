@@ -384,7 +384,8 @@ import GoogleAuth from "../components/GoogleAuth";
 import { useDispatch } from "react-redux";
 import { loginStart, loginSuccess, loginFailure } from "../redux/authSlice";
 import bgImage from "../assets/bg-signup.jpg";
-import Navbar from "../components/NavigationBar";
+import logo from "../assets/learnexa-logo.png";
+
 
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -495,6 +496,13 @@ const SignUpPage = () => {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/30 flex items-end p-8">
               <div>
+                <div className="w-12 h-12 mb-2 rounded-md bg-gradient-to-br from-indigo-600 to-indigo-400 flex items-center justify-center shadow">
+                  <img
+                    src={logo}
+                    alt="Learnexa"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
                 <h2 className="text-3xl font-bold text-white mb-2">
                   Join Our Community
                 </h2>
@@ -508,7 +516,7 @@ const SignUpPage = () => {
         </div>
 
         {/* Form container - full width on small screens, half on large */}
-        <div className="w-full max-w-md lg:max-w-md  sm:bg-white sm:dark:bg-zinc-800 rounded-xl lg:rounded-2xl shadow-sm lg:shadow-lg p-2 sm:p-8 lg:p-10">
+        <div className="w-full max-w-md lg:max-w-md  sm:bg-white sm:dark:bg-zinc-800 rounded-xl lg:rounded-2xl md:shadow-sm lg:shadow-lg p-2 sm:p-8 lg:p-10">
           {isLoading || isGoogleLoading ? (
             <div className="flex flex-col items-center justify-center h-64">
               <div className="flex items-center space-x-2 mb-4">
@@ -526,8 +534,21 @@ const SignUpPage = () => {
           ) : (
             <>
               <div className="text-center mb-8">
+                <div
+                  onClick={() => navigate("/")}
+                  className="w-10 h-10 mb-4 mx-auto lg:hidden rounded-md bg-gradient-to-br from-indigo-600 to-indigo-400 flex items-center justify-center md:shadow"
+                >
+                  <img
+                    src={logo}
+                    alt="Learnexa"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
                 <h1 className="text-3xl sm:text-4xl font-light text-gray-800 dark:text-white mb-2">
-                  Join <span className="text-blue-600">Learnexa</span>
+                  Join{" "}
+                  <span className="bg-gradient-to-br from-indigo-600 to-indigo-400 bg-clip-text text-transparent">
+                    Learnexa
+                  </span>
                 </h1>
                 <p className="text-gray-600 font-light dark:text-gray-300 text-sm sm:text-base">
                   Create your account to get started
@@ -708,7 +729,7 @@ const SignUpPage = () => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full mt-4 flex font-light items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white  py-2.5 px-4 rounded-lg shadow transition-all duration-200 hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="w-full mt-4 flex font-light items-center justify-center gap-2 bg-gradient-to-br from-indigo-600 to-indigo-400  text-white  py-2.5 px-4 rounded-lg shadow transition-all duration-200 hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {isLoading ? (
                     <>
