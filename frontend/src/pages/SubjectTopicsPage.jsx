@@ -448,7 +448,7 @@ const SubjectTopicsPage = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-white transition-colors duration-200">
+      <div className="min-h-screen bg-gray-50 text-gray-900 dark:bg-black dark:text-white transition-colors duration-200">
         <div className="container mx-auto px-4 sm:px-6 py-8">
           {/* Header Section */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">

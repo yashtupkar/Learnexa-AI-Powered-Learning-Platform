@@ -1515,7 +1515,7 @@ const QuizQuestionRenderer = ({
       initial="hidden"
       animate="visible"
       exit="exit"
-      className="rounded-xl  md:rounded-2xl p-4 sm:p-6 md:p-8 mb-6 md:mb-8 bg-white shadow-lg md:shadow-xl border border-gray-100 dark:bg-zinc-900 dark:border-gray-700 dark:shadow-2xl transition-colors duration-300 select-none"
+      className="rounded-xl h-[70vh] md:h-fit md:rounded-2xl p-4 sm:p-6 md:p-8 mb-6 md:mb-8 bg-white  md:shadow-xl md:border border-gray-100 dark:bg-zinc-900 dark:border-gray-700 dark:shadow-2xl transition-colors duration-300 select-none"
       style={{
         WebkitUserSelect: "none",
         MozUserSelect: "none",

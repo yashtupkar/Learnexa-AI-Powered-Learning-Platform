@@ -20,6 +20,7 @@
     "date-fns": "^4.1.0",
     "framer-motion": "^12.12.1",
     "gsap": "^3.13.0",
+    "howler": "^2.2.4",
     "jwt-decode": "^4.0.0",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.511.0",
