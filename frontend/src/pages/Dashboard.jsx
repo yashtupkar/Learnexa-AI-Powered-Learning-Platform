@@ -538,8 +538,8 @@ const Dashboard = () => {
                   <CurrentAffairsSlider />
 
                   <AllQuizes />
-
-                  {/* Charts and Recent Activity */}
+{/* 
+                  Charts and Recent Activity
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
                     <div className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border border-gray-200 dark:border-gray-700">
                       <div className="flex items-center justify-between mb-4">
@@ -608,10 +608,10 @@ const Dashboard = () => {
                         ))}
                       </div>
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* Recent Quizzes */}
-                  <div className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border border-gray-200 dark:border-gray-700">
+                  {/* <div className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border border-gray-200 dark:border-gray-700">
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="font-medium text-gray-900 dark:text-white">
                         Recent Quizzes
@@ -674,7 +674,7 @@ const Dashboard = () => {
                         </div>
                       ))}
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               )}
 
@@ -684,263 +684,9 @@ const Dashboard = () => {
                 </>
               )}
 
-              {activeTab === "analytics" && (
-                <div className="space-y-6">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-                    <div className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border border-gray-200 dark:border-gray-700">
-                      <h3 className="font-medium text-gray-900 dark:text-white mb-4">
-                        Score Distribution
-                      </h3>
-                      <div className="h-64 bg-gray-50 dark:bg-gray-700/30 rounded-lg flex items-center justify-center">
-                        <PieChart className="w-12 h-12 text-gray-300 dark:text-gray-600" />
-                        <p className="ml-3 text-gray-400 dark:text-gray-500">
-                          Score distribution chart will appear here
-                        </p>
-                      </div>
-                    </div>
+            
 
-                    <div className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border border-gray-200 dark:border-gray-700">
-                      <h3 className="font-medium text-gray-900 dark:text-white mb-4">
-                        Topic Mastery
-                      </h3>
-                      <div className="space-y-4">
-                        {stats.topics.map((topic) => (
-                          <div key={topic.name} className="space-y-1">
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm font-medium text-gray-900 dark:text-white">
-                                {topic.name}
-                              </span>
-                              <span className="text-xs text-gray-500 dark:text-gray-400">
-                                {topic.count} quizzes
-                              </span>
-                            </div>
-                            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                              <div
-                                className="bg-blue-500 h-2 rounded-full"
-                                style={{
-                                  width: `${Math.min(
-                                    100,
-                                    (topic.count / stats.totalQuizzes) * 200
-                                  )}%`,
-                                }}
-                              ></div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border border-gray-200 dark:border-gray-700">
-                    <h3 className="font-medium text-gray-900 dark:text-white mb-4">
-                      Performance Over Time
-                    </h3>
-                    <div className="h-80 bg-gray-50 dark:bg-gray-700/30 rounded-lg flex items-center justify-center">
-                      <BarChart2 className="w-12 h-12 text-gray-300 dark:text-gray-600" />
-                      <p className="ml-3 text-gray-400 dark:text-gray-500">
-                        Performance over time chart will appear here
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border border-gray-200 dark:border-gray-700">
-                    <h3 className="font-medium text-gray-900 dark:text-white mb-4">
-                      Achievements
-                    </h3>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                      <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-4 text-center">
-                        <Award className="w-8 h-8 mx-auto text-amber-500" />
-                        <p className="text-sm font-medium mt-2 dark:text-white">
-                          Fast Learner
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          Complete 5 quizzes
-                        </p>
-                      </div>
-                      <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-4 text-center">
-                        <Trophy className="w-8 h-8 mx-auto text-blue-500" />
-                        <p className="text-sm font-medium mt-2 dark:text-white">
-                          High Scorer
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          Score 90%+ on 3 quizzes
-                        </p>
-                      </div>
-                      <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-4 text-center">
-                        <TrendingUp className="w-8 h-8 mx-auto text-green-500" />
-                        <p className="text-sm font-medium mt-2 dark:text-white">
-                          Improver
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          Improve by 10%+
-                        </p>
-                      </div>
-                      <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-4 text-center">
-                        <Globe className="w-8 h-8 mx-auto text-purple-500" />
-                        <p className="text-sm font-medium mt-2 dark:text-white">
-                          Explorer
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          3 different topics
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === "goals" && (
-                <div className="space-y-6">
-                  <div className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border border-gray-200 dark:border-gray-700">
-                    <h3 className="font-medium text-gray-900 dark:text-white mb-4">
-                      Learning Goals
-                    </h3>
-                    <div className="space-y-4">
-                      <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <h4 className="font-medium dark:text-white">
-                              Complete 30 quizzes
-                            </h4>
-                            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                              Current: {stats.completed} of 30
-                            </p>
-                          </div>
-                          <div className="w-12 h-12 rounded-full border-4 border-blue-100 dark:border-blue-900 flex items-center justify-center">
-                            <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
-                              {Math.round((stats.completed / 30) * 100)}%
-                            </span>
-                          </div>
-                        </div>
-                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-3">
-                          <div
-                            className="bg-blue-500 h-2 rounded-full"
-                            style={{
-                              width: `${(stats.completed / 30) * 100}%`,
-                            }}
-                          ></div>
-                        </div>
-                      </div>
-
-                      <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <h4 className="font-medium dark:text-white">
-                              Achieve 85% average score
-                            </h4>
-                            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                              Current: {stats.averageScore}%
-                            </p>
-                          </div>
-                          <div className="w-12 h-12 rounded-full border-4 border-green-100 dark:border-green-900 flex items-center justify-center">
-                            <span
-                              className={`text-sm font-medium ${
-                                stats.averageScore >= 85
-                                  ? "text-green-600 dark:text-green-400"
-                                  : "text-gray-500 dark:text-gray-400"
-                              }`}
-                            >
-                              {stats.averageScore >= 85
-                                ? "Achieved!"
-                                : stats.averageScore + "%"}
-                            </span>
-                          </div>
-                        </div>
-                        {stats.averageScore < 85 && (
-                          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-3">
-                            <div
-                              className="bg-green-500 h-2 rounded-full"
-                              style={{
-                                width: `${(stats.averageScore / 85) * 100}%`,
-                              }}
-                            ></div>
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <h4 className="font-medium dark:text-white">
-                              Explore 5 topics
-                            </h4>
-                            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                              Current: {stats.topics.length} of 5
-                            </p>
-                          </div>
-                          <div className="w-12 h-12 rounded-full border-4 border-purple-100 dark:border-purple-900 flex items-center justify-center">
-                            <span
-                              className={`text-sm font-medium ${
-                                stats.topics.length >= 5
-                                  ? "text-purple-600 dark:text-purple-400"
-                                  : "text-gray-500 dark:text-gray-400"
-                              }`}
-                            >
-                              {stats.topics.length >= 5
-                                ? "Achieved!"
-                                : stats.topics.length + "/5"}
-                            </span>
-                          </div>
-                        </div>
-                        {stats.topics.length < 5 && (
-                          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-3">
-                            <div
-                              className="bg-purple-500 h-2 rounded-full"
-                              style={{
-                                width: `${(stats.topics.length / 5) * 100}%`,
-                              }}
-                            ></div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border border-gray-200 dark:border-gray-700">
-                    <h3 className="font-medium text-gray-900 dark:text-white mb-4">
-                      Create New Goal
-                    </h3>
-                    <div className="space-y-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                          Goal Type
-                        </label>
-                        <select className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                          <option>Complete quizzes</option>
-                          <option>Achieve score</option>
-                          <option>Explore topics</option>
-                          <option>Time spent</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                          Target
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          placeholder="e.g. 10 quizzes, 85% score"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                          Deadline (optional)
-                        </label>
-                        <div className="relative">
-                          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                          <input
-                            type="date"
-                            className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          />
-                        </div>
-                      </div>
-                      <button className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors dark:bg-blue-700 dark:hover:bg-blue-800">
-                        Set Goal
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
+             
             </>
           )}
         </div>

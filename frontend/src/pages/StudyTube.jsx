@@ -1448,7 +1448,7 @@ const StudyTube = () => {
     
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-zinc-950">
-        <header className="bg-white/80 dark:bg-zinc-900 backdrop-blur-md shadow-lg border-b border-gray-200 dark:border-gray-700 p-2 sm:p-4 sticky top-0 z-10">
+        <header className="bg-white/80 hidden dark:bg-zinc-900 backdrop-blur-md shadow-lg border-b border-gray-200 dark:border-gray-700 p-2 sm:p-4 sticky top-0 z-10">
           <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
             <div className="hidden sm:flex items-center space-x-2 sm:space-x-4">
               <h1 className="text-xl hidden    sm:text-2xl font-bold md:flex items-center dark:text-white">
@@ -1460,8 +1460,6 @@ const StudyTube = () => {
             </div>
 
             <div className="flex items-center space-x-2 sm:space-x-4 w-full sm:w-auto">
-           
-            
               <div className="relative flex-1 sm:w-80">
                 <input
                   type="text"
@@ -1497,12 +1495,10 @@ const StudyTube = () => {
 
         <button
           onClick={handleBackToResults}
-          className="flex bg-gray-200 dark:bg-zinc-800 rounded-lg px-3 py-2 text-sm cursor-pointer m-4 items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 transition-colors"
+          className="flex bg-gray-200 dark:bg-zinc-800 rounded-lg px-2 py-1 text-sm cursor-pointer m-2 items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 transition-colors"
         >
           <ArrowLeft size={20} />
-          <span className="flex gap-1">
-            Back <span className="hidden sm:block">to results</span>
-          </span>
+          <span className="flex gap-1">Back</span>
         </button>
 
         <main className="container sm:mx-auto px-2 sm:px-4">
@@ -1574,7 +1570,11 @@ const StudyTube = () => {
                   </div>
                 </div>
 
-                <div className={`bg-gray-100  ${!showFullDescription? 'h-[30px]' : 'h-auto'} sm:h-auto overflow-y-hidden dark:bg-zinc-800 rounded-lg p-2 sm:p-4 sm:mb-6`}>
+                <div
+                  className={`bg-gray-100  ${
+                    !showFullDescription ? "h-[30px]" : "h-auto"
+                  } sm:h-auto overflow-y-hidden dark:bg-zinc-800 rounded-lg p-2 sm:p-4 sm:mb-6`}
+                >
                   <div className="flex items-center space-x-4 mb-2">
                     <div className="flex items-center space-x-1 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                       <Play size={16} />
@@ -1588,11 +1588,14 @@ const StudyTube = () => {
                         {formatDuration(selectedVideo.contentDetails?.duration)}
                       </span>
                     </div>
-                    <div onClick={() => {
-                      setShowFullDescription(!showFullDescription);
-                    }} className="flex sm:hidden items-center space-x-1 text-xs sm:text-sm cursor-pointer text-blue-500">
+                    <div
+                      onClick={() => {
+                        setShowFullDescription(!showFullDescription);
+                      }}
+                      className="flex sm:hidden items-center space-x-1 text-xs sm:text-sm cursor-pointer text-blue-500"
+                    >
                       <span>
-                       {showFullDescription ? 'Show Less' : 'Show More'}
+                        {showFullDescription ? "Show Less" : "Show More"}
                       </span>
                     </div>
                   </div>
@@ -1604,8 +1607,39 @@ const StudyTube = () => {
             </div>
 
             <div className="lg:w-1/3">
-              <div className="bg-white/80 dark:bg-zinc-900 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-gray-200 dark:border-gray-700 sticky top-24">
-                <h3 className="font-bold text-lg dark:text-white mb-4">
+              <div className="flex items-center mb-4 sticky top-10 space-x-2 sm:space-x-4 w-full sm:w-auto">
+                <div className="relative flex-1  sm:w-80">
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter") {
+                        fetchVideos();
+                        handleBackToResults();
+                      }
+                    }}
+                    placeholder="Search educational videos..."
+                    className="w-full text-xs sm:text-sm p-2 sm:p-3 pl-8 sm:pl-10 rounded-xl border border-gray-300 dark:border-gray-600 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent dark:text-white transition-all"
+                  />
+                  <Search
+                    className="absolute left-2 sm:left-3 top-2.5 sm:top-3.5 text-gray-400"
+                    size={14}
+                    sm:size={18}
+                  />
+                </div>
+                <button
+                  onClick={() => {
+                    fetchVideos();
+                    handleBackToResults();
+                  }}
+                  className="bg-gradient-to-r text-xs sm:text-sm from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-3 sm:px-6 py-2 sm:py-3 rounded-xl transition-all transform hover:scale-105 shadow-lg whitespace-nowrap"
+                >
+                  Search
+                </button>
+              </div>
+              <div className="bg-white/80 dark:bg-zinc-900 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700 sticky top-25">
+                <h3 className=" text-lg dark:text-white mb-4">
                   Related Videos
                 </h3>
                 {isLoading ? (
@@ -1650,8 +1684,8 @@ const StudyTube = () => {
                 )}
                 {/* Saved Videos Component */}
                 {savedVideos.length > 0 && (
-                  <div className="bg-white/80 dark:bg-zinc-900 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-gray-200 dark:border-gray-700 mt-4">
-                    <h3 className="font-bold text-lg dark:text-white mb-4">
+                  <div className="bg-white/80 dark:bg-zinc-900 backdrop-blur-sm rounded-xl p-2 sm:p-4  border border-gray-200 dark:border-gray-700 mt-4">
+                    <h3 className=" text-lg dark:text-white mb-4">
                       Saved Videos
                     </h3>
                     <div className="space-y-4">
