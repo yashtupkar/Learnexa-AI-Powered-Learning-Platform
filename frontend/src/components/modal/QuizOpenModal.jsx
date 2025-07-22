@@ -16,9 +16,11 @@ import quizModalAnimation from "../../assets/quizModalAnimation.json";
 import { useNavigate } from "react-router-dom";
 
 
+
 const QuizOpenModal = ({ quiz, isOpen, onClose }) => {
   const [copied, setCopied] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+
 
   const navigate = useNavigate();
 
@@ -38,7 +40,7 @@ const QuizOpenModal = ({ quiz, isOpen, onClose }) => {
   return (
     <>
       {/* Backdrop with fade-in animation */}
-      <div className="fixed inset-0 bg-black/70   z-50" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/70 backdrop-blur-sm  z-50" onClick={onClose} />
 
       {/* Modal with slide-up animation */}
       <div className="fixed inset-0 flex items-center justify-center p-4 z-50">
@@ -123,8 +125,9 @@ const QuizOpenModal = ({ quiz, isOpen, onClose }) => {
             {/* Action buttons */}
             <div className="flex flex-col gap-3">
               <button
-                onClick={() => {
+                onClick={async () => {
                   navigate(`/quiz/${quiz._id}`);
+                 
                 }}
                 className="bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700 text-white py-3 px-6 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0"
               >

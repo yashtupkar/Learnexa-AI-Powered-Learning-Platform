@@ -212,6 +212,7 @@ import DashboardNav from "../DashboardNav";
 import Sidebar from "../SideBar";
 import { useLocation } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
+import Footer from "../footer";
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -292,6 +293,7 @@ const Layout = ({ children }) => {
         />
         <main className="main-content scrollbar-custom dark:bg-black flex-1 overflow-y-auto">
           {children}
+          <Footer />
         </main>
       </div>
     </div>

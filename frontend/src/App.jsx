@@ -20,52 +20,64 @@ import QuestionsPage from "./pages/QuestionsPage";
 import SubjectTopicsPage from "./pages/SubjectTopicsPage";
 import QuestionEditPage from "./pages/QuestionsEditPage";
 import Layout from "./components/layouts/layout";
+import QuizInterface2 from "./pages/QuizInterface";
+import StreakMap from "./pages/StreakPage";
+import QuizInterface from "./pages/QuizInterface";
+import { Toaster } from "react-hot-toast";
+import SettingsPage from "./components/SettingPage";
+import NotificationPage from "./pages/NotificationPage";
 
 // Protected route component
 
 const App = () => {
   return (
-    <Routes>
-      {/* Public routes */}
-      <Route path="/" element={<HomePage />} />
-      <Route path="/login" element={<LogInPage />} />
-      <Route path="/signup" element={<SignUpPage />} />
-      <Route path="/verify-email" element={<EmailVerify />} />
-      <Route path="/reset-password" element={<ResetPassword />} />
+    <>
+      <Toaster />
+      <Routes>
+        {/* Public routes */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LogInPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/verify-account" element={<EmailVerify />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/notifications" element={<NotificationPage />} />
 
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/create" element={<CreateQuiz />} />
-      <Route path="/quiz/:quizId" element={<QuizPage />} />
-      <Route path="/my-quizzes" element={<MyQuizzes />} />
-      <Route path="/challenge/:id" element={<ChallengeFriendPage />} />
-      <Route path="/current-affairs" element={<CurrentAffairs />} />
-      <Route path="/interview" element={<HRInterviewPage />} />
-      <Route
-        path="/hr-interview/question/:id"
-        element={<HRQuestionDetailPage />}
-      />
-      <Route path="/:subject/:topic" element={<QuestionsPage />} />
-      <Route path="/:subject/:topic/edit" element={<QuestionEditPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/create" element={<CreateQuiz />} />
+        <Route path="/quiz/:quizId" element={<QuizInterface />} />
+        <Route path="/my-quizzes" element={<MyQuizzes />} />
+        <Route path="/challenge/:id" element={<ChallengeFriendPage />} />
+        <Route path="/current-affairs" element={<CurrentAffairs />} />
+        <Route path="/interview" element={<HRInterviewPage />} />
+        <Route path="/streak" element={<StreakMap />} />
+        <Route path="/settings" element={<SettingsPage />} />
+        <Route
+          path="/hr-interview/question/:id"
+          element={<HRQuestionDetailPage />}
+        />
+        <Route path="/:subject/:topic" element={<QuestionsPage />} />
+        <Route path="/:subject/:topic/edit" element={<QuestionEditPage />} />
 
-      <Route path="/study-tube/search=:query" element={<SearchResults />} />
-      <Route path="/:subject" element={<SubjectTopicsPage />} />
-      <Route
-        path="/video/:videoId"
-        element={
-          <Layout>
-            <StudyTube />
-          </Layout>
-        }
-      />
-      <Route
-        path="/study-tube"
-        element={
-          <Layout>
-            <StudyTube />
-          </Layout>
-        }
-      />
-    </Routes>
+        <Route path="/study-tube/search=:query" element={<SearchResults />} />
+        <Route path="/:subject" element={<SubjectTopicsPage />} />
+        <Route
+          path="/video/:videoId"
+          element={
+            <Layout>
+              <StudyTube />
+            </Layout>
+          }
+        />
+        <Route
+          path="/study-tube"
+          element={
+            <Layout>
+              <StudyTube />
+            </Layout>
+          }
+        />
+      </Routes>
+    </>
   );
 };
 

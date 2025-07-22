@@ -469,6 +469,8 @@ import {
   AlertCircle,
 } from "lucide-react";
 import Layout from "../components/layouts/layout";
+import toast from "react-hot-toast";
+import { StreakUpdate } from "../../utils/streakService";
 
 const QuestionsPage = () => {
   const [questions, setQuestions] = useState([]);
@@ -501,6 +503,7 @@ const QuestionsPage = () => {
     fetchQuestions();
   }, [backend_URL, subject, topic]);
 
+ 
   const questionsPerPage = 5;
   const totalPages = Math.ceil(questions.length / questionsPerPage);
   const indexOfLastQuestion = currentPage * questionsPerPage;
@@ -535,6 +538,7 @@ const QuestionsPage = () => {
   };
 
   const toggleExplanation = (questionId) => {
+    StreakUpdate("Questions Solved");
     setShowExplanations({
       ...showExplanations,
       [questionId]: !showExplanations[questionId],

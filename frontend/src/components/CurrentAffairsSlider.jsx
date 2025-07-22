@@ -213,12 +213,14 @@ import React, { useState, useEffect, useContext } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { AppContext } from "../context/AppContext";
 
+
 const CurrentAffairsSlider = () => {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const { backend_URL } = useContext(AppContext);
+
 
   // Fetch news from backend
   useEffect(() => {
@@ -268,12 +270,16 @@ const CurrentAffairsSlider = () => {
   const maxSlideIndex = Math.max(0, news.length - visibleItems);
 
   // Slider navigation
-  const nextSlide = () => {
+  const nextSlide = async () => {
+
     setCurrentSlide((prev) => (prev >= maxSlideIndex ? 0 : prev + 1));
+
+
   };
 
-  const prevSlide = () => {
+  const prevSlide = async() => {
     setCurrentSlide((prev) => (prev === 0 ? maxSlideIndex : prev - 1));
+ 
   };
 
   // Auto-slide functionality

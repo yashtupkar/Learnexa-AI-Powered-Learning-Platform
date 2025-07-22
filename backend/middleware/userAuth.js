@@ -1,12 +1,10 @@
 const jwt = require("jsonwebtoken");
 
 const userAuth = async (req, res, next) => {
-  console.log("\n=== New Request ===");
-  console.log("Endpoint:", req.originalUrl);
-  console.log("Method:", req.method);
+
 
   const authHeader = req.headers.authorization;
-  console.log("Raw Authorization Header:", authHeader);
+ 
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     console.log("No valid auth header found");
@@ -17,12 +15,9 @@ const userAuth = async (req, res, next) => {
   }
 
   const token = authHeader.split(" ")[1];
-  console.log("Extracted Token:", token);
 
   try {
-    console.log("JWT_SECRET:", process.env.JWT_SECRET ? "exists" : "missing");
     const payload = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("Decoded Payload:", payload);
 
     if (!payload?.id) {
       console.log("Token missing required 'id' field");
@@ -32,7 +27,7 @@ const userAuth = async (req, res, next) => {
       });
     }
 
-    console.log("Authentication successful for user ID:", payload.id);
+    // console.log("Authentication successful for user ID:", payload.id);
     req.user = { userId: payload.id };
     next();
   } catch (error) {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Loader2,
   CheckCircle,
@@ -30,6 +30,7 @@ import {
   Play,
   Sparkle,
   Sparkles,
+  X,
 } from "lucide-react";
 import Layout from "../components/layouts/layout";
 import waveAnimation from "../assets/waveCartoon.json";
@@ -46,6 +47,9 @@ import GenerateModal from "../components/modal/GenerateModal";
 import { useModal } from "../hooks/useModal";
 import { useNavigate } from "react-router-dom";
 import UpgradeBanner from "../components/banners/UpgradeBanner";
+import axios from "axios";
+import { AppContext } from "../context/AppContext";
+import toast from "react-hot-toast";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -59,9 +63,34 @@ const Dashboard = () => {
   const [showStreakModal, setShowStreakModal] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [showGenerateModal, setShowGenerateModal] = useState(false);
-  const navigate = useNavigate();
+  const [streakData, setStreakData] = useState(null);
 
+  const navigate = useNavigate();
+  const { backend_URL } = useContext(AppContext);
   const { isAuthenticated, user } = useSelector((state) => state.auth);
+
+  const fetchStreakData = async () => {
+    try {
+      const response = await axios.post(
+        `${backend_URL}/api/user/track-activity`,
+        { id: user._id }, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        }
+      );
+      setStreakData(response.data);
+
+    } catch (error) {
+      console.error("Error fetching streak data:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (user?._id) {
+      fetchStreakData();
+    }
+  }, [ user?._id]);
 
   // Mock data
   useEffect(() => {
@@ -161,76 +190,110 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
-  const filteredQuizzes = quizzes.filter((quiz) => {
-    const matchesSearch =
-      quiz.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      quiz.topic.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesSearch;
-  });
 
-  const getTopicIcon = (topic) => {
-    switch (topic.toLowerCase()) {
-      case "geography":
-        return <Globe className="w-5 h-5 text-blue-500" />;
-      case "programming":
-        return <Code className="w-5 h-5 text-purple-500" />;
-      case "history":
-        return <Landmark className="w-5 h-5 text-amber-500" />;
-      case "science":
-        return <FlaskConical className="w-5 h-5 text-green-500" />;
-      default:
-        return <File className="w-5 h-5 text-gray-400" />;
+
+
+  const renderStreakComponent = () => {
+    if (!streakData || streakData.currentStreak === 0) {
+      return (
+        <div className="flex items-center gap-4 w-full sm:w-1/2 md:w-full rounded-xl p-3 sm:p-4 dark:bg-zinc-900 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-orange-50 dark:hover:bg-orange-900/30 cursor-pointer group">
+          <svg
+            className="mx-auto mb-2 text-primary-500 w-8 h-8 sm:w-16 sm:h-16 group-hover:rotate-12 transition-transform"
+            width="20"
+            height="21"
+            viewBox="0 0 20 21"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            {/* Flame SVG paths */}
+            <path
+              d="M16.0156 6.41016C13.9062 9.125 9.78516 6.41016 12.207 1.21484C5.31641 2.71484 3.33333 9.33984 3.20312 12.4648C2.42188 12.4336 1.78385 11.5664 1.5625 11.1367C1.5625 14.4766 3.32031 20.5312 10.1953 20.5312C16.9727 20.5312 18.4961 14.9258 18.6328 12.0547C18.1797 12.6484 17.4414 13.1094 16.6016 13.2266C18.2812 10.6094 16.9531 7.64062 16.0156 6.41016Z"
+              fill="#FD6050"
+            ></path>
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M10.1953 20.5312C11.3507 20.5312 12.3535 20.3683 13.2227 20.0838C7.44141 18.4804 1.7897 8.05133 12.207 1.2148C12.1827 1.26694 12.23 1.16317 12.207 1.2148C5.31641 2.7148 3.33333 9.33981 3.20312 12.4648C2.42188 12.4336 1.78385 11.5664 1.5625 11.1367C1.5625 14.4765 3.32031 20.5312 10.1953 20.5312Z"
+              fill="#BC3C85"
+            ></path>
+            <path
+              d="M16.0156 6.41016C13.9062 9.125 9.78516 6.41016 12.207 1.21484C5.31641 2.71484 3.33333 9.33984 3.20312 12.4648C2.42188 12.4336 1.78385 11.5664 1.5625 11.1367C1.5625 14.4766 3.32031 20.5312 10.1953 20.5312C16.9727 20.5312 18.4961 14.9258 18.6328 12.0547C18.1797 12.6484 17.4414 13.1094 16.6016 13.2266C18.2812 10.6094 16.9531 7.64062 16.0156 6.41016Z"
+              stroke="#07296F"
+              strokeWidth="0.585938"
+              strokeLinejoin="round"
+            ></path>
+          </svg>
+          <div
+            onClick={handleOpenStreakModal}
+            className="flex flex-col gap-1 sm:gap-2"
+          >
+            <h1 className="text-base sm:text-lg text-gray-800 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
+              Start your streak
+            </h1>
+            <p className="text-gray-500 text-xs sm:text-sm dark:text-gray-300 font-light group-hover:text-orange-500 dark:group-hover:text-orange-300 transition-colors">
+              Take daily quizzes to build your knowledge
+            </p>
+          </div>
+        </div>
+      );
     }
-  };
 
-  const getStatusText = (status) => {
-    switch (status) {
-      case "completed":
-        return "Completed";
-      case "generating":
-        return "Generating";
-      case "failed":
-        return "Failed";
-      default:
-        return "Unknown";
-    }
-  };
+    // For streaks greater than 0
+    const streakMessage =
+      streakData.currentStreak >= 20
+        ? "Wow! You're on fire! Keep going!"
+        : streakData.currentStreak >= 10
+        ? "Great job! You're building a strong habit!"
+        : "Keep it up! Don't break your streak!";
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "completed":
-        return "bg-green-50 text-green-800 dark:bg-green-900/30 dark:text-green-300";
-      case "generating":
-        return "bg-blue-50 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300";
-      case "failed":
-        return "bg-red-50 text-red-800 dark:bg-red-900/30 dark:text-red-300";
-      default:
-        return "bg-gray-50 text-gray-800 dark:bg-gray-800 dark:text-gray-300";
-    }
-  };
-
-  const toggleFavorite = (id) => {
-    setQuizzes(
-      quizzes.map((quiz) =>
-        quiz.id === id ? { ...quiz, favorite: !quiz.favorite } : quiz
-      )
+    return (
+      <div className="flex items-center gap-4 w-full sm:w-1/2 md:w-full rounded-xl p-3 sm:p-4 dark:bg-zinc-900 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-orange-50 dark:hover:bg-orange-900/30 cursor-pointer group">
+        <div className="relative">
+          <svg
+            className="mx-auto mb-2 text-primary-500 w-8 h-8 sm:w-16 sm:h-16 group-hover:rotate-12 transition-transform"
+            width="20"
+            height="21"
+            viewBox="0 0 20 21"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            {/* Flame SVG paths */}
+            <path
+              d="M16.0156 6.41016C13.9062 9.125 9.78516 6.41016 12.207 1.21484C5.31641 2.71484 3.33333 9.33984 3.20312 12.4648C2.42188 12.4336 1.78385 11.5664 1.5625 11.1367C1.5625 14.4766 3.32031 20.5312 10.1953 20.5312C16.9727 20.5312 18.4961 14.9258 18.6328 12.0547C18.1797 12.6484 17.4414 13.1094 16.6016 13.2266C18.2812 10.6094 16.9531 7.64062 16.0156 6.41016Z"
+              fill="#FD6050"
+            ></path>
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M10.1953 20.5312C11.3507 20.5312 12.3535 20.3683 13.2227 20.0838C7.44141 18.4804 1.7897 8.05133 12.207 1.2148C12.1827 1.26694 12.23 1.16317 12.207 1.2148C5.31641 2.7148 3.33333 9.33981 3.20312 12.4648C2.42188 12.4336 1.78385 11.5664 1.5625 11.1367C1.5625 14.4765 3.32031 20.5312 10.1953 20.5312Z"
+              fill="#BC3C85"
+            ></path>
+            <path
+              d="M16.0156 6.41016C13.9062 9.125 9.78516 6.41016 12.207 1.21484C5.31641 2.71484 3.33333 9.33984 3.20312 12.4648C2.42188 12.4336 1.78385 11.5664 1.5625 11.1367C1.5625 14.4766 3.32031 20.5312 10.1953 20.5312C16.9727 20.5312 18.4961 14.9258 18.6328 12.0547C18.1797 12.6484 17.4414 13.1094 16.6016 13.2266C18.2812 10.6094 16.9531 7.64062 16.0156 6.41016Z"
+              stroke="#07296F"
+              strokeWidth="0.585938"
+              strokeLinejoin="round"
+            ></path>
+          </svg>
+          <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white font-bold text-xs sm:text-base">
+            {streakData.currentStreak}
+          </span>
+        </div>
+        <div
+          onClick={handleOpenStreakModal}
+          className="flex flex-col gap-1 sm:gap-2"
+        >
+          <h1 className="text-base sm:text-lg text-gray-800 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
+            {streakData.currentStreak}-day streak!
+          </h1>
+          <p className="text-gray-500 text-xs sm:text-sm dark:text-gray-300 font-light group-hover:text-orange-500 dark:group-hover:text-orange-300 transition-colors">
+            {streakMessage}
+          </p>
+        </div>
+      </div>
     );
   };
 
-  const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "short", day: "numeric" };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
-
-  const formatDateTime = (dateString) => {
-    const options = {
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
 
   const handleOpenInviteModal = () => {
     openModal(MODAL_TYPES.INVITE, {
@@ -243,14 +306,19 @@ const Dashboard = () => {
     openModal(MODAL_TYPES.STREAK, {
       isOpen: true,
       onClose: () => setShowStreakModal(false),
+      user: user
     });
   };
   const handleOpenGenerateModal = () => {
+ 
     openModal(MODAL_TYPES.GENERATE, {
       isOpen: true,
       onClose: () => setShowGenerateModal(false),
+      
     });
   };
+
+
 
   return (
     <Layout>
@@ -290,62 +358,7 @@ const Dashboard = () => {
             </div>
 
             <div className="w-full md:w-2/5 mb-6 h-fit flex flex-col sm:flex-row md:flex-col gap-2 sm:gap-4 items-center md:border-l-2 border-gray-200 dark:border-zinc-800 px-2 sm:px-4">
-              <div className="flex items-center gap-4 w-full sm:w-1/2 md:w-full rounded-xl p-3 sm:p-4 dark:bg-zinc-900 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-orange-50 dark:hover:bg-orange-900/30 cursor-pointer group">
-                <svg
-                  className="w-8 h-8 sm:w-12 sm:h-12 group-hover:scale-110 group-hover:rotate-12 transition-transform"
-                  width="48"
-                  height="49"
-                  viewBox="0 0 48 49"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <defs>
-                    <linearGradient
-                      id="flameGradient"
-                      x1="0%"
-                      y1="0%"
-                      x2="100%"
-                      y2="100%"
-                    >
-                      <stop offset="0%" style={{ stopColor: "#FF4D4D" }} />
-                      <stop offset="50%" style={{ stopColor: "#FF9900" }} />
-                      <stop offset="100%" style={{ stopColor: "#FFCC00" }} />
-                    </linearGradient>
-                    <filter id="glow">
-                      <feGaussianBlur stdDeviation="2" result="coloredBlur" />
-                      <feMerge>
-                        <feMergeNode in="coloredBlur" />
-                        <feMergeNode in="SourceGraphic" />
-                      </feMerge>
-                    </filter>
-                  </defs>
-                  <path
-                    d="M38.4375 13.9844C33.375 20.5 23.4844 13.9844 29.2969 1.51562C12.7594 5.11563 8 21.0156 7.6875 28.5156C5.8125 28.4406 4.28125 26.3594 3.75 25.3281C3.75 33.3438 7.96875 47.875 24.4688 47.875C40.7344 47.875 44.3906 34.4219 44.7188 27.5312C43.6312 28.9562 41.8594 30.0625 39.8438 30.3438C43.875 24.0625 40.6875 16.9375 38.4375 13.9844Z"
-                    fill="url(#flameGradient)"
-                    filter="url(#glow)"
-                    className="group-hover:animate-pulse"
-                  ></path>
-                  <path
-                    d="M38.4375 13.9844C33.375 20.5 23.4844 13.9844 29.2969 1.51562C12.7594 5.11563 8 21.0156 7.6875 28.5156C5.8125 28.4406 4.28125 26.3594 3.75 25.3281C3.75 33.3438 7.96875 47.875 24.4688 47.875C40.7344 47.875 44.3906 34.4219 44.7188 27.5312C43.6312 28.9562 41.8594 30.0625 39.8438 30.3438C43.875 24.0625 40.6875 16.9375 38.4375 13.9844Z"
-                    stroke="#FF6B00"
-                    strokeWidth="1.40625"
-                    strokeLinejoin="round"
-                    opacity="0.6"
-                  ></path>
-                </svg>
-                <div
-                  onClick={handleOpenStreakModal}
-                  className="flex flex-col gap-1 sm:gap-2"
-                >
-                  <h1 className="text-base sm:text-lg text-gray-800 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
-                    Start your streak
-                  </h1>
-                  <p className="text-gray-500 text-xs sm:text-sm dark:text-gray-300 font-light group-hover:text-orange-500 dark:group-hover:text-orange-300 transition-colors">
-                    Take daily quizzes to build your knowledge
-                  </p>
-                </div>
-              </div>
-
+              {renderStreakComponent()}
               <div className="flex items-center gap-4 w-full sm:w-1/2 md:w-full rounded-xl p-3 sm:p-4 dark:bg-zinc-900 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-blue-50 dark:hover:bg-blue-900/30 cursor-pointer group">
                 <img
                   src={FriendsImage}
@@ -384,10 +397,7 @@ const Dashboard = () => {
               ))}
             </div>
           </div>
-          {/* <UpgradePopup isOpen={true}/> */}
-          {/* <InviteModal isOpen={true}/> */}
-          {/* <StreakModal isOpen={true}/> */}
-          {/* <GenerateModal isOpen={true}/> */}
+
           {isLoading ? (
             <div className="grid place-items-center py-20">
               <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
@@ -534,11 +544,11 @@ const Dashboard = () => {
                       <div className="absolute bottom-0 left-0 w-full h-0.5 sm:h-1 bg-amber-500 scale-x-100 sm:scale-x-0 sm:group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
                     </div>
                   </div>
-                  <UpgradeBanner />
-                  <CurrentAffairsSlider />
 
+                  <CurrentAffairsSlider />
+                  <UpgradeBanner />
                   <AllQuizes />
-{/* 
+                  {/* 
                   Charts and Recent Activity
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
                     <div className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border border-gray-200 dark:border-gray-700">
@@ -683,10 +693,6 @@ const Dashboard = () => {
                   <AllQuizes />
                 </>
               )}
-
-            
-
-             
             </>
           )}
         </div>

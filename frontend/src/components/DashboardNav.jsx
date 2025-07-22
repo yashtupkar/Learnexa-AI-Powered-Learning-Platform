@@ -154,6 +154,7 @@ export default function DashboardNav({
               <DropdownMenu
                 name={user?.name}
                 email={user?.email}
+                avatar={user.avatar}
                 onLogout={handleLogout}
               />
             </div>

@@ -9,6 +9,9 @@ const quizRouter = require("./routes/quizRoutes");
 const newsRouter = require("./routes/newsRoute");
 const interviewRouter = require("./routes/interviewRoute");
 const indiabixRouter = require("./routes/indiaBixRoute");
+const notificationRouter = require("./routes/notificationRoute");
+require("./cornJobs/newsCorn");
+require("./cornJobs/resetStreakCron");
 
 
 const app = express();
@@ -54,6 +57,7 @@ app.use('/api/quiz', quizRouter);
 app.use('/api/news', newsRouter);
 app.use('/api/interview', interviewRouter);
 app.use('/api/indiabix', indiabixRouter);
+app.use('/api/notification', notificationRouter)
 
 // Start the server
 app.listen(PORT, () => {

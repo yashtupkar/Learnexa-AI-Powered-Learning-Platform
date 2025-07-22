@@ -832,8 +832,6 @@ import {
   Trash2,
 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ThemeToggle } from "../components/ThemeTogler";
-import { FaYoutube, FaYoutubeSquare } from "react-icons/fa";
 
 const StudyTube = () => {
   const [videos, setVideos] = useState([]);
@@ -853,7 +851,7 @@ const StudyTube = () => {
   const YOUTUBE_API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
   const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
 
-  // Add to your existing state declarations
+ 
 
 
   // Add these useEffect hooks for localStorage persistence
@@ -1069,7 +1067,7 @@ const StudyTube = () => {
         console.error("API error:", response.status, await response.text());
         return fallbackResponse;
       }
-
+    
       const data = await response.json();
 
       if (data.choices?.[0]?.message?.content) {
@@ -1366,6 +1364,8 @@ const StudyTube = () => {
     setIsLoading(true);
     setSelectedVideo(video);
     addToWatchedHistory(video); 
+    
+   
     // Fetch related videos
     const relatedVideos = await fetchRelatedVideos(video.id.videoId);
 
@@ -1401,9 +1401,10 @@ const StudyTube = () => {
     navigate(`/video/${video.id.videoId}`);
   };
 
-  const handleBackToResults = () => {
+  const handleBackToResults = async() => {
     setSelectedVideo(null);
     navigate("/study-tube");
+
   };
 
   const studyCategories = [
@@ -1760,7 +1761,6 @@ return (
             </div>
 
             <div className="flex items-center space-x-2 sm:space-x-4 w-full sm:w-auto">
-            
               <div className="relative flex-1 sm:w-80">
                 <input
                   type="text"
@@ -2026,13 +2026,16 @@ return (
                       ? "opacity-70 cursor-not-allowed"
                       : ""
                   }`}
-                > <Search
+                >
+                  {" "}
+                  <Search
                     className=" sm:hidden text-white"
                     size={20}
                     sm:size={24}
                   />
-                    <span className="hidden sm:block">{isAiAnalyzing ? "Analyzing..." : "Search"}</span>{" "}
-                 
+                  <span className="hidden sm:block">
+                    {isAiAnalyzing ? "Analyzing..." : "Search"}
+                  </span>{" "}
                 </button>
               </div>
             </div>
@@ -2114,7 +2117,7 @@ return (
                     </button>
                   </div>
                   <div className="relative">
-                    <div className="flex space-x-3 sm:space-x-4 overflow-x-auto pb-4 scrollbar-hide">
+                    <div className="flex space-x-3 sm:space-x-4 overflow-x-auto pb-4 scrollbar-custom">
                       {watchedVideos.map((video, index) => (
                         <div
                           key={`watched-${video.id.videoId}-${index}`}

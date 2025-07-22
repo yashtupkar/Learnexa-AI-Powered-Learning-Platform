@@ -440,9 +440,7 @@ export function SidebarItem({
       </div>
       {showContent && (
         <div className="flex-1 flex items-center justify-between overflow-hidden">
-          <span className="text-sm  transition-all duration-200">
-            {label}
-          </span>
+          <span className="text-sm  transition-all duration-200">{label}</span>
           {isNew && (
             <span className="bg-green-500/20 dark:bg-green-600/30 text-green-600 dark:text-green-500 text-xs px-2 py-0.5 rounded-full">
               New
@@ -469,11 +467,9 @@ export default function Sidebar({
   const userId = user?._id;
   const { backend_URL } = useContext(AppContext);
 
-
- const closeMobileSidebar = () => {
-   setMobileSidebarOpen(false);
- };
-
+  const closeMobileSidebar = () => {
+    setMobileSidebarOpen(false);
+  };
 
   useEffect(() => {
     if (!isCollapsed) {
@@ -557,7 +553,9 @@ export default function Sidebar({
             {!isMobile && (
               <button
                 onClick={toggleSidebar}
-                className={`text-gray-400 ${isCollapsed && "hidden"}  dark:text-gray-500 cursor-pointer hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none transition-colors duration-200 p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800`}
+                className={`text-gray-400 ${
+                  isCollapsed && "hidden"
+                }  dark:text-gray-500 cursor-pointer hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none transition-colors duration-200 p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800`}
                 aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
               >
                 {isCollapsed ? (
@@ -573,11 +571,7 @@ export default function Sidebar({
                 className="text-gray-400 dark:text-gray-500 cursor-pointer hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none transition-colors duration-200 p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
                 aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
               >
-               
-               
-              
-                  <PanelLeftClose size={20} />
-              
+                <PanelLeftClose size={20} />
               </button>
             )}
           </div>
@@ -656,7 +650,15 @@ export default function Sidebar({
           >
             {!isCollapsed ? (
               <div className="flex items-center space-x-3">
-                <Avatar name={user?.name} size={40} variant="bean" />
+                {user.avatar ? (
+                  <img
+                    src={user.avatar}
+                    alt={user.name}
+                    className="w-10 h-10 object-cover rounded-full "
+                  />
+                ) : (
+                  <Avatar name={user?.name} size={40} variant="bean" />
+                )}
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-gray-700 dark:text-gray-200 truncate">
                     {user?.name}
@@ -668,7 +670,17 @@ export default function Sidebar({
                 <ThemeToggle />
               </div>
             ) : (
-              <Avatar name={user?.name} size={40} variant="bean" />
+              <>
+                {user.avatar ? (
+                  <img
+                    src={user.avatar}
+                    alt={user.name}
+                    className="w-10 h-10 object-cover rounded-full "
+                  />
+                ) : (
+                  <Avatar name={user?.name} size={40} variant="bean" />
+                )}
+              </>
             )}
           </div>
         </div>

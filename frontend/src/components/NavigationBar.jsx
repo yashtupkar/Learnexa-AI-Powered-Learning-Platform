@@ -261,12 +261,14 @@ import { ThemeToggle } from "./ThemeTogler";
 import logo from "../assets/learnexa-logo.png";
 import { Menu, X } from "lucide-react";
 
+
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { backend_URL } = useContext(AppContext);
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
 
   const handleLogout = async () => {
     localStorage.removeItem("token");

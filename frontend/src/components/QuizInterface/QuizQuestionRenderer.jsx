@@ -1070,7 +1070,7 @@ const QuizQuestionRenderer = ({
             whileHover={!showResults ? "hover" : {}}
             whileTap={!showResults ? "tap" : {}}
             onClick={() => !showResults && handleAnswer(option)}
-            className={`group relative w-full p-3 md:p-4 text-left rounded-lg md:rounded-xl border-2 transition-all duration-300 overflow-hidden select-none ${
+            className={`group relative w-full p-2 md:p-3 text-left rounded-lg md:rounded-xl border-2 transition-all duration-300 overflow-hidden select-none ${
               showFeedback
                 ? isRightAnswer
                   ? "border-emerald-500 bg-emerald-50 text-emerald-900 shadow-lg shadow-emerald-200/50 dark:border-emerald-400 dark:bg-emerald-900/30 dark:text-emerald-50 dark:shadow-emerald-900/20"
@@ -1558,7 +1558,7 @@ const QuizQuestionRenderer = ({
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: 0.2 }}
-                          className={`flex items-center space-x-1 md:space-x-2 px-2 py-1 md:px-3 md:py-1.5 rounded-full border text-xs md:text-sm ${questionTypeInfo.bgColor} ${questionTypeInfo.textColor} ${questionTypeInfo.borderColor}`}
+                          className={`flex items-center text-xs space-x-1 md:space-x-2 px-2 py-1 md:px-3 md:py-1.5 rounded-full border  ${questionTypeInfo.bgColor} ${questionTypeInfo.textColor} ${questionTypeInfo.borderColor}`}
                         >
                           <questionTypeInfo.icon className="w-3 h-3 md:w-4 md:h-4" />
                           <span className="font-semibold uppercase tracking-wide">
@@ -1593,29 +1593,11 @@ const QuizQuestionRenderer = ({
                           />
                         </motion.button>
 
-                        <motion.button
-                          whileHover={{ scale: 1.1, rotate: -5 }}
-                          whileTap={{ scale: 0.9 }}
-                          onClick={toggleFlag}
-                          className={`p-2 md:p-3 rounded-lg md:rounded-xl transition-all duration-200 ${
-                          flaggedQuestions.includes(currentQuestion)
-                            ? "text-red-500 bg-red-100 shadow-lg shadow-red-200/50 dark:bg-red-900/30 dark:shadow-red-900/20"
-                            : "text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:text-red-400 dark:hover:bg-red-900/20"
-                          }`}
-                        >
-                          <Flag
-                          className="w-4 h-4 md:w-5 md:h-5"
-                          fill={
-                            flaggedQuestions.includes(currentQuestion)
-                            ? "currentColor"
-                            : "none"
-                          }
-                          />
-                        </motion.button>
+                    
                         </motion.div>
                       </div>
                       <motion.h3
-                        className="text-lg md:text-xl mt-2 text-gray-600 dark:text-white leading-relaxed select-none"
+                        className="text-sm sm:text-lg md:text-xl mt-2 text-gray-600 dark:text-white leading-relaxed select-none"
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.2 }}

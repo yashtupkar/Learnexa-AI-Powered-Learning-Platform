@@ -1079,10 +1079,11 @@ const QuizResults = ({
         />
       )}
 
-      <div className="flex justify-center items-center py-10 px-4 min-h-screen">
+      <div className="flex justify-center items-center py-10 md:px-4 min-h-screen">
         <div className="max-w-4xl w-full mx-auto">
           {/* Header */}
-          <div className="flex justify-between items-center mb-8">
+
+          {/* <div className="flex justify-between items-center mb-8">
             <h1 className="text-3xl font-extrabold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
               Quiz Results
             </h1>
@@ -1096,7 +1097,8 @@ const QuizResults = ({
               <Home size={18} />
               <span>Exit Quiz</span>
             </button>
-          </div>
+          </div> */}
+          
 
           {/* Main Results Card */}
           <motion.div

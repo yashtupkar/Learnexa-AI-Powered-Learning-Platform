@@ -12,17 +12,21 @@ import { ModalProvider } from './context/ModalContext.jsx'
 
 
 createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
-    <ModalProvider>
-      <AppThemeProvider>
-        <Provider store={store}>
-          <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-            <AppContextProvider>
-              <App />
-            </AppContextProvider>
-          </GoogleOAuthProvider>
-        </Provider>
-      </AppThemeProvider>
-    </ModalProvider>
-  </BrowserRouter>
+  <Provider store={store}>
+    <AppContextProvider>
+      <BrowserRouter>
+        <ModalProvider>
+          <AppThemeProvider>
+            <GoogleOAuthProvider
+              clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
+            >
+             
+                <App />
+          
+            </GoogleOAuthProvider>
+          </AppThemeProvider>
+        </ModalProvider>
+      </BrowserRouter>
+    </AppContextProvider>
+  </Provider>
 );

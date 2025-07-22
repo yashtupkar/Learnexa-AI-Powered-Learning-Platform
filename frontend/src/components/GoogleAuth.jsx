@@ -8,11 +8,13 @@ import { Loader2 } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../redux/authSlice"; // ⬅️ adjust path if needed
 
+
 const GoogleAuth = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch(); // ✅ Redux dispatch
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const { backend_URL } = useContext(AppContext);
+ 
 
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
@@ -41,6 +43,7 @@ const GoogleAuth = () => {
         if (data.success) {
           localStorage.setItem("user", JSON.stringify(data.user));
           localStorage.setItem("token", data.token);
+
 
           // Dispatch to redux with the full user object
           dispatch(loginSuccess(data.user));

@@ -17,23 +17,212 @@ import { BarChart2, BookOpen, Calendar, Clock, Play, Search, Users } from "lucid
 import Avatar from "boring-avatars";
 
 const TOPIC_IMAGES = {
+  // Programming Languages
   javascript:
-    "https://images.pexels.com/photos/270348/pexels-photo-270348.jpeg", // Code on screen
+    "https://images.pexels.com/photos/270348/pexels-photo-270348.jpeg",
+  python: "https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg",
+  java: "https://images.pexels.com/photos/2004161/pexels-photo-2004161.jpeg",
+  "c++": "https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg",
+  "c#": "https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg",
+  php: "https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg",
+  ruby: "https://images.pexels.com/photos/1181472/pexels-photo-1181472.jpeg",
+  go: "https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg",
+  rust: "https://images.pexels.com/photos/3861957/pexels-photo-3861957.jpeg",
+  swift: "https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg",
+  kotlin: "https://images.pexels.com/photos/3861959/pexels-photo-3861959.jpeg",
+
+  // Web Development
+  html: "https://images.pexels.com/photos/160107/pexels-photo-160107.jpeg",
+  css: "https://images.pexels.com/photos/177598/pexels-photo-177598.jpeg",
+  react: "https://images.pexels.com/photos/11035380/pexels-photo-11035380.jpeg",
+  vue: "https://images.pexels.com/photos/6424586/pexels-photo-6424586.jpeg",
+  angular:
+    "https://images.pexels.com/photos/11035471/pexels-photo-11035471.jpeg",
+  nodejs:
+    "https://images.pexels.com/photos/11035540/pexels-photo-11035540.jpeg",
+  "web development":
+    "https://images.pexels.com/photos/326503/pexels-photo-326503.jpeg",
+  frontend: "https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg",
+  backend: "https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg",
+
+  // Data & Analytics
+  database: "https://images.pexels.com/photos/257360/pexels-photo-257360.jpeg",
+  sql: "https://images.pexels.com/photos/1181354/pexels-photo-1181354.jpeg",
+  "data science":
+    "https://images.pexels.com/photos/7947687/pexels-photo-7947687.jpeg",
+  "machine learning":
+    "https://images.pexels.com/photos/8439093/pexels-photo-8439093.jpeg",
+  "artificial intelligence":
+    "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg",
+  analytics: "https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg",
+  "big data":
+    "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg",
+  visualization:
+    "https://images.pexels.com/photos/590016/pexels-photo-590016.jpeg",
+
+  // Mathematics
+  mathematics:
+    "https://images.pexels.com/photos/3729557/pexels-photo-3729557.jpeg",
+  algebra: "https://images.pexels.com/photos/6238108/pexels-photo-6238108.jpeg",
+  geometry:
+    "https://images.pexels.com/photos/5212317/pexels-photo-5212317.jpeg",
+  calculus:
+    "https://images.pexels.com/photos/3729557/pexels-photo-3729557.jpeg",
+  statistics:
+    "https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg",
   permutation:
-    "https://images.pexels.com/photos/256417/pexels-photo-256417.jpeg", // Math board
-  calendar: "https://images.pexels.com/photos/590045/pexels-photo-590045.jpeg", // Calendar
-  database: "https://images.pexels.com/photos/257360/pexels-photo-257360.jpeg", // Server room
-  array: "https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg", // Data representation
+    "https://images.pexels.com/photos/256417/pexels-photo-256417.jpeg",
+  probability:
+    "https://images.pexels.com/photos/4386321/pexels-photo-4386321.jpeg",
+
+  // Sciences
+  physics: "https://images.pexels.com/photos/8092/pexels-photo.jpg",
+  chemistry:
+    "https://images.pexels.com/photos/2280571/pexels-photo-2280571.jpeg",
+  biology: "https://images.pexels.com/photos/256262/pexels-photo-256262.jpeg",
+  astronomy: "https://images.pexels.com/photos/816608/pexels-photo-816608.jpeg",
+  medicine:
+    "https://images.pexels.com/photos/40568/medical-appointment-doctor-healthcare-40568.jpeg",
+  anatomy: "https://images.pexels.com/photos/4386321/pexels-photo-4386321.jpeg",
+  psychology:
+    "https://images.pexels.com/photos/3807738/pexels-photo-3807738.jpeg",
+  neuroscience:
+    "https://images.pexels.com/photos/8553873/pexels-photo-8553873.jpeg",
+
+  // Languages
+  english: "https://images.pexels.com/photos/4050316/pexels-photo-4050316.jpeg",
+  spanish: "https://images.pexels.com/photos/3740390/pexels-photo-3740390.jpeg",
+  french: "https://images.pexels.com/photos/2041540/pexels-photo-2041540.jpeg",
+  german: "https://images.pexels.com/photos/3849168/pexels-photo-3849168.jpeg",
+  chinese: "https://images.pexels.com/photos/8993561/pexels-photo-8993561.jpeg",
+  japanese: "https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg",
+  linguistics:
+    "https://images.pexels.com/photos/356079/pexels-photo-356079.jpeg",
+
+  // Business & Finance
+  business: "https://images.pexels.com/photos/416405/pexels-photo-416405.jpeg",
+  finance: "https://images.pexels.com/photos/210607/pexels-photo-210607.jpeg",
+  marketing: "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg",
+  economics:
+    "https://images.pexels.com/photos/3483098/pexels-photo-3483098.jpeg",
+  accounting:
+    "https://images.pexels.com/photos/6863183/pexels-photo-6863183.jpeg",
+  management:
+    "https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg",
+  entrepreneurship:
+    "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
+
+  // Arts & Creative
+  art: "https://images.pexels.com/photos/1183992/pexels-photo-1183992.jpeg",
+  music: "https://images.pexels.com/photos/164743/pexels-photo-164743.jpeg",
+  photography: "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg",
+  design: "https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg",
+  "graphic design":
+    "https://images.pexels.com/photos/196645/pexels-photo-196645.jpeg",
+  writing: "https://images.pexels.com/photos/261662/pexels-photo-261662.jpeg",
+  literature:
+    "https://images.pexels.com/photos/256559/pexels-photo-256559.jpeg",
+  poetry: "https://images.pexels.com/photos/207662/pexels-photo-207662.jpeg",
+
+  // Technology
+  "cyber security":
+    "https://images.pexels.com/photos/60504/security-protection-anti-virus-software-60504.jpeg",
+  networking:
+    "https://images.pexels.com/photos/257360/pexels-photo-257360.jpeg",
+  "cloud computing":
+    "https://images.pexels.com/photos/1181354/pexels-photo-1181354.jpeg",
+  devops: "https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg",
+  blockchain:
+    "https://images.pexels.com/photos/844124/pexels-photo-844124.jpeg",
+  cryptocurrency:
+    "https://images.pexels.com/photos/844124/pexels-photo-844124.jpeg",
+  iot: "https://images.pexels.com/photos/325185/pexels-photo-325185.jpeg",
+  robotics:
+    "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg",
+
+  // Social Sciences
+  history:
+    "https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg",
+  geography: "https://images.pexels.com/photos/335393/pexels-photo-335393.jpeg",
+  sociology:
+    "https://images.pexels.com/photos/1181396/pexels-photo-1181396.jpeg",
+  anthropology:
+    "https://images.pexels.com/photos/3807738/pexels-photo-3807738.jpeg",
+  philosophy:
+    "https://images.pexels.com/photos/256559/pexels-photo-256559.jpeg",
+  politics:
+    "https://images.pexels.com/photos/1550337/pexels-photo-1550337.jpeg",
+  law: "https://images.pexels.com/photos/4427430/pexels-photo-4427430.jpeg",
+
+  // Data Structures & Algorithms
+  array: "https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg",
+  "linked list":
+    "https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg",
+  "binary tree":
+    "https://images.pexels.com/photos/3729557/pexels-photo-3729557.jpeg",
+  graph: "https://images.pexels.com/photos/590016/pexels-photo-590016.jpeg",
+  "hash table":
+    "https://images.pexels.com/photos/1181354/pexels-photo-1181354.jpeg",
+  sorting: "https://images.pexels.com/photos/256417/pexels-photo-256417.jpeg",
+  searching: "https://images.pexels.com/photos/270348/pexels-photo-270348.jpeg",
+  algorithms:
+    "https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg",
+
+  // Tools & Utilities
+  calendar: "https://images.pexels.com/photos/590045/pexels-photo-590045.jpeg",
+  productivity:
+    "https://images.pexels.com/photos/196645/pexels-photo-196645.jpeg",
+  organization:
+    "https://images.pexels.com/photos/590045/pexels-photo-590045.jpeg",
+  planning:
+    "https://images.pexels.com/photos/1428171/pexels-photo-1428171.jpeg",
+
+  // Gaming & Entertainment
+  gaming: "https://images.pexels.com/photos/442576/pexels-photo-442576.jpeg",
+  "game development":
+    "https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg",
+  animation: "https://images.pexels.com/photos/196645/pexels-photo-196645.jpeg",
+  "3d modeling":
+    "https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg",
+
+  // Health & Fitness
+  health:
+    "https://images.pexels.com/photos/40568/medical-appointment-doctor-healthcare-40568.jpeg",
+  fitness: "https://images.pexels.com/photos/416778/pexels-photo-416778.jpeg",
+  nutrition:
+    "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg",
+  wellness:
+    "https://images.pexels.com/photos/3768916/pexels-photo-3768916.jpeg",
+
+  // Environment & Nature
+  environment:
+    "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg",
+  ecology: "https://images.pexels.com/photos/355321/pexels-photo-355321.jpeg",
+  sustainability:
+    "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg",
+  "climate change":
+    "https://images.pexels.com/photos/60013/desert-drought-dehydrated-clay-60013.jpeg",
+
+  // General Categories
   "general knowledge":
-    "https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg", // Books and globe
-  english: "https://images.pexels.com/photos/4050316/pexels-photo-4050316.jpeg", // English learning
-  "c++": "https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg", // Code editor
-  html: "https://images.pexels.com/photos/160107/pexels-photo-160107.jpeg", // Web dev screen
-  css: "https://images.pexels.com/photos/177598/pexels-photo-177598.jpeg", // Web styling
-  default: "https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg", // Abstract tech
+    "https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg",
+  education: "https://images.pexels.com/photos/289737/pexels-photo-289737.jpeg",
+  research:
+    "https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg",
+  science: "https://images.pexels.com/photos/256262/pexels-photo-256262.jpeg",
+  technology:
+    "https://images.pexels.com/photos/325185/pexels-photo-325185.jpeg",
+  engineering:
+    "https://images.pexels.com/photos/159298/gears-cogs-machine-machinery-159298.jpeg",
+
+  // Default fallback
+  default: "https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg",
 };
 
-const ITEMS_PER_PAGE = 12; // Number of quizzes per page
+
+
+
+const ITEMS_PER_PAGE = 12;
 
 const AllQuizes = () => {
   const [quizzes, setQuizzes] = useState([]);
@@ -105,7 +294,7 @@ const AllQuizes = () => {
       const quizzesData = Array.isArray(response.data)
         ? response.data
         : response.data.quizzes || [];
-      console.log(quizzesData)
+   
 
       setQuizzes(quizzesData);
     } catch (error) {
@@ -125,22 +314,209 @@ const AllQuizes = () => {
 
     const lowerTopic = topic.toLowerCase();
 
-    // Check for specific matches first
-    if (lowerTopic.includes("javascript")) return TOPIC_IMAGES.javascript;
-    if (lowerTopic.includes("permutation")) return TOPIC_IMAGES.permutation;
-    if (lowerTopic.includes("calendar") || lowerTopic.includes("calander"))
-      return TOPIC_IMAGES.calendar;
-    if (lowerTopic.includes("database")) return TOPIC_IMAGES.database;
-    if (lowerTopic.includes("array")) return TOPIC_IMAGES.array;
-    if (lowerTopic.includes("general knowledge"))
-      return TOPIC_IMAGES["general knowledge"];
-    if (lowerTopic.includes("english")) return TOPIC_IMAGES.english;
-    if (lowerTopic.includes("c++")) return TOPIC_IMAGES["c++"];
+    // Check for specific matches first (exact keyword detection)
+    if (lowerTopic.includes("javascript") || lowerTopic.includes("js"))
+      return TOPIC_IMAGES.javascript;
+    if (lowerTopic.includes("python") || lowerTopic.includes("py"))
+      return TOPIC_IMAGES.python;
+    if (lowerTopic.includes("java") && !lowerTopic.includes("javascript"))
+      return TOPIC_IMAGES.java;
+    if (lowerTopic.includes("c++") || lowerTopic.includes("cpp"))
+      return TOPIC_IMAGES["c++"];
+    if (lowerTopic.includes("c#") || lowerTopic.includes("csharp"))
+      return TOPIC_IMAGES["c#"];
+    if (lowerTopic.includes("php")) return TOPIC_IMAGES.php;
+    if (lowerTopic.includes("ruby")) return TOPIC_IMAGES.ruby;
+    if (lowerTopic.includes("golang") || lowerTopic.includes(" go "))
+      return TOPIC_IMAGES.go;
+    if (lowerTopic.includes("rust")) return TOPIC_IMAGES.rust;
+    if (lowerTopic.includes("swift")) return TOPIC_IMAGES.swift;
+    if (lowerTopic.includes("kotlin")) return TOPIC_IMAGES.kotlin;
+
+    // Web Development
     if (lowerTopic.includes("html")) return TOPIC_IMAGES.html;
     if (lowerTopic.includes("css")) return TOPIC_IMAGES.css;
+    if (lowerTopic.includes("react")) return TOPIC_IMAGES.react;
+    if (lowerTopic.includes("vue")) return TOPIC_IMAGES.vue;
+    if (lowerTopic.includes("angular")) return TOPIC_IMAGES.angular;
+    if (lowerTopic.includes("nodejs") || lowerTopic.includes("node.js"))
+      return TOPIC_IMAGES.nodejs;
+    if (lowerTopic.includes("frontend") || lowerTopic.includes("front-end"))
+      return TOPIC_IMAGES.frontend;
+    if (lowerTopic.includes("backend") || lowerTopic.includes("back-end"))
+      return TOPIC_IMAGES.backend;
+    if (lowerTopic.includes("web dev")) return TOPIC_IMAGES["web development"];
+
+    // Data & Analytics
+    if (lowerTopic.includes("database") || lowerTopic.includes("db"))
+      return TOPIC_IMAGES.database;
+    if (lowerTopic.includes("sql")) return TOPIC_IMAGES.sql;
+    if (lowerTopic.includes("data science") || lowerTopic.includes("ds"))
+      return TOPIC_IMAGES["data science"];
+    if (lowerTopic.includes("machine learning") || lowerTopic.includes("ml"))
+      return TOPIC_IMAGES["machine learning"];
+    if (
+      lowerTopic.includes("artificial intelligence") ||
+      lowerTopic.includes("ai")
+    )
+      return TOPIC_IMAGES["artificial intelligence"];
+    if (lowerTopic.includes("analytics")) return TOPIC_IMAGES.analytics;
+    if (lowerTopic.includes("big data")) return TOPIC_IMAGES["big data"];
+    if (lowerTopic.includes("visualization")) return TOPIC_IMAGES.visualization;
+
+    // Mathematics
+    if (
+      lowerTopic.includes("mathematics") ||
+      lowerTopic.includes("math") ||
+      lowerTopic.includes("maths")
+    )
+      return TOPIC_IMAGES.mathematics;
+    if (lowerTopic.includes("algebra")) return TOPIC_IMAGES.algebra;
+    if (lowerTopic.includes("geometry")) return TOPIC_IMAGES.geometry;
+    if (lowerTopic.includes("calculus")) return TOPIC_IMAGES.calculus;
+    if (lowerTopic.includes("statistics") || lowerTopic.includes("stats"))
+      return TOPIC_IMAGES.statistics;
+    if (lowerTopic.includes("permutation")) return TOPIC_IMAGES.permutation;
+    if (lowerTopic.includes("probability")) return TOPIC_IMAGES.probability;
+
+    // Sciences
+    if (lowerTopic.includes("physics")) return TOPIC_IMAGES.physics;
+    if (lowerTopic.includes("chemistry")) return TOPIC_IMAGES.chemistry;
+    if (lowerTopic.includes("biology")) return TOPIC_IMAGES.biology;
+    if (lowerTopic.includes("astronomy")) return TOPIC_IMAGES.astronomy;
+    if (lowerTopic.includes("medicine")) return TOPIC_IMAGES.medicine;
+    if (lowerTopic.includes("anatomy")) return TOPIC_IMAGES.anatomy;
+    if (lowerTopic.includes("psychology")) return TOPIC_IMAGES.psychology;
+    if (lowerTopic.includes("neuroscience")) return TOPIC_IMAGES.neuroscience;
+
+    // Languages
+    if (lowerTopic.includes("english")) return TOPIC_IMAGES.english;
+    if (lowerTopic.includes("spanish")) return TOPIC_IMAGES.spanish;
+    if (lowerTopic.includes("french")) return TOPIC_IMAGES.french;
+    if (lowerTopic.includes("german")) return TOPIC_IMAGES.german;
+    if (lowerTopic.includes("chinese")) return TOPIC_IMAGES.chinese;
+    if (lowerTopic.includes("japanese")) return TOPIC_IMAGES.japanese;
+    if (lowerTopic.includes("linguistics")) return TOPIC_IMAGES.linguistics;
+
+    // Business & Finance
+    if (lowerTopic.includes("business")) return TOPIC_IMAGES.business;
+    if (lowerTopic.includes("finance")) return TOPIC_IMAGES.finance;
+    if (lowerTopic.includes("marketing")) return TOPIC_IMAGES.marketing;
+    if (lowerTopic.includes("economics")) return TOPIC_IMAGES.economics;
+    if (lowerTopic.includes("accounting")) return TOPIC_IMAGES.accounting;
+    if (lowerTopic.includes("management")) return TOPIC_IMAGES.management;
+    if (lowerTopic.includes("entrepreneurship"))
+      return TOPIC_IMAGES.entrepreneurship;
+
+    // Arts & Creative
+    if (lowerTopic.includes("art") && !lowerTopic.includes("artificial"))
+      return TOPIC_IMAGES.art;
+    if (lowerTopic.includes("music")) return TOPIC_IMAGES.music;
+    if (lowerTopic.includes("photography")) return TOPIC_IMAGES.photography;
+    if (lowerTopic.includes("design")) return TOPIC_IMAGES.design;
+    if (lowerTopic.includes("graphic design"))
+      return TOPIC_IMAGES["graphic design"];
+    if (lowerTopic.includes("writing")) return TOPIC_IMAGES.writing;
+    if (lowerTopic.includes("literature")) return TOPIC_IMAGES.literature;
+    if (lowerTopic.includes("poetry")) return TOPIC_IMAGES.poetry;
+
+    // Technology
+    if (
+      lowerTopic.includes("cyber security") ||
+      lowerTopic.includes("cybersecurity")
+    )
+      return TOPIC_IMAGES["cyber security"];
+    if (lowerTopic.includes("networking")) return TOPIC_IMAGES.networking;
+    if (lowerTopic.includes("cloud")) return TOPIC_IMAGES["cloud computing"];
+    if (lowerTopic.includes("devops")) return TOPIC_IMAGES.devops;
+    if (lowerTopic.includes("blockchain")) return TOPIC_IMAGES.blockchain;
+    if (lowerTopic.includes("cryptocurrency") || lowerTopic.includes("crypto"))
+      return TOPIC_IMAGES.cryptocurrency;
+    if (lowerTopic.includes("iot")) return TOPIC_IMAGES.iot;
+    if (lowerTopic.includes("robotics")) return TOPIC_IMAGES.robotics;
+
+    // Social Sciences
+    if (lowerTopic.includes("history")) return TOPIC_IMAGES.history;
+    if (lowerTopic.includes("geography")) return TOPIC_IMAGES.geography;
+    if (lowerTopic.includes("sociology")) return TOPIC_IMAGES.sociology;
+    if (lowerTopic.includes("anthropology")) return TOPIC_IMAGES.anthropology;
+    if (lowerTopic.includes("philosophy")) return TOPIC_IMAGES.philosophy;
+    if (lowerTopic.includes("politics")) return TOPIC_IMAGES.politics;
+    if (lowerTopic.includes("law")) return TOPIC_IMAGES.law;
+
+    // Data Structures & Algorithms
+    if (lowerTopic.includes("array")) return TOPIC_IMAGES.array;
+    if (lowerTopic.includes("linked list")) return TOPIC_IMAGES["linked list"];
+    if (lowerTopic.includes("binary tree") || lowerTopic.includes("tree"))
+      return TOPIC_IMAGES["binary tree"];
+    if (lowerTopic.includes("graph")) return TOPIC_IMAGES.graph;
+    if (lowerTopic.includes("hash") || lowerTopic.includes("hashmap"))
+      return TOPIC_IMAGES["hash table"];
+    if (lowerTopic.includes("sorting")) return TOPIC_IMAGES.sorting;
+    if (lowerTopic.includes("searching")) return TOPIC_IMAGES.searching;
+    if (lowerTopic.includes("algorithm")) return TOPIC_IMAGES.algorithms;
+
+    // Tools & Utilities
+    if (lowerTopic.includes("calendar") || lowerTopic.includes("calander"))
+      return TOPIC_IMAGES.calendar;
+    if (lowerTopic.includes("productivity")) return TOPIC_IMAGES.productivity;
+    if (lowerTopic.includes("organization")) return TOPIC_IMAGES.organization;
+    if (lowerTopic.includes("planning")) return TOPIC_IMAGES.planning;
+
+    // Gaming & Entertainment
+    if (lowerTopic.includes("gaming") || lowerTopic.includes("games"))
+      return TOPIC_IMAGES.gaming;
+    if (lowerTopic.includes("game dev"))
+      return TOPIC_IMAGES["game development"];
+    if (lowerTopic.includes("animation")) return TOPIC_IMAGES.animation;
+    if (lowerTopic.includes("3d")) return TOPIC_IMAGES["3d modeling"];
+
+    // Health & Fitness
+    if (lowerTopic.includes("health")) return TOPIC_IMAGES.health;
+    if (lowerTopic.includes("fitness")) return TOPIC_IMAGES.fitness;
+    if (lowerTopic.includes("nutrition")) return TOPIC_IMAGES.nutrition;
+    if (lowerTopic.includes("wellness")) return TOPIC_IMAGES.wellness;
+
+    // Environment & Nature
+    if (lowerTopic.includes("environment")) return TOPIC_IMAGES.environment;
+    if (lowerTopic.includes("ecology")) return TOPIC_IMAGES.ecology;
+    if (lowerTopic.includes("sustainability"))
+      return TOPIC_IMAGES.sustainability;
+    if (lowerTopic.includes("climate")) return TOPIC_IMAGES["climate change"];
+
+    // General Categories
+    if (lowerTopic.includes("general knowledge"))
+      return TOPIC_IMAGES["general knowledge"];
+    if (lowerTopic.includes("education")) return TOPIC_IMAGES.education;
+    if (lowerTopic.includes("research")) return TOPIC_IMAGES.research;
+    if (lowerTopic.includes("science")) return TOPIC_IMAGES.science;
+    if (lowerTopic.includes("technology")) return TOPIC_IMAGES.technology;
+    if (lowerTopic.includes("engineering")) return TOPIC_IMAGES.engineering;
 
     return TOPIC_IMAGES.default;
   };
+
+  // const getTopicImage = (topic) => {
+  //   if (!topic) return TOPIC_IMAGES.default;
+
+  //   const lowerTopic = topic.toLowerCase();
+
+  //   // Check for specific matches first
+  //   if (lowerTopic.includes("javascript")) return TOPIC_IMAGES.javascript;
+  //   if (lowerTopic.includes("permutation")) return TOPIC_IMAGES.permutation;
+  //   if (lowerTopic.includes("calendar") || lowerTopic.includes("calander"))
+  //     return TOPIC_IMAGES.calendar;
+  //   if (lowerTopic.includes("database")) return TOPIC_IMAGES.database;
+  //   if (lowerTopic.includes("array")) return TOPIC_IMAGES.array;
+  //   if (lowerTopic.includes("general knowledge"))
+  //     return TOPIC_IMAGES["general knowledge"];
+  //   if (lowerTopic.includes("english")) return TOPIC_IMAGES.english;
+  //   if (lowerTopic.includes("c++")) return TOPIC_IMAGES["c++"];
+  //   if (lowerTopic.includes("html")) return TOPIC_IMAGES.html;
+  //   if (lowerTopic.includes("css")) return TOPIC_IMAGES.css;
+
+  //   return TOPIC_IMAGES.default;
+  // };
 
   const difficultyColor = (grade) => {
     if (!grade) return "bg-gray-100 text-gray-800";
@@ -187,9 +563,10 @@ const AllQuizes = () => {
     return "bg-gray-100 text-gray-800";
   };
 
-  const handlePageChange = (newPage) => {
+  const handlePageChange = async (newPage) => {
     if (newPage >= 1 && newPage <= paginationData.totalPages) {
       setCurrentPage(newPage);
+     
       // Scroll to top when page changes
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
@@ -321,9 +698,10 @@ return (
                 ...quiz,
               };
 
-              const handleCardClick = () => {
+              const handleCardClick = async () => {
                 setSelectedQuiz(quizWithDefaults);
                 setIsModalOpen(true);
+            
               };
 
               return (

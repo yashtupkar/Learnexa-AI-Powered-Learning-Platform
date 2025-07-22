@@ -387,6 +387,7 @@ import bgImage from "../assets/bg-signup.jpg";
 import logo from "../assets/learnexa-logo.png";
 
 
+
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState("");
@@ -398,6 +399,7 @@ const SignUpPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { backend_URL } = useContext(AppContext);
+
 
   // Password strength indicator
   const [passwordStrength, setPasswordStrength] = useState({
@@ -473,6 +475,7 @@ const SignUpPage = () => {
         dispatch(loginSuccess(data.user));
         toast.success(data.message);
         navigate("/verify-account");
+   
       } else {
         toast.error(data.message);
       }
