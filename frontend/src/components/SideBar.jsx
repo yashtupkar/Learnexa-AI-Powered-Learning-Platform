@@ -482,11 +482,7 @@ export default function Sidebar({
     }
   }, [isCollapsed]);
 
-  const interviewSubItems = [
-    { label: "HR Interview", to: "/interview/hr" },
-    { label: "Technical Interview", to: "/interview/technical" },
-    { label: "Mock Sessions", to: "/interview/mock" },
-  ];
+ 
 
   return (
     <>
@@ -637,7 +633,6 @@ export default function Sidebar({
                 label="Interview Prep"
                 to="/interview"
                 collapsed={isCollapsed}
-                subItems={interviewSubItems}
               />
             </div>
           </nav>

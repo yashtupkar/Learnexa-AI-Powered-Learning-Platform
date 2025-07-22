@@ -40,16 +40,13 @@ import AllQuizes from "../components/AllQuizes";
 import CurrentAffairs from "../components/CurrentAffairsSlider";
 import CurrentAffairsSlider from "../components/CurrentAffairsSlider";
 import FriendsImage from "../assets/referal.png";
-import UpgradePopup from "../components/modal/UpgradeModal";
-import InviteModal from "../components/modal/InviteModal";
-import StreakModal from "../components/modal/StreakModal";
-import GenerateModal from "../components/modal/GenerateModal";
 import { useModal } from "../hooks/useModal";
 import { useNavigate } from "react-router-dom";
 import UpgradeBanner from "../components/banners/UpgradeBanner";
 import axios from "axios";
 import { AppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
+import fire from "../assets/Fire.json";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -197,32 +194,12 @@ const Dashboard = () => {
     if (!streakData || streakData.currentStreak === 0) {
       return (
         <div className="flex items-center gap-4 w-full sm:w-1/2 md:w-full rounded-xl p-3 sm:p-4 dark:bg-zinc-900 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-orange-50 dark:hover:bg-orange-900/30 cursor-pointer group">
-          <svg
-            className="mx-auto mb-2 text-primary-500 w-8 h-8 sm:w-16 sm:h-16 group-hover:rotate-12 transition-transform"
-            width="20"
-            height="21"
-            viewBox="0 0 20 21"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {/* Flame SVG paths */}
-            <path
-              d="M16.0156 6.41016C13.9062 9.125 9.78516 6.41016 12.207 1.21484C5.31641 2.71484 3.33333 9.33984 3.20312 12.4648C2.42188 12.4336 1.78385 11.5664 1.5625 11.1367C1.5625 14.4766 3.32031 20.5312 10.1953 20.5312C16.9727 20.5312 18.4961 14.9258 18.6328 12.0547C18.1797 12.6484 17.4414 13.1094 16.6016 13.2266C18.2812 10.6094 16.9531 7.64062 16.0156 6.41016Z"
-              fill="#FD6050"
-            ></path>
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M10.1953 20.5312C11.3507 20.5312 12.3535 20.3683 13.2227 20.0838C7.44141 18.4804 1.7897 8.05133 12.207 1.2148C12.1827 1.26694 12.23 1.16317 12.207 1.2148C5.31641 2.7148 3.33333 9.33981 3.20312 12.4648C2.42188 12.4336 1.78385 11.5664 1.5625 11.1367C1.5625 14.4765 3.32031 20.5312 10.1953 20.5312Z"
-              fill="#BC3C85"
-            ></path>
-            <path
-              d="M16.0156 6.41016C13.9062 9.125 9.78516 6.41016 12.207 1.21484C5.31641 2.71484 3.33333 9.33984 3.20312 12.4648C2.42188 12.4336 1.78385 11.5664 1.5625 11.1367C1.5625 14.4766 3.32031 20.5312 10.1953 20.5312C16.9727 20.5312 18.4961 14.9258 18.6328 12.0547C18.1797 12.6484 17.4414 13.1094 16.6016 13.2266C18.2812 10.6094 16.9531 7.64062 16.0156 6.41016Z"
-              stroke="#07296F"
-              strokeWidth="0.585938"
-              strokeLinejoin="round"
-            ></path>
-          </svg>
+          <Lottie
+            animationData={fire}
+            loop
+            className="w-14 h-16 sm:w-18 sm:h-20 md:w-20 md:h-20 transition-all duration-300 group-hover:scale-110"
+          />
+
           <div
             onClick={handleOpenStreakModal}
             className="flex flex-col gap-1 sm:gap-2"
@@ -249,35 +226,12 @@ const Dashboard = () => {
     return (
       <div className="flex items-center gap-4 w-full sm:w-1/2 md:w-full rounded-xl p-3 sm:p-4 dark:bg-zinc-900 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-orange-50 dark:hover:bg-orange-900/30 cursor-pointer group">
         <div className="relative">
-          <svg
-            className="mx-auto mb-2 text-primary-500 w-8 h-8 sm:w-16 sm:h-16 group-hover:rotate-12 transition-transform"
-            width="20"
-            height="21"
-            viewBox="0 0 20 21"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {/* Flame SVG paths */}
-            <path
-              d="M16.0156 6.41016C13.9062 9.125 9.78516 6.41016 12.207 1.21484C5.31641 2.71484 3.33333 9.33984 3.20312 12.4648C2.42188 12.4336 1.78385 11.5664 1.5625 11.1367C1.5625 14.4766 3.32031 20.5312 10.1953 20.5312C16.9727 20.5312 18.4961 14.9258 18.6328 12.0547C18.1797 12.6484 17.4414 13.1094 16.6016 13.2266C18.2812 10.6094 16.9531 7.64062 16.0156 6.41016Z"
-              fill="#FD6050"
-            ></path>
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M10.1953 20.5312C11.3507 20.5312 12.3535 20.3683 13.2227 20.0838C7.44141 18.4804 1.7897 8.05133 12.207 1.2148C12.1827 1.26694 12.23 1.16317 12.207 1.2148C5.31641 2.7148 3.33333 9.33981 3.20312 12.4648C2.42188 12.4336 1.78385 11.5664 1.5625 11.1367C1.5625 14.4765 3.32031 20.5312 10.1953 20.5312Z"
-              fill="#BC3C85"
-            ></path>
-            <path
-              d="M16.0156 6.41016C13.9062 9.125 9.78516 6.41016 12.207 1.21484C5.31641 2.71484 3.33333 9.33984 3.20312 12.4648C2.42188 12.4336 1.78385 11.5664 1.5625 11.1367C1.5625 14.4766 3.32031 20.5312 10.1953 20.5312C16.9727 20.5312 18.4961 14.9258 18.6328 12.0547C18.1797 12.6484 17.4414 13.1094 16.6016 13.2266C18.2812 10.6094 16.9531 7.64062 16.0156 6.41016Z"
-              stroke="#07296F"
-              strokeWidth="0.585938"
-              strokeLinejoin="round"
-            ></path>
-          </svg>
-          <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white font-bold text-xs sm:text-base">
-            {streakData.currentStreak}
-          </span>
+          <Lottie
+            animationData={fire}
+            loop
+            className="w-14 h-16 sm:w-18 sm:h-20 md:w-20 md:h-20 transition-all duration-300 group-hover:scale-110"
+          />
+        
         </div>
         <div
           onClick={handleOpenStreakModal}

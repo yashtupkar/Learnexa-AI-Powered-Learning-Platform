@@ -32,8 +32,7 @@ export default function DashboardNav({
   const { user } = useSelector((state) => state.auth);
   const isMobile = useMediaQuery({ maxWidth: 1024 });
 
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [showMobileSearch, setShowMobileSearch] = useState(false);
+
   const [unreadCount, setUnreadCount] = useState(0);
 
   // Calculate unread notifications count
@@ -47,10 +46,7 @@ export default function DashboardNav({
     navigate("/login");
   };
 
-  // Hide mobile search when route changes
-  useEffect(() => {
-    setShowMobileSearch(false);
-  }, [location.pathname]);
+
 
   // Handle sidebar toggle based on device type
   const handleSidebarToggle = () => {
@@ -82,37 +78,12 @@ export default function DashboardNav({
             </h1>
           </div>
 
-          {/* Center Section - Search (Desktop) */}
-          <div className="hidden lg:flex flex-1 max-w-xl mx-8">
-            <div className="relative w-full group">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search
-                  size={18}
-                  className="text-gray-400 dark:text-gray-500 group-focus-within:text-indigo-500 transition-colors duration-200"
-                />
-              </div>
-              <input
-                type="text"
-                placeholder="Search topics, quizzes, or anything..."
-                className="w-full pl-10 pr-4 py-2.5 bg-gray-50/80 dark:bg-gray-800/80 border border-gray-200/60 dark:border-gray-700/60 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/60 dark:text-white transition-all duration-300 placeholder-gray-400 dark:placeholder-gray-500 hover:bg-gray-100/80 dark:hover:bg-gray-700/80 focus:bg-white dark:focus:bg-gray-800"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-          </div>
+        
 
           {/* Right Section - Actions */}
           <div className="flex items-center space-x-3 sm:space-x-4">
             {/* Mobile Search Toggle */}
-            {isMobile && (
-              <button
-                onClick={() => setShowMobileSearch(!showMobileSearch)}
-                className="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100/80 dark:hover:bg-gray-800/80 transition-all duration-200"
-                aria-label="Toggle search"
-              >
-                <Search size={20} />
-              </button>
-            )}
+            
 
             {/* Create New Button (Desktop) */}
             <button
@@ -142,12 +113,7 @@ export default function DashboardNav({
 
             {/* Notifications */}
             {/* Notifications Panel */}
-            <Notifications
-              notifications={notifications}
-              showNotifications={showNotifications}
-              onToggle={() => setShowNotifications(!showNotifications)}
-              markAllAsRead={markAllAsRead}
-            />
+            <Notifications/>
 
             {/* User Avatar with Dropdown */}
             <div className="sm:ml-2">
@@ -161,27 +127,7 @@ export default function DashboardNav({
           </div>
         </div>
 
-        {/* Mobile Search Bar (Conditional) */}
-        {showMobileSearch && (
-          <div className="lg:hidden pb-3 transition-all duration-300">
-            <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search
-                  size={16}
-                  className="text-gray-400 dark:text-gray-500 group-focus-within:text-indigo-500 transition-colors duration-200"
-                />
-              </div>
-              <input
-                type="text"
-                placeholder="Search..."
-                className="w-full pl-10 pr-4 py-2 bg-gray-50/80 dark:bg-gray-800/80 border border-gray-200/60 dark:border-gray-700/60 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/60 dark:text-white transition-all duration-300 placeholder-gray-400 dark:placeholder-gray-500"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                autoFocus
-              />
-            </div>
-          </div>
-        )}
+       
       </div>
     </header>
   );

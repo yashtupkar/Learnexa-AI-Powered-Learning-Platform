@@ -172,31 +172,15 @@ useEffect(() => {
 
   return (
     <Layout>
-      <div className="min-h-screen max-w-4xl mx-auto bg-zinc-50 text-zinc-900 dark:bg-zinc-900 dark:text-zinc-100">
+      <div className="min-h-screen max-w-4xl mx-auto text-zinc-900  dark:text-zinc-100">
         <div className="container mx-auto px-4 py-8">
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-2xl flex items-center gap-2">
               <Bell className="w-6 h-6" />
               Notifications
-              {unreadCount > 0 && activeTab === "personal" && (
-                <span className="bg-blue-500 text-white text-sm rounded-full px-2 py-1">
-                  {unreadCount}
-                </span>
-              )}
+              
             </h1>
-            <button
-              onClick={toggleMute}
-              className="p-2 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
-              aria-label={
-                isMuted ? "Unmute notifications" : "Mute notifications"
-              }
-            >
-              {isMuted ? (
-                <BellOff className="w-5 h-5" />
-              ) : (
-                <Bell className="w-5 h-5" />
-              )}
-            </button>
+          
           </div>
 
           {/* Tabs */}

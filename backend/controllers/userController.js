@@ -35,6 +35,27 @@ const getUserData = async (req, res) => {
     }
 }
 
+const getUserDetails = async (req, res) => {
+  const { userId } = req.user;
+  if (!userId) {
+    return res.json({ success: false, message: "User Id not found" });
+  }
+  try {
+    const user = await userModel.findById(userId);
+
+    if (!user) {
+      return res.json({ success: false, message: "User not found !" });
+    }
+
+    res.json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    return res.json({ success: false, message: error.message });
+  }
+};
+
 const getAllUsers = async (req, res) => {
   try {
     const users = await userModel.find();
@@ -209,6 +230,7 @@ const updateUserProfile = async (req, res) => {
 
 module.exports = {
   getUserData,
+  getUserDetails,
   getAllUsers,
   allUserAccordingStreak,
   trackStreak,

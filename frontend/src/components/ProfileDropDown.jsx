@@ -10,6 +10,7 @@ import {
   Users,
   PaintBucket,
   Brush,
+  Bell,
 
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -140,14 +141,14 @@ export function DropdownMenu({ name, avatar, email }) {
                   whileHover={{ backgroundColor: "rgba(100, 116, 139, 0.1)" }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => {
-                    navigate("/settings?tab=peferences");
+                    navigate("/notifications");
                     setIsOpen(false);
                   }}
                   className="flex items-center w-full px-4 py-2.5 text-sm 
                              text-gray-700 dark:text-gray-300 rounded-md transition-colors"
                 >
-                  <Brush className="h-4 w-4 mr-3" />
-                  <span>Preference</span>
+                  <Bell className="h-4 w-4 mr-3" />
+                  <span>Notifications</span>
                 </motion.button>
                 <motion.button
                   whileHover={{ backgroundColor: "rgba(100, 116, 139, 0.1)" }}

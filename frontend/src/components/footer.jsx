@@ -16,6 +16,8 @@ import {
   Send,
 } from "lucide-react";
 import logo from "../assets/learnexa-logo.png";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaFacebook, FaInstagram, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 
 
 const Footer = () => {
@@ -58,38 +60,38 @@ const Footer = () => {
             Join thousands of learners who are transforming their skills with
             our AI-powered personalized learning platform.
           </p>
-          <div className=" flex gap-4 w-fit items-center mx-auto">
-            <div className="flex items-center p-3 rounded bg-blue-600">
-              {" "}
-              <a
-                href="https://facebook.com/learnexa"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center  space-x-3 text-white transition-colors duration-200"
-              >
-                <Facebook className="w-6 h-6" />
-              </a>
-            </div>
-            <div className="flex items-center p-3 rounded bg-pink-600">
-              <a
-                href="https://instagram.com/learnexa"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center space-x-3 text-white transition-colors duration-200"
-              >
-                <Instagram className="w-6 h-6" />
-              </a>
-            </div>
-            <div className="flex items-center p-3 rounded bg-blue-600">
-              <a
-                href="https://linkedin.com/company/learnexa"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center space-x-3 text-white  transition-colors duration-200"
-              >
-                <Linkedin className="w-6 h-6" />
-              </a>
-            </div>
+          <div className="flex items-center justify-center gap-3 sm:gap-4 mt-4 sm:mt-6">
+            <motion.button
+              whileHover={{ scale: 1.05, rotate: 5 }}
+              whileTap={{ scale: 0.95 }}
+              className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center cursor-pointer justify-center bg-[#25D366] text-white hover:bg-[#128C7E] hover:shadow-lg transition-all duration-300`}
+            >
+              <FaWhatsapp className="w-5 h-5 sm:w-6 sm:h-6" />
+            </motion.button>
+
+            <motion.button
+              whileHover={{ scale: 1.05, rotate: 5 }}
+              whileTap={{ scale: 0.95 }}
+              className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center cursor-pointer justify-center bg-[#1877F2] text-white hover:bg-[#166FE5] hover:shadow-lg transition-all duration-300`}
+            >
+              <FaFacebook className="w-5 h-5 sm:w-6 sm:h-6" />
+            </motion.button>
+
+            <motion.button
+              whileHover={{ scale: 1.05, rotate: 5 }}
+              whileTap={{ scale: 0.95 }}
+              className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center cursor-pointer justify-center bg-[#0A66C2] text-white hover:bg-[#004182] hover:shadow-lg transition-all duration-300`}
+            >
+              <FaLinkedin className="w-5 h-5 sm:w-6 sm:h-6" />
+            </motion.button>
+
+            <motion.button
+              whileHover={{ scale: 1.05, rotate: 5 }}
+              whileTap={{ scale: 0.95 }}
+              className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center cursor-pointer justify-center bg-[#E4405F] text-white hover:bg-[#D93147] hover:shadow-lg transition-all duration-300`}
+            >
+              <FaInstagram className="w-5 h-5 sm:w-6 sm:h-6" />
+            </motion.button>
           </div>
         </div>
       </div>
@@ -170,7 +172,7 @@ const Footer = () => {
                 type="submit"
                 className=" px-4 py-2 w-fit bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200"
               >
-                <Send size={20}/>
+                <Send size={20} />
               </button>
             </form>
           </div>

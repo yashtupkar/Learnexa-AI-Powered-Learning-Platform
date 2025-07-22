@@ -2,10 +2,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Copy, Share2 } from "lucide-react";
 import { useState } from "react";
 import { FaWhatsapp, FaFacebook, FaLinkedin, FaInstagram } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const InviteModal = ({ isOpen, onClose }) => {
   const [copied, setCopied] = useState(false);
-  const inviteUrl = "https://learnexa.com?ref=StainlessKindness103";
+  const { user } = useSelector((state) => state.auth);
+  
+  
+
+
+  const inviteUrl = `https://learnexa.vercel.app?ref=${
+    user?.username || user?.name || "guest"
+  }`;
 
   const handleCopy = async () => {
     try {

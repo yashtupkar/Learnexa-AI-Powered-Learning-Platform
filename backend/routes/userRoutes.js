@@ -1,11 +1,12 @@
 const express = require("express");
 const userAuth = require("../middleware/userAuth");
-const { getUserData, trackStreak, getAllUsers, allUserAccordingStreak, getNotifications, updateUserProfile } = require("../controllers/userController");
+const { getUserData, trackStreak, getAllUsers, allUserAccordingStreak, getNotifications, updateUserProfile, getUserDetails } = require("../controllers/userController");
 
 const userRouter = express.Router();
 
 
 userRouter.get('/data', userAuth, getUserData);
+userRouter.get("/user-details", userAuth, getUserDetails);
 userRouter.post('/track-activity', userAuth, trackStreak);
 userRouter.post("/get-all-users", getAllUsers);
 userRouter.get("/leaderboard-users", allUserAccordingStreak);

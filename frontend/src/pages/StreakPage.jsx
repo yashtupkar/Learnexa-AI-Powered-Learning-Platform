@@ -746,6 +746,8 @@ import axios from "axios";
 import { AppContext } from "../context/AppContext";
 import Avatar from "boring-avatars";
 import { useSelector } from "react-redux";
+import Lottie from "lottie-react";
+import fire from "../assets/Fire.json";
 
 // SVG Icons
 const FireIcon = ({ active, size = 20 }) => (
@@ -925,39 +927,41 @@ const StreakMap = () => {
   },[]);
 
 
-  // Mock data - replace with your actual data fetching logic
- useEffect(() => {
-   if (streakData.activeDates.length === 0) return;
+  
+useEffect(() => {
+  const daysInMonth = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth() + 1,
+    0
+  ).getDate();
 
-   const daysInMonth = new Date(
-     currentDate.getFullYear(),
-     currentDate.getMonth() + 1,
-     0
-   ).getDate();
+  // Always generate the calendar days for the current month
+  const currentMonthStreaks = Array.from({ length: daysInMonth }, (_, i) => {
+    const day = i + 1;
+    const date = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      day
+    );
 
-   const currentMonthStreaks = Array.from({ length: daysInMonth }, (_, i) => {
-     const day = i + 1;
-     const date = new Date(
-       currentDate.getFullYear(),
-       currentDate.getMonth(),
-       day
-     );
+    // Check if this date is in activeDates (if they exist)
+    let isActive = false;
+    if (streakData.activeDates && streakData.activeDates.length > 0) {
+      const dateStr = date.toISOString().split("T")[0];
+      isActive = streakData.activeDates.some((activeDate) => {
+        const activeDateStr = new Date(activeDate).toISOString().split("T")[0];
+        return activeDateStr === dateStr;
+      });
+    }
 
-     // Check if this date is in activeDates
-     const dateStr = date.toISOString().split("T")[0];
-     const isActive = streakData.activeDates.some((activeDate) => {
-       const activeDateStr = new Date(activeDate).toISOString().split("T")[0];
-       return activeDateStr === dateStr;
-     });
+    return {
+      date,
+      active: isActive,
+    };
+  });
 
-     return {
-       date,
-       active: isActive,
-     };
-   });
-
-   setStreaks(currentMonthStreaks);
- }, [currentDate, streakData.activeDates]);
+  setStreaks(currentMonthStreaks);
+}, [currentDate, streakData.activeDates]);
 
  const changeMonth = (offset) => {
    setCurrentDate(
@@ -983,32 +987,12 @@ const StreakMap = () => {
         {/* Hero Section with Big Flame and Current Streak */}
         <div className="flex flex-col items-center mb-6 sm:mb-10 text-center">
           <div className="relative">
-            <svg
-              className="mx-auto mb-2 text-primary-500 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 group-hover:rotate-12 transition-transform"
-              width="20"
-              height="21"
-              viewBox="0 0 20 21"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M16.0156 6.41016C13.9062 9.125 9.78516 6.41016 12.207 1.21484C5.31641 2.71484 3.33333 9.33984 3.20312 12.4648C2.42188 12.4336 1.78385 11.5664 1.5625 11.1367C1.5625 14.4766 3.32031 20.5312 10.1953 20.5312C16.9727 20.5312 18.4961 14.9258 18.6328 12.0547C18.1797 12.6484 17.4414 13.1094 16.6016 13.2266C18.2812 10.6094 16.9531 7.64062 16.0156 6.41016Z"
-                fill="#FD6050"
-              ></path>
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M10.1953 20.5312C11.3507 20.5312 12.3535 20.3683 13.2227 20.0838C7.44141 18.4804 1.7897 8.05133 12.207 1.2148C12.1827 1.26694 12.23 1.16317 12.207 1.2148C5.31641 2.7148 3.33333 9.33981 3.20312 12.4648C2.42188 12.4336 1.78385 11.5664 1.5625 11.1367C1.5625 14.4765 3.32031 20.5312 10.1953 20.5312Z"
-                fill="#BC3C85"
-              ></path>
-              <path
-                d="M16.0156 6.41016C13.9062 9.125 9.78516 6.41016 12.207 1.21484C5.31641 2.71484 3.33333 9.33984 3.20312 12.4648C2.42188 12.4336 1.78385 11.5664 1.5625 11.1367C1.5625 14.4766 3.32031 20.5312 10.1953 20.5312C16.9727 20.5312 18.4961 14.9258 18.6328 12.0547C18.1797 12.6484 17.4414 13.1094 16.6016 13.2266C18.2812 10.6094 16.9531 7.64062 16.0156 6.41016Z"
-                stroke="#07296F"
-                strokeWidth="0.585938"
-                strokeLinejoin="round"
-              ></path>
-            </svg>
-            <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-sm sm:text-xl">
+            <Lottie
+              animationData={fire}
+              loop
+              className="w-32 h-32 sm:w-48 sm:h-48 md:w-48 md:h-30 transition-all duration-300 group-hover:scale-110"
+            />
+            <span className="absolute  bg-orange-500 h-6 w-6 flex items-center justify-center rounded-full bottom-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-xs sm:text-lg">
               {streakData.currentStreak}
             </span>
           </div>
@@ -1247,7 +1231,9 @@ const StreakMap = () => {
                                   size={30}
                                 />
                                 <span className="text-xs sm:text-sm truncate max-w-[100px] sm:max-w-none">
-                                  {isCurrentUser ? "You" : leaderboardUser.username}
+                                  {isCurrentUser
+                                    ? "You"
+                                    : leaderboardUser.username}
                                 </span>
                               </div>
                             </td>

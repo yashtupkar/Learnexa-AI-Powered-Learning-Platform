@@ -26,6 +26,7 @@ import QuizInterface from "./pages/QuizInterface";
 import { Toaster } from "react-hot-toast";
 import SettingsPage from "./components/SettingPage";
 import NotificationPage from "./pages/NotificationPage";
+import ComingSoonPage from "./pages/ComingSoonPage";
 
 // Protected route component
 
@@ -48,7 +49,9 @@ const App = () => {
         <Route path="/my-quizzes" element={<MyQuizzes />} />
         <Route path="/challenge/:id" element={<ChallengeFriendPage />} />
         <Route path="/current-affairs" element={<CurrentAffairs />} />
-        <Route path="/interview" element={<HRInterviewPage />} />
+        {/* <Route path="/interview" element={<HRInterviewPage />} /> */}
+        <Route path="/interview" element={<ComingSoonPage />} />
+
         <Route path="/streak" element={<StreakMap />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route
