@@ -37,6 +37,8 @@ const fetchNotification = async (req, res) => {
   
     res.json(notifications);
 };
+
+
   
 module.exports = {
     fetchNotification,

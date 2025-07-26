@@ -1224,12 +1224,15 @@ useEffect(() => {
                             </td>
                             <td className="p-3 sm:p-4">
                               <div className="flex items-center gap-2 sm:gap-3">
-                                <Avatar
-                                  name={
-                                    isCurrentUser ? "You" : leaderboardUser.name
-                                  }
-                                  size={30}
-                                />
+                                {leaderboardUser?.avatar ? (
+                                  <img
+                                    src={leaderboardUser?.avatar}
+                                    alt="Profile"
+                                    className="h-10 rounded-full  w-10 object-cover"
+                                  />
+                                ) : (
+                                  <Avatar name={leaderboardUser.username} size={40} />
+                                )}
                                 <span className="text-xs sm:text-sm truncate max-w-[100px] sm:max-w-none">
                                   {isCurrentUser
                                     ? "You"

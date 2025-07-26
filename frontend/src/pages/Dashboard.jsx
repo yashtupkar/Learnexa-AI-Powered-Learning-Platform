@@ -47,10 +47,13 @@ import axios from "axios";
 import { AppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
 import fire from "../assets/Fire.json";
+import AvatarUploadPopup from "../components/modal/AvatarUploadModal";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const [isLoading, setIsLoading] = useState(true);
+  const [isAvatarPopupOpen, setIsAvatarPopupOpen] = useState(true);
+
   const [quizzes, setQuizzes] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [stats, setStats] = useState(null);
@@ -58,7 +61,6 @@ const Dashboard = () => {
   const { openModal, closeModal, MODAL_TYPES } = useModal();
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [showStreakModal, setShowStreakModal] = useState(false);
-  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [showGenerateModal, setShowGenerateModal] = useState(false);
   const [streakData, setStreakData] = useState(null);
 
@@ -276,6 +278,12 @@ const Dashboard = () => {
 
   return (
     <Layout>
+      {!user?.avatar && (
+        <AvatarUploadPopup
+          isOpen={isAvatarPopupOpen}
+          onClose={() => setIsAvatarPopupOpen(false)}
+        />
+      )}
       <div className="min-h-screen p-2 sm:p-3 md:p-6 bg-gray-50 dark:bg-black">
         <div className="max-w-7xl mx-auto ">
           <div className="flex flex-col md:flex-row items-center">

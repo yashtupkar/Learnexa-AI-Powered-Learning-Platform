@@ -12,6 +12,7 @@ const indiabixRouter = require("./routes/indiaBixRoute");
 const notificationRouter = require("./routes/notificationRoute");
 require("./cornJobs/newsCorn");
 require("./cornJobs/resetStreakCron");
+const upload = require("./multer/upload"); 
 
 
 const app = express();
@@ -39,7 +40,7 @@ app.use(
       }
     },
     credentials: true,
-    methods: "GET, POST, PUT, DELETE, OPTIONS",
+    methods: "GET, POST, PATCH, PUT, DELETE, OPTIONS",
     allowedHeaders:
       "Origin, X-Requested-With, Content-Type, Accept, Authorization",
   })
@@ -58,6 +59,20 @@ app.use('/api/news', newsRouter);
 app.use('/api/interview', interviewRouter);
 app.use('/api/indiabix', indiabixRouter);
 app.use('/api/notification', notificationRouter)
+
+app.post("/upload", upload.single("file"), (req, res) => {
+  console.log("File Uploaded:", req.file); // Debugging
+
+  if (!req.file) {
+    return res.status(400).json({ error: "No file uploaded" });
+  }
+
+  // Return Cloudinary URL instead of local file path
+  res.json({
+    url: req.file.path, // Cloudinary URL
+    public_id: req.file.filename, // Cloudinary public ID
+  });
+});
 
 // Start the server
 app.listen(PORT, () => {

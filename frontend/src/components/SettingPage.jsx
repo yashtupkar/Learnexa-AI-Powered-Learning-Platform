@@ -1085,33 +1085,39 @@ import {
 } from "lucide-react";
 import Layout from "./layouts/layout";
 import Avatar from "boring-avatars";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { AppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
+import AvatarUploadPopup from "./modal/AvatarUploadModal";
+import { userUpdate } from "../redux/authSlice";
 
 const SettingsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = searchParams.get("tab") || "my-account";
-  const [darkMode, setDarkMode] = useState(false);
   const [profilePicture, setProfilePicture] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [emailNotifications, setEmailNotifications] = useState(true);
-  const [language, setLanguage] = useState("English");
+  const [isAvatarPopupOpen, setIsAvatarPopupOpen] = useState(false);
   const [expandedSection, setExpandedSection] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const {backend_URL}=useContext(AppContext)
+  const { user } = useSelector((state) => state.auth);
+  const { backend_URL } = useContext(AppContext);
+  const dispatch = useDispatch();
 
-
-  const {user} = useSelector((state) => state.auth);
- 
-
+  // Initialize userData with current user data and track original data
   const [userData, setUserData] = useState({
-    name: user.name || " ",
-    email: user.email || " ",
-    username: user.username || " ",
+    name: user?.name || "",
+    email: user?.email || "",
+    username: user?.username || "",
+  });
+
+  const [originalUserData, setOriginalUserData] = useState({
+    name: user?.name || "",
+    email: user?.email || "",
+    username: user?.username || "",
   });
 
   const [subscriptionData, setSubscriptionData] = useState({
@@ -1121,6 +1127,31 @@ const SettingsPage = () => {
     paymentMethod: "Visa ending in 4242",
     storageUsed: "45%",
   });
+
+  // Check if user data has changed
+  const hasChanges = () => {
+    return (
+      userData.name !== originalUserData.name ||
+      userData.email !== originalUserData.email ||
+      userData.username !== originalUserData.username
+    );
+  };
+
+  // Update original data when user changes
+  useEffect(() => {
+    if (user) {
+      setOriginalUserData({
+        name: user.name || "",
+        email: user.email || "",
+        username: user.username || "",
+      });
+      setUserData({
+        name: user.name || "",
+        email: user.email || "",
+        username: user.username || "",
+      });
+    }
+  }, [user]);
 
   const handleTabChange = (tabName) => {
     setSearchParams({ tab: tabName });
@@ -1132,47 +1163,52 @@ const SettingsPage = () => {
     setUserData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleAccountSave = async(e) => {
+  const handleAccountSave = async (e) => {
     e.preventDefault();
+    if (!hasChanges()) {
+      toast.error("No changes to save");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      const response = await axios.put(`${backend_URL}/api/user/update-profile`, {
-        name: userData.name,
-        email: userData.email,
-        username: userData.username,
-      }, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+      const response = await axios.put(
+        `${backend_URL}/api/user/update-profile`,
+        {
+          name: userData.name,
+          email: userData.email,
+          username: userData.username,
         },
-      })
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
       if (response.status === 200) {
+
+        console.log(response);
         toast.success("Profile updated successfully");
+        // Update original data after successful save
+        setOriginalUserData({
+          name: userData.name,
+          email: userData.email,
+          username: userData.username,
+        });
+        // Update Redux store if needed
+        dispatch(
+          userUpdate(response.data.user)
+        );
       } else {
         toast.error("Failed to update account details");
       }
-      
     } catch (error) {
       console.error("Error saving account details:", error);
+      toast.error(error.response?.data?.message || "Failed to update profile");
+    } finally {
       setIsLoading(false);
-      return;
-      
-    }
-    
-    setTimeout(() => {
-      setIsLoading(false);
-      console.log("Account details saved:", userData);
-    }, 1500);
-  };
-
-  const handlePictureUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setProfilePicture(event.target.result);
-      };
-      reader.readAsDataURL(file);
     }
   };
 
@@ -1184,8 +1220,6 @@ const SettingsPage = () => {
   const toggleSection = (section) => {
     setExpandedSection(expandedSection === section ? null : section);
   };
-
-
 
   return (
     <Layout>
@@ -1264,9 +1298,9 @@ const SettingsPage = () => {
                     <div className="flex justify-center">
                       <div className="relative group">
                         <div className="h-32 w-32 rounded-full bg-white dark:bg-zinc-900 overflow-hidden shadow-lg border-4 border-white dark:border-gray-700">
-                          {user.avatar ? (
+                          {user?.avatar ? (
                             <img
-                              src={user.avatar }
+                              src={user?.avatar}
                               alt="Profile"
                               className="h-full w-full object-cover"
                             />
@@ -1274,17 +1308,19 @@ const SettingsPage = () => {
                             <Avatar name="yash Tupkar" size={128} />
                           )}
                         </div>
-                        <label className="absolute inset-0 flex items-center justify-center bg-black/0 hover:bg-black/20 rounded-full cursor-pointer transition-all duration-200">
+                        <label
+                          onClick={() => setIsAvatarPopupOpen(true)}
+                          className="absolute inset-0 flex items-center justify-center bg-black/0 hover:bg-black/20 rounded-full cursor-pointer transition-all duration-200"
+                        >
                           <Upload className="h-6 w-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-                          <input
-                            type="file"
-                            className="sr-only"
-                            accept="image/png, image/jpeg, image/gif"
-                            onChange={handlePictureUpload}
-                          />
                         </label>
                       </div>
                     </div>
+
+                    <AvatarUploadPopup
+                      isOpen={isAvatarPopupOpen}
+                      onClose={() => setIsAvatarPopupOpen(false)}
+                    />
 
                     <form onSubmit={handleAccountSave} className="space-y-6">
                       <div className="space-y-4">
@@ -1343,9 +1379,11 @@ const SettingsPage = () => {
                       <div className="flex justify-end">
                         <button
                           type="submit"
-                          disabled={isLoading}
+                          disabled={!hasChanges() || isLoading}
                           className={`inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 ${
-                            isLoading ? "opacity-75 cursor-not-allowed" : ""
+                            !hasChanges() || isLoading
+                              ? "opacity-75 cursor-not-allowed"
+                              : ""
                           }`}
                         >
                           {isLoading ? (

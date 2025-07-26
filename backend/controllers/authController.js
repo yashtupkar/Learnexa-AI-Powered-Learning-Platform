@@ -321,134 +321,9 @@ const generateAndCheckUniqueUsername = async () => {
   return username;
 };
 
-// Fixed Google Login function
-// const GoogleLogin = async (req, res) => {
-//   const { sub, name, email, picture } = req.body;
 
-//   try {
-//     if (!sub || !name || !email) {
-//       return res.status(400).json({ 
-//         success: false, 
-//         message: "Missing required fields: sub, name, or email" 
-//       });
-//     }
-
-//     console.log(`Google login attempt for email: ${email}`);
-
-//     let user = await userModel
-//       .findOne({ email })
-//       .populate("generatedQuizzes")
-//       .populate("attemptedQuizzes");
-
-//     const isNewUser = !user;
-//     console.log(`User status: ${isNewUser ? 'New user' : 'Existing user'}`);
-
-//     if (isNewUser) {
-//       console.log('Creating new user...');
-//       const uniqueUsername = await generateAndCheckUniqueUsername();
-      
-//       if (!uniqueUsername) {
-//         throw new Error('Failed to generate unique username');
-//       }
-
-//       user = new userModel({
-//         googleId: sub,
-//         name,
-//         username: uniqueUsername,
-//         email,
-//         avatar: picture,
-//         isAccountVerified: true,
-//         notifications: [],
-//       });
-      
-//       await user.save();
-//       console.log(`✓ New user created with username: ${uniqueUsername}`);
-      
-//     } else {
-//       // Handle existing user (regardless of whether they have googleId or not)
-//       console.log('Updating existing user...');
-      
-//       // Update Google ID if not present
-//       if (!user.googleId) {
-//         user.googleId = sub;
-//         console.log('Added Google ID to existing user');
-//       }
-      
-//       // Update name if different
-//       if (user.name !== name) {
-//         user.name = name;
-//         console.log('Updated user name');
-//       }
-
-//       // Generate username if missing (this is the key fix)
-//       if (!user.username) {
-//         console.log('Existing user missing username, generating...');
-//         const uniqueUsername = await generateAndCheckUniqueUsername();
-        
-//         if (!uniqueUsername) {
-//           throw new Error('Failed to generate unique username for existing user');
-//         }
-        
-//         user.username = uniqueUsername;
-//         console.log(`✓ Username generated for existing user: ${uniqueUsername}`);
-//       }
-      
-//       await user.save();
-//       console.log('✓ Existing user updated successfully');
-//     }
-
-//     // Add welcome notification for new users
-//     if (isNewUser) {
-//       user.notifications.push({
-//         type: "welcome",
-//         title: `🎉Welcome ${name} to Learnexa!`,
-//         message: "We're thrilled to have you here! 🚀 Start exploring the amazing features we've built just for you.",
-//         createdAt: new Date(),
-//         read: false,
-//       });
-//       await user.save();
-//     }
-
-//     if (!process.env.JWT_SECRET) {
-//       throw new Error("JWT_SECRET is not defined in environment variables.");
-//     }
-
-//     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-//       expiresIn: "7d",
-//     });
-
-//     const userObj = user.toObject();
-//     // Remove sensitive fields
-//     delete userObj.password;
-//     delete userObj.__v;
-//     delete userObj.verifyOtp;
-//     delete userObj.verifyOtpExpireAt;
-//     delete userObj.resetPassOtp;
-//     delete userObj.resetPassOtpExpireAt;
-//     delete userObj.isAccountVerified;
-
-//     console.log(`✓ Google login successful for user: ${user.username}`);
-
-//     res.json({
-//       success: true,
-//       message: "Login successful",
-//       token: token,
-//       user: {
-//         ...userObj,
-//         avatar: picture,
-//        },
-//     });
-
-//   } catch (error) {
-//     console.error("Google login error:", error);
-//     res.status(500).json({ 
-//       success: false, 
-//       message: error.message || "Internal server error during Google login"
-//     });
-//   }
-// };
 const GoogleLogin = async (req, res) => {
-  const { sub, name, email, picture } = req.body;
+  const { sub, name, email } = req.body;
 
   try {
     if (!sub || !name || !email) {
@@ -481,7 +356,6 @@ const GoogleLogin = async (req, res) => {
         name,
         username: uniqueUsername,
         email,
-        avatar: picture, // Set avatar for new user
         isAccountVerified: true,
         notifications: [],
       });
@@ -501,12 +375,6 @@ const GoogleLogin = async (req, res) => {
       if (user.name !== name) {
         user.name = name;
         console.log("Updated user name");
-      }
-
-      // Always update avatar from Google (if provided)
-      if (picture && user.avatar !== picture) {
-        user.avatar = picture;
-        console.log("Updated user avatar from Google");
       }
 
       // Generate username if missing
@@ -530,19 +398,19 @@ const GoogleLogin = async (req, res) => {
       console.log("✓ Existing user updated successfully");
     }
 
-    // Add welcome notification for new users
-    if (isNewUser) {
+  const hasWelcomeNotification = user.notifications.some(
+    (notification) => notification.type === "welcome"
+  );
+    if (!hasWelcomeNotification) {
       user.notifications.push({
         type: "welcome",
         title: `🎉Welcome ${name} to Learnexa!`,
-        message:
-          "We're thrilled to have you here! 🚀 Start exploring the amazing features we've built just for you.",
+        message: "We're thrilled to have you here! 🚀 Start exploring the amazing features we've built just for you.",
         createdAt: new Date(),
         read: false,
       });
       await user.save();
     }
-
     if (!process.env.JWT_SECRET) {
       throw new Error("JWT_SECRET is not defined in environment variables.");
     }

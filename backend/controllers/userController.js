@@ -226,6 +226,126 @@ const updateUserProfile = async (req, res) => {
   }
 };
 
+const updateAvatar = async (req, res) => {
+  try {
+    const { userId } = req.user;
+    const { avatar } = req.body;
+
+    const user = await userModel.findByIdAndUpdate(
+      userId,
+      { avatar },
+      { new: true }
+    );
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Error updating avatar" });
+  }
+};
+
+//to push notification to user
+const newNotification = async (req,res) => {
+  try {
+    const { notification } = req.body;
+    const {userId} = req.user;
+    const user = await userModel.findById(userId);
+    if (!user) {    
+      res.json("User not found for notification:", userId);
+      return;
+    }
+    user.notifications.push(notification);
+    await user.save();  
+  } catch (error) {
+    res.json("Error pushing notification:", error);
+  }
+};
+
+//to update notification to read
+const markAsRead = async (req, res) => {
+  const { userId } = req.user;
+  const { notificationId } = req.body;
+
+  if (!userId || !notificationId) {
+    return res.status(400).json({ success: false, message: "Invalid request" });
+  }
+
+  try {
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    const notification = user.notifications.id(notificationId);
+    if (!notification) {
+      return res.status(404).json({ success: false, message: "Notification not found" });
+    }
+
+    notification.read = true;
+    await user.save();
+
+    res.json({ success: true, user, message: "Notification marked as read" });
+  } catch (error) {
+    console.error("Error updating notification:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+}
+
+//to delete notification
+const deleteNotification = async (req, res) => {
+  const { userId } = req.user;
+  const { notificationId } = req.body;
+
+  if (!userId || !notificationId) {
+    return res.status(400).json({ success: false, message: "Invalid request" });
+  }
+
+  try {
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    const notification = user.notifications.id(notificationId);
+    if (!notification) {
+      return res.status(404).json({ success: false, message: "Notification not found" });
+    }
+
+    user.notifications.pull(notificationId);
+    await user.save();
+
+    res.json({ success: true, user, message: "Notification deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting notification:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+//to mark all as read
+const markAllNotificationsAsRead = async (req, res) => {
+  const { userId } = req.user;
+
+  if (!userId) {
+    return res.status(400).json({ success: false, message: "User ID not found" });
+  }
+
+  try {
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    user.notifications.forEach(notification => {
+      notification.read = true;
+    });
+
+    await user.save();
+
+    res.json({ success: true, message: "All notifications marked as read" });
+  } catch (error) {
+    console.error("Error marking all notifications as read:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
 
 
 module.exports = {
@@ -236,4 +356,9 @@ module.exports = {
   trackStreak,
   getNotifications,
   updateUserProfile,
+  updateAvatar,
+  deleteNotification,
+  markAsRead,
+  newNotification,
+  markAllNotificationsAsRead
 };
