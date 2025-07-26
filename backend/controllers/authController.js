@@ -405,7 +405,8 @@ const GoogleLogin = async (req, res) => {
       user.notifications.push({
         type: "welcome",
         title: `🎉Welcome ${name} to Learnexa!`,
-        message: "We're thrilled to have you here! 🚀 Start exploring the amazing features we've built just for you.",
+        message:
+          "We're thrilled to have you here! 🚀 Start exploring the amazing features we've built just for you. Here are some things you can do:\n\n• Complete your profile to get personalized recommendations\n• Explore courses in your areas of interest\n• Join community discussions\n• Set up your learning goals",
         createdAt: new Date(),
         read: false,
       });
@@ -481,7 +482,8 @@ const register = async (req, res) => {
     newUser.notifications.push({
       type: "welcome",
       title: `🎉Welcome ${name} to Learnexa!`,
-      message: "We're thrilled to have you here! 🚀 Start exploring the amazing features we've built just for you.",
+      message:
+        "We're thrilled to have you here! 🚀 Start exploring the amazing features we've built just for you. Here are some things you can do:\n\n• Complete your profile to get personalized recommendations\n• Explore courses in your areas of interest\n• Join community discussions\n• Set up your learning goals",
       createdAt: new Date(),
       read: false,
     });

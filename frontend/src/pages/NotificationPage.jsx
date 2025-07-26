@@ -270,7 +270,7 @@ const markAllAsRead = async () => {
         <div className="container mx-auto px-4 py-8">
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-2">
+              <h1 className="text-2xl md:text-3xl  flex items-center gap-2">
                 <Bell className="w-6 h-6" />
                 Notifications
               </h1>
@@ -280,22 +280,7 @@ const markAllAsRead = async () => {
                   : "Important announcements and updates"}
               </p>
             </div>
-            <button
-              className={`p-2 rounded-full ${
-                isMuted
-                  ? "bg-zinc-200 dark:bg-zinc-700"
-                  : "bg-blue-100 dark:bg-blue-900/30"
-              }`}
-              aria-label={
-                isMuted ? "Unmute notifications" : "Mute notifications"
-              }
-            >
-              {isMuted ? (
-                <BellOff className="w-5 h-5 text-zinc-600 dark:text-zinc-300" />
-              ) : (
-                <Bell className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-              )}
-            </button>
+           
           </div>
 
           {/* Tabs */}
@@ -407,7 +392,7 @@ const markAllAsRead = async () => {
                           className={`text-sm text-zinc-600 dark:text-zinc-300 mt-1 ${
                             expandedNotifications[notification.id]
                               ? ""
-                              : "line-clamp-2"
+                              : "line-clamp-3"
                           }`}
                           onClick={() =>
                             toggleExpandNotification(notification.id)
