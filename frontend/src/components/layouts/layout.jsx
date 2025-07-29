@@ -213,6 +213,7 @@ import Sidebar from "../SideBar";
 import { useLocation } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import Footer from "../footer";
+import StudyTimerModal from "../modal/StudytimerModal";
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -292,6 +293,7 @@ const Layout = ({ children }) => {
           isMobile={isMobile}
         />
         <main className="main-content scrollbar-custom dark:bg-black flex-1 overflow-y-auto">
+          <StudyTimerModal/>
           {children}
           <Footer />
         </main>

@@ -22,6 +22,8 @@ import {
   Award,
   Plus,
   X,
+  Eye,
+  Info,
 } from "lucide-react";
 import axios from "axios";
 import { AppContext } from "../../context/AppContext";
@@ -31,12 +33,12 @@ import {useNavigate} from 'react-router-dom';
 
 const QuizGeneration = () => {
   const [difficultyLevel, setDifficultyLevel] = useState("beginner");
-  const [questionsCount, setQuestionsCount] = useState(10);
+  const [questionsCount, setQuestionsCount] = useState(5);
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
   const [questionTypes, setQuestionTypes] = useState("mcq");
   const [includeImages, setIncludeImages] = useState(false);
   const [includeExplanations, setIncludeExplanations] = useState(true);
-  const [quizTimer, setquizTimer] = useState(0);
+  const [quizTimer, setquizTimer] = useState(10);
   const [quizReady, setquizReady] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
     const [topic, setTopic] = useState("");
@@ -69,7 +71,7 @@ const QuizGeneration = () => {
       name: "Quick Practice",
       questions: 5,
       difficultyLevel: "intermediate",
-      quizTimer: 10,
+      quizTimer: 15,
       type: "mcq",
       bgGradient:
         "bg-gradient-to-br from-violet-600 via-purple-600 to-blue-600",
@@ -86,7 +88,7 @@ const QuizGeneration = () => {
       name: "Flash Cards",
       questions: 15,
       difficultyLevel: "beginner",
-      quizTimer: 0,
+      quizTimer: 5,
       type: "mixed",
       bgGradient: "bg-gradient-to-r from-green-500 to-teal-500",
     },
@@ -227,7 +229,7 @@ const QuizGeneration = () => {
          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
            <div>
              <h2 className="text-lg md:text-xl font-bold text-gray-800 dark:text-white">
-               {currentQuiz.topic || topic}
+               {currentQuiz.quiz_title || topic}
              </h2>
              <div className="flex flex-wrap items-center gap-2 mt-2">
                <span className="text-xs md:text-sm px-2 md:px-3 py-1 rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200">
@@ -314,7 +316,7 @@ const QuizGeneration = () => {
                <input
                  type="text"
                  id="topic"
-                 className="w-full px-4 py-3 text-sm md:text-base border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-black dark:text-white transition-all"
+                 className="w-full  px-4 py-3 text-sm  border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-black dark:text-white transition-all"
                  placeholder="e.g. JavaScript Fundamentals, Organic Chemistry, World War II"
                  value={topic}
                  onChange={handleTopicChange}
@@ -336,7 +338,7 @@ const QuizGeneration = () => {
                <div className="relative">
                  <select
                    id="difficulty"
-                   className="w-full px-4 py-3 text-sm md:text-base border border-gray-300 dark:border-gray-600 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-black dark:text-white transition-all"
+                   className="w-full px-4 py-3 text-sm  border border-gray-300 dark:border-gray-600 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-black dark:text-white transition-all"
                    value={difficultyLevel}
                    onChange={(e) => setDifficultyLevel(e.target.value)}
                  >
@@ -363,7 +365,7 @@ const QuizGeneration = () => {
                <div className="relative">
                  <select
                    id="questions"
-                   className="w-full px-4 py-3 text-sm md:text-base border border-gray-300 dark:border-gray-600 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-black dark:text-white transition-all"
+                   className="w-full px-4 py-3 text-sm  border border-gray-300 dark:border-gray-600 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-black dark:text-white transition-all"
                    value={questionsCount}
                    onChange={(e) => setQuestionsCount(parseInt(e.target.value))}
                  >
@@ -372,6 +374,63 @@ const QuizGeneration = () => {
                        {num} questions
                      </option>
                    ))}
+                 </select>
+                 <ChevronDown
+                   size={16}
+                   className="absolute right-4 top-3.5 text-gray-500 dark:text-gray-400 pointer-events-none"
+                 />
+               </div>
+             </div>
+
+             <div>
+               <label
+                 htmlFor="question-type"
+                 className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+               >
+                 Question Type
+               </label>
+               <div className="relative">
+                 <select
+                   id="question-type"
+                   className="w-full px-4 py-3 text-sm  border border-gray-300 dark:border-gray-600 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-black dark:text-white"
+                   value={questionTypes}
+                   onChange={(e) => setQuestionTypes(e.target.value)}
+                 >
+                   <option value="mcq">Multiple Choice</option>
+                   <option value="true-false">True/False</option>
+                   <option value="short-answer">Short Answer</option>
+                   <option value="fill-blank">Fill in the Blank</option>
+                   <option value="mixed">Mixed Types</option>
+                 </select>
+                 <ChevronDown
+                   size={16}
+                   className="absolute right-4 top-3.5 text-gray-500 dark:text-gray-400 pointer-events-none"
+                 />
+               </div>
+             </div>
+
+             <div>
+               <label
+                 htmlFor="grade"
+                 className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+               >
+                 Grade
+               </label>
+               <div className="relative">
+                 <select
+                   id="grade"
+                   className="w-full px-4 py-3 text-sm  border border-gray-300 dark:border-gray-600 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-black dark:text-white"
+                   value={grade}
+                   onChange={(e) => setGrade(e.target.value)}
+                 >
+                   <option value="class-1to5">Class 1 to 5</option>
+                   <option value="class-6to10">Class 5 to 10</option>
+                   <option value="class-11">Class 11</option>
+                   <option value="class-12">Class 12</option>
+                   <option value="college-level">College Level</option>
+                   <option value="placement-level">Placements</option>
+                   <option value="upsc">UPSC</option>
+                   <option value="jee/neet">JEE/NEET</option>
                  </select>
                  <ChevronDown
                    size={16}
@@ -398,58 +457,6 @@ const QuizGeneration = () => {
 
              {showAdvancedOptions && (
                <div className="mt-4 space-y-4 px-4 pt-4 pb-2 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-zinc-900 transition-all">
-                 <div>
-                   <label
-                     htmlFor="question-type"
-                     className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                   >
-                     Question Type
-                   </label>
-                   <div className="relative">
-                     <select
-                       id="question-type"
-                       className="w-full px-4 py-3 text-sm md:text-base border border-gray-300 dark:border-gray-600 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-black dark:text-white"
-                       value={questionTypes}
-                       onChange={(e) => setQuestionTypes(e.target.value)}
-                     >
-                       <option value="mcq">Multiple Choice</option>
-                       <option value="true-false">True/False</option>
-                       <option value="short-answer">Short Answer</option>
-                       <option value="fill-blank">Fill in the Blank</option>
-                       <option value="mixed">Mixed Types</option>
-                     </select>
-                     <ChevronDown
-                       size={16}
-                       className="absolute right-4 top-3.5 text-gray-500 dark:text-gray-400 pointer-events-none"
-                     />
-                   </div>
-                 </div>
-
-                 <div>
-                   <label
-                     htmlFor="grade"
-                     className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                   >
-                     Grade
-                   </label>
-                   <div className="relative">
-                     <select
-                       id="grade"
-                       className="w-full px-4 py-3 text-sm md:text-base border border-gray-300 dark:border-gray-600 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-black dark:text-white"
-                       value={grade}
-                       onChange={(e) => setGrade(e.target.value)}
-                     >
-                       <option value="class-1">Class 1</option>
-                       <option value="class-2">Class 2</option>
-                       {/* ... other grade options ... */}
-                     </select>
-                     <ChevronDown
-                       size={16}
-                       className="absolute right-4 top-3.5 text-gray-500 dark:text-gray-400 pointer-events-none"
-                     />
-                   </div>
-                 </div>
-
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                    {/* Checkboxes */}
                    <div className="flex items-center">
@@ -585,108 +592,191 @@ const QuizGeneration = () => {
          </div>
 
          {/* Preview Panel (hidden on mobile) */}
+         {/* Right Panel - Preview */}
          <div className="hidden lg:block z-10">
            <div className="sticky top-6">
-             <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 shadow-lg">
-               <div className="bg-gradient-to-r from-[#f8ff00] to-[#3ad59f] rounded-xl px-4 py-2 mb-5">
-                 <h3 className="text-xl font-bold text-gray-900 dark:text-black tracking-wide text-center">
-                   Quiz Preview
-                 </h3>
-               </div>
-
-               <div className="space-y-5">
-                 {/* Topic Section */}
-                 <div className="bg-indigo-100 dark:bg-gray-800/50 rounded-lg p-4">
-                   <div className="text-sm font-medium text-indigo-800 dark:text-indigo-300 flex items-center gap-1">
-                     Topic
+             {isGenerating ? (
+               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-200 dark:border-gray-700 p-6">
+                 <div className="flex flex-col items-center justify-center py-8">
+                   <div className="relative mb-6">
+                     <div className="w-16 h-16 border-4 border-blue-100 rounded-full"></div>
+                     <div className="absolute top-0 left-0 w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
                    </div>
-                   <div className="text-gray-900 dark:text-white mt-1 truncate font-semibold">
-                     {topic || "Not specified"}
-                   </div>
-                 </div>
-
-                 {/* Grid Stats */}
-                 <div className="grid grid-cols-2 gap-4">
-                   {[
-                     { label: "Questions", value: questionsCount },
-                     {
-                       label: "Difficulty",
-                       value: difficultyLevel,
-                       isCap: true,
-                     },
-                     {
-                       label: "Type",
-                       value:
-                         questionTypes === "mcq"
-                           ? "MCQ"
-                           : questionTypes === "true-false"
-                           ? "True/False"
-                           : questionTypes === "short-answer"
-                           ? "Short Answer"
-                           : questionTypes === "fill-blank"
-                           ? "Fill Blank"
-                           : "Mixed",
-                     },
-                     {
-                       label: "Time Limit",
-                       value: quizTimer ? `${quizTimer} min` : "None",
-                     },
-                   ].map(({ label, value, isCap }) => (
+                   <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-2">
+                     Generating Your Quiz
+                   </h3>
+                   <p className="text-sm text-gray-600 dark:text-gray-400 text-center max-w-xs">
+                     This usually takes 10-30 seconds depending on complexity
+                   </p>
+                   <div className="mt-4 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                      <div
-                       key={label}
-                       className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4"
-                     >
-                       <div className="text-xs text-gray-500 dark:text-gray-400">
-                         {label}
-                       </div>
-                       <div
-                         className={`text-sm md:text-lg font-semibold text-gray-800 dark:text-white ${
-                           isCap ? "capitalize" : ""
-                         }`}
-                       >
-                         {value}
-                       </div>
-                     </div>
-                   ))}
-                 </div>
-
-                 {/* Features */}
-                 <div>
-                   <div className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                     🌟 Features
-                   </div>
-                   <div className="space-y-2">
-                     <FeatureItem
-                       active={includeImages}
-                       label="Includes images"
-                     />
-                     <FeatureItem
-                       active={includeExplanations}
-                       label="Includes explanations"
-                     />
+                       className="bg-blue-600 h-2 rounded-full animate-pulse"
+                       style={{ width: "70%" }}
+                     ></div>
                    </div>
                  </div>
-
-                 {/* Tags */}
-                 {tags.length > 0 && (
-                   <div>
-                     <div className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                       🏷️ Tags
-                     </div>
-                     <div className="flex flex-wrap gap-2">
-                       {tags.map((tag) => (
-                         <span
-                           key={tag}
-                           className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600"
-                         >
-                           🔖 {tag}
-                         </span>
-                       ))}
-                     </div>
-                   </div>
-                 )}
                </div>
-             </div>
+             ) : (
+               <>
+                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-200 dark:border-gray-700">
+                   {/* Preview Header */}
+                   <div className="bg-gradient-to-r from-blue-500 to-indigo-600 px-5 py-4">
+                     <h2 className="font-semibold text-lg text-white flex items-center gap-2">
+                       <Eye size={18} />
+                       Live Preview
+                     </h2>
+                   </div>
+
+                   {/* Preview Content */}
+                   <div className="p-5 space-y-5">
+                     {/* Preview Card */}
+                     <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+                       <div className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
+                         Quiz Preview
+                       </div>
+                       <h3 className="text-lg font-semibold text-gray-800 dark:text-white truncate">
+                         {topic || "Your Quiz Title"}
+                       </h3>
+                       <div className="mt-3 flex flex-wrap gap-2">
+                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                           {questionsCount} questions
+                         </span>
+                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 capitalize">
+                           {difficultyLevel}
+                         </span>
+                         {quizTimer > 0 && (
+                           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+                             ⏱️ {quizTimer} min
+                           </span>
+                         )}
+                       </div>
+                     </div>
+
+                     {/* Settings Summary */}
+                     <div className="space-y-4">
+                       <div>
+                         <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
+                           Quiz Settings
+                         </h4>
+                         <div className="grid grid-cols-2 gap-3">
+                           <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3">
+                             <div className="text-xs text-gray-500 dark:text-gray-400">
+                               Type
+                             </div>
+                             <div className="text-sm font-medium text-gray-800 dark:text-white capitalize">
+                               {questionTypes === "mcq"
+                                 ? "Multiple Choice"
+                                 : questionTypes === "true-false"
+                                 ? "True/False"
+                                 : questionTypes === "short-answer"
+                                 ? "Short Answer"
+                                 : questionTypes === "fill-blank"
+                                 ? "Fill Blank"
+                                 : "Mixed"}
+                             </div>
+                           </div>
+                           <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3">
+                             <div className="text-xs text-gray-500 dark:text-gray-400">
+                               Time
+                             </div>
+                             <div className="text-sm font-medium text-gray-800 dark:text-white">
+                               {quizTimer ? `${quizTimer} min` : "Unlimited"}
+                             </div>
+                           </div>
+                           <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3">
+                             <div className="text-xs text-gray-500 dark:text-gray-400">
+                               Grade
+                             </div>
+                             <div className="text-sm font-medium text-gray-800 dark:text-white capitalize">
+                               {grade === "placements"
+                                 ? "Placements"
+                                 : grade === "class-1"
+                                 ? "Class 1"
+                                 : grade === "class-2"
+                                 ? "Class 2"
+                                 : grade}
+                             </div>
+                           </div>
+                         </div>
+                       </div>
+
+                       {/* Features */}
+                       <div>
+                         <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
+                           Features
+                         </h4>
+                         <div className="space-y-2">
+                           <div className="flex items-center gap-2">
+                             <div
+                               className={`w-2 h-2 rounded-full ${
+                                 includeImages ? "bg-green-500" : "bg-gray-300"
+                               }`}
+                             ></div>
+                             <span className="text-sm text-gray-700 dark:text-gray-300">
+                               Images
+                             </span>
+                           </div>
+                           <div className="flex items-center gap-2">
+                             <div
+                               className={`w-2 h-2 rounded-full ${
+                                 includeExplanations
+                                   ? "bg-green-500"
+                                   : "bg-gray-300"
+                               }`}
+                             ></div>
+                             <span className="text-sm text-gray-700 dark:text-gray-300">
+                               Explanations
+                             </span>
+                           </div>
+                         </div>
+                       </div>
+
+                       {/* Tags */}
+                       {tags.length > 0 && (
+                         <div>
+                           <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
+                             Tags
+                           </h4>
+                           <div className="flex flex-wrap gap-2">
+                             {tags.map((tag) => (
+                               <span
+                                 key={tag}
+                                 className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-600 dark:text-gray-200"
+                               >
+                                 {tag}
+                               </span>
+                             ))}
+                           </div>
+                         </div>
+                       )}
+                     </div>
+                   </div>
+                 </div>
+
+                 {/* Help Card */}
+                 <div className="mt-6 bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
+                   <div className="flex items-start gap-3">
+                     <Info
+                       size={18}
+                       className="text-blue-500 mt-0.5 flex-shrink-0"
+                     />
+                     <div>
+                       <h4 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-1">
+                         Quick Tips
+                       </h4>
+                       <ul className="text-xs text-blue-700 dark:text-blue-300 space-y-1 list-disc list-inside">
+                         <li>Be specific with your topic for better results</li>
+                         <li>Use tags to organize your quizzes</li>
+                         <li>Try different difficulty levels</li>
+                         <li>
+                           Select appropriate grade level for targeted questions
+                         </li>
+                       </ul>
+                     </div>
+                   </div>
+                 </div>
+               </>
+             )}
            </div>
          </div>
        </div>

@@ -43,6 +43,16 @@ const userAttemptSchema = new mongoose.Schema({
       correct: Number,
       totalQuestions: Number,
       percentage: Number,
+      timeSpent: Number, // in seconds
+      questions: [
+        {
+          questionId: { type: mongoose.Schema.Types.ObjectId, ref: "Question" },
+          questionText: String,
+          selectedOption: String,
+          correctOption: String,
+          isCorrect: Boolean,
+        },
+      ],
       submittedAt: { type: Date, default: Date.now },
     },
   ],
@@ -53,10 +63,20 @@ const quizSchema = new mongoose.Schema(
     quiz_title: { type: String, required: true },
     questions: [questionSchema],
     attempts: [userAttemptSchema],
-    topic: { type: String, required: true },
+    topic: { type: String, },
     grade: { type: String, required: true },
     question_type: { type: String, required: true },
-    quiz_timer:{type: Number , default: 0},
+    quiz_timer: { type: Number, default: 0 },
+    quiz_type: {
+      type: String,
+      enum: ["standard-quiz", "coding-quiz", "pdf-quiz"],
+      default: "standard-quiz",
+      required: true,
+    },
+    published: {
+      type: Boolean,
+      default: false,
+    },
     difficultyLevel: {
       type: String,
 

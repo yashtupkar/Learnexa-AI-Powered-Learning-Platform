@@ -16,6 +16,7 @@ import { logout } from "../redux/authSlice";
 import Notifications from "./Notification";
 import { DropdownMenu } from "./ProfileDropDown";
 import { useMediaQuery } from "react-responsive";
+import StudyTimerModal from "./modal/StudytimerModal";
 
 export default function DashboardNav({
   pageTitle,
@@ -83,7 +84,7 @@ export default function DashboardNav({
           {/* Right Section - Actions */}
           <div className="flex items-center space-x-3 sm:space-x-4">
             {/* Mobile Search Toggle */}
-            
+           
 
             {/* Create New Button (Desktop) */}
             <button

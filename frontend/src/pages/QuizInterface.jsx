@@ -307,6 +307,46 @@ const QuizInterface = () => {
     navigate(`/quiz/${quizId}?tab=question1`, { replace: true });
   };
 
+  const calculateDetailedScore = () => {
+    // 1. Handle case where quiz data isn't loaded
+    if (!quizData?.questions) {
+      return {
+        correct: 0,
+        totalQuestions: 0,
+        percentage: 0,
+        questions: [],
+        submittedAt: new Date(),
+      };
+    }
+
+    // 2. Map through each question to create detailed results
+    const questionsWithResults = quizData.questions.map((question, index) => {
+      const isCorrect = isAnswerCorrect(index);
+      return {
+        questionId: question._id, // From quiz data
+        questionText: question.question_text, // From quiz data
+        selectedOption: answers[index] || null, // From user's answers
+        correctOption: question.correct_answer, // From quiz data
+        isCorrect, // Calculated
+      };
+    });
+
+    // 3. Calculate summary statistics
+    const correct = questionsWithResults.filter((q) => q.isCorrect).length;
+    const totalQuestions = quizData.questions.length;
+    const percentage = Math.round((correct / totalQuestions) * 100);
+
+    // 4. Return complete score object
+    return {
+      correct,
+      totalQuestions,
+      percentage,
+      questions: questionsWithResults,
+      submittedAt: new Date(), // Current timestamp
+      timeSpent, // Optional: seconds taken
+    };
+  };
+
 
   const handleSubmit = async () => {
     const scoreDetails = calculateDetailedScore();
@@ -316,10 +356,9 @@ const QuizInterface = () => {
         userId: user._id,
         score: scoreDetails,
       });
-      setShowResults(true);
+      navigate(`/quiz-result/${quizId}`);
       setShowConfetti(scoreDetails.percentage >= 90);
       setTimeout(() => setShowConfetti(false), 5000);
-      navigate(`/quiz/${quizId}?tab=results`, { replace: true });
     } catch (error) {
       console.error("Error submitting quiz:", error);
       setError("Failed to submit quiz");
@@ -348,27 +387,7 @@ const QuizInterface = () => {
     }, 0);
   };
 
-  const calculateDetailedScore = () => {
-    if (!quizData?.questions) {
-      return {
-        correct: 0,
-        totalQuestions: 0,
-        percentage: 0,
-      };
-    }
 
-    const correct = calculateScore();
-    const totalQuestions = quizData.questions.length;
-    const percentage = Math.round((correct / totalQuestions) * 100);
-
-    return {
-      correct,
-      totalQuestions,
-      percentage,
-      timeSpent,
-      attempts: 1,
-    };
-  };
 
   const capitalize = (val) => {
     if (val === undefined || val === null) return "";
@@ -480,27 +499,27 @@ const QuizInterface = () => {
   }
 
   // Results Screen
-  if (showResults && quizData) {
-    const scoreDetails = calculateDetailedScore();
-    return (
-      <QuizResults
-        score={scoreDetails.correct}
-        quizData={quizData}
-        answers={answers}
-        isAnswerCorrect={isAnswerCorrect}
-        showConfetti={showConfetti}
-        expandedResults={expandedResults}
-        setExpandedResults={setExpandedResults}
-        resetQuiz={resetQuiz}
-        setCurrentQuestion={setCurrentQuestion}
-        setShowResults={setShowResults}
-        setIsReviewing={setIsReviewing}
-        timeSpent={timeSpent}
-        attempts={1}
-        darkMode={darkMode}
-      />
-    );
-  }
+  // if (showResults && quizData) {
+  //   const scoreDetails = calculateDetailedScore();
+  //   return (
+  //     <QuizResults
+  //       score={scoreDetails.correct}
+  //       quizData={quizData}
+  //       answers={answers}
+  //       isAnswerCorrect={isAnswerCorrect}
+  //       showConfetti={showConfetti}
+  //       expandedResults={expandedResults}
+  //       setExpandedResults={setExpandedResults}
+  //       resetQuiz={resetQuiz}
+  //       setCurrentQuestion={setCurrentQuestion}
+  //       setShowResults={setShowResults}
+  //       setIsReviewing={setIsReviewing}
+  //       timeSpent={timeSpent}
+  //       attempts={1}
+  //       darkMode={darkMode}
+  //     />
+  //   );
+  // }
 
   // Don't render main interface if no quiz data
   if (!quizData) {

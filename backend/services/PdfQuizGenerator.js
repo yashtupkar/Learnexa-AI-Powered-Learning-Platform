@@ -119,7 +119,7 @@ const generateQuizFromPdf = async ({
   questionTypes,
   grade,
 }) => {
-  const API_KEY = process.env.OPENROUTER_API_KEY_EXTRA;
+  const API_KEY = process.env.OPENROUTER_API_KEY;
   if (!API_KEY) throw new Error("Missing API key");
 
   try {

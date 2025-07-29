@@ -27,6 +27,8 @@ import { Toaster } from "react-hot-toast";
 import SettingsPage from "./components/SettingPage";
 import NotificationPage from "./pages/NotificationPage";
 import ComingSoonPage from "./pages/ComingSoonPage";
+import PracticeArena from "./pages/PracticeArenaPage";
+import QuizResults from "./components/QuizInterface/QuizResults";
 
 // Protected route component
 
@@ -46,11 +48,14 @@ const App = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/create" element={<CreateQuiz />} />
         <Route path="/quiz/:quizId" element={<QuizInterface />} />
+        <Route path="/quiz-result/:quizId" element={<QuizResults />} />
+
         <Route path="/my-quizzes" element={<MyQuizzes />} />
         <Route path="/challenge/:id" element={<ChallengeFriendPage />} />
         <Route path="/current-affairs" element={<CurrentAffairs />} />
-        {/* <Route path="/interview" element={<HRInterviewPage />} /> */}
+        <Route path="/study-plan" element={<HRInterviewPage />} />
         <Route path="/interview" element={<ComingSoonPage />} />
+        <Route path="/practice-arena" element={<PracticeArena />} />
 
         <Route path="/streak" element={<StreakMap />} />
         <Route path="/settings" element={<SettingsPage />} />
