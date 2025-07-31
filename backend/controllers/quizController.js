@@ -9,7 +9,6 @@ const fs = require("fs");
 const Quiz = require("../models/quizModel");
 const Tesseract = require("tesseract.js");
 const userModel = require("../models/userModel");
-const getTopicSuggestions = require("../services/TopicSuggestion");
 
 const pdf = require("pdf-parse");
 
@@ -332,12 +331,7 @@ const GenerateQuizFromPdf = async (req, res) => {
   }
 };
 
-const SuggestTopic = async (req, res) => {
-  const { input } = req.body;
-  const suggestions = await getTopicSuggestions(input);
 
-  res.json({ suggestions });
-};
 
 //fetch all quiz
 const getAllQuiz = async (req, res) => {
@@ -643,7 +637,7 @@ module.exports = {
   GenerateQuiz,
   GenerateCodingQuiz,
   GenerateQuizFromPdf,
-  SuggestTopic,
+
   getAllQuiz,
   getQuizById,
   submitQuiz,

@@ -26,6 +26,8 @@ const PORT = process.env.PORT || 3000;
 const allowedOrigins = [
   "http://localhost:5173",
   "https://learnexa.vercel.app",
+  "https://www.learnexa.xyz",
+  "https://learnexa.xyz",
 ];
 // Middleware
 app.use(express.json());
@@ -56,7 +58,6 @@ app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use('/api/quiz', quizRouter);
 app.use('/api/news', newsRouter);
-app.use('/api/interview', interviewRouter);
 app.use('/api/indiabix', indiabixRouter);
 app.use('/api/notification', notificationRouter)
 

@@ -996,6 +996,8 @@ const Dashboard = () => {
     setDailyChallenge(null);
   };
 
+  
+
   return (
     <Layout>
       {!user?.avatar && (
@@ -1004,18 +1006,7 @@ const Dashboard = () => {
           onClose={() => setIsAvatarPopupOpen(false)}
         />
       )}
-      {showTimer && (
-        <StudyTimerModal
-          isOpen={showTimer}
-          onClose={() => setShowTimer(false)}
-          onComplete={() => {
-            setStudyTime((prev) => prev + 25);
-            toast.success(
-              "Great study session! 25 minutes added to your stats."
-            );
-          }}
-        />
-      )}
+     
       <div className="min-h-screen p-2 sm:p-3 md:p-6 bg-gray-50 dark:bg-black">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center">
