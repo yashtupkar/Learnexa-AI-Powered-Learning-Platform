@@ -347,6 +347,42 @@ const markAllNotificationsAsRead = async (req, res) => {
   }
 };
 
+//to insert youtubeApiKey
+const addYoutubeApiKey = async (req, res) => {
+  try {
+    const { userId } = req.user;
+    const { youtubeApiKey } = req.body;
+
+    if (!userId || !youtubeApiKey) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid request" });
+    }
+
+    const user = await userModel.findById(userId);
+     if (!user) {
+       return res
+         .status(404)
+         .json({ success: false, message: "User not found" });
+     }
+    if (user.youtubeApiKey) {
+       res.json("api key is already saved")
+    }
+    else {
+          user.youtubeApiKey = youtubeApiKey;
+
+    }
+    user.save();
+    res.json({
+      success: true,
+      message: "Api saved successfully",
+      user
+    })
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 
 module.exports = {
   getUserData,
@@ -360,5 +396,6 @@ module.exports = {
   deleteNotification,
   markAsRead,
   newNotification,
+  addYoutubeApiKey,
   markAllNotificationsAsRead
 };

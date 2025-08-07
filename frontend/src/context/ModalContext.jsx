@@ -6,6 +6,7 @@ import QuizGeneratingModal from "../components/modal/QuizGeneratingModal";
 import QuizOpenModal from "../components/modal/QuizOpenModal";
 import StreakModal from "../components/modal/StreakModal";
 import UpgradeModal from "../components/modal/UpgradeModal";
+import ReportIssueModal from "../components/modal/ReportIssueModal";
 
 
 export const ModalContext = createContext();
@@ -17,6 +18,7 @@ export const MODAL_TYPES = {
   QUIZ_OPEN: "quiz_open",
   STREAK: "streak",
   UPGRADE: "upgrade",
+  REPORT: "report_issue",
 };
 
 const MODAL_COMPONENTS = {
@@ -26,6 +28,7 @@ const MODAL_COMPONENTS = {
   [MODAL_TYPES.QUIZ_OPEN]: QuizOpenModal,
   [MODAL_TYPES.STREAK]: StreakModal,
   [MODAL_TYPES.UPGRADE]: UpgradeModal,
+  [MODAL_TYPES.REPORT]: ReportIssueModal,
 };
 
 export const ModalProvider = ({ children }) => {

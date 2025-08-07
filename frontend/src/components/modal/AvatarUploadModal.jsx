@@ -95,7 +95,7 @@ const AvatarUploadPopup = ({ isOpen, onClose }) => {
               stiffness: 300,
               delay: 0.1,
             }}
-            className="relative bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-700/50 rounded-2xl shadow-xl overflow-hidden w-full max-w-md"
+            className="relative bg-white dark:bg-gradient-to-l dark:from-gray-900 dark:to-gray-950 border border-gray-200 dark:border-gray-700/50 rounded-2xl shadow-xl overflow-hidden w-full max-w-md"
           >
             <div className="relative p-6">
               <button
@@ -111,13 +111,15 @@ const AvatarUploadPopup = ({ isOpen, onClose }) => {
 
               <div className="flex flex-col items-center mb-6">
                 <div className="relative w-32 h-32 rounded-full bg-gray-200 dark:bg-gray-800 mb-6 overflow-hidden border-4 border-gray-100 dark:border-gray-700">
-                 {previewUrl || user.avatar ?  <img
-                    src={previewUrl || user.avatar }
-                    className="w-full h-full object-cover"
-                    alt="Preview"
-                  /> : 
-                    <Avatar name={ user.name} />
-                  }
+                  {previewUrl || user.avatar ? (
+                    <img
+                      src={previewUrl || user.avatar}
+                      className="w-full h-full object-cover"
+                      alt="Preview"
+                    />
+                  ) : (
+                    <Avatar name={user.name} />
+                  )}
                   {isUploading && (
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>

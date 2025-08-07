@@ -79,17 +79,14 @@ export default function DashboardNav({
             </h1>
           </div>
 
-        
-
           {/* Right Section - Actions */}
           <div className="flex items-center space-x-3 sm:space-x-4">
             {/* Mobile Search Toggle */}
-           
 
             {/* Create New Button (Desktop) */}
             <button
               onClick={() => navigate("/create")}
-              className="hidden md:flex items-center space-x-1.5 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors duration-200"
+              className="hidden md:flex items-center space-x-1.5 px-3 py-2 bg-gradient-to-br from-indigo-600 to-indigo-400 cursor-pointer text-white text-sm font-medium rounded-lg transition-colors duration-200"
             >
               <Plus size={16} />
               <span>Create</span>
@@ -97,15 +94,14 @@ export default function DashboardNav({
 
             {/* Help Center */}
             <button
-              onClick={() => navigate("/help")}
-              className="hidden sm:block p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100/80 dark:hover:bg-gray-800/80 transition-all duration-200"
+              onClick={() => navigate("/help-center")}
+              className="hidden sm:block p-2 rounded-lg cursor-pointer text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100/80 dark:hover:bg-gray-800/80 transition-all duration-200"
               aria-label="Help"
             >
               <HelpCircle size={20} />
             </button>
 
             {/* Messages */}
-
 
             {/* Theme Toggle */}
             <div className="">
@@ -114,7 +110,7 @@ export default function DashboardNav({
 
             {/* Notifications */}
             {/* Notifications Panel */}
-            <Notifications/>
+            <Notifications />
 
             {/* User Avatar with Dropdown */}
             <div className="sm:ml-2">
@@ -127,8 +123,6 @@ export default function DashboardNav({
             </div>
           </div>
         </div>
-
-       
       </div>
     </header>
   );

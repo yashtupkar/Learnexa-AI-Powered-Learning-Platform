@@ -725,6 +725,8 @@ import toast from "react-hot-toast";
 import fire from "../assets/Fire.json";
 import AvatarUploadPopup from "../components/modal/AvatarUploadModal";
 import StudyTimerModal from "../components/modal/StudytimerModal";
+import { Helmet } from "react-helmet-async";
+import GlobalLoader from "../components/GlobalLoader";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -1000,17 +1002,21 @@ const Dashboard = () => {
 
   return (
     <Layout>
+    
+      <Helmet>
+        <title>Dashboard | Learnexa</title>
+      </Helmet>
       {!user?.avatar && (
         <AvatarUploadPopup
           isOpen={isAvatarPopupOpen}
           onClose={() => setIsAvatarPopupOpen(false)}
         />
       )}
-     
+
       <div className="min-h-screen p-2 sm:p-3 md:p-6 bg-gray-50 dark:bg-black">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center">
-            <div className="flex flex-row w-full gap-4 sm:gap-8 items-center mb-4 md:mb-10 animate-fadeIn">
+          <div className="flex flex-col justify-between md:flex-row items-center">
+            <div className="flex  flex-row w-fit  gap-4 sm:gap-8 items-center mb-4 md:mb-10 animate-fadeIn">
               <div className="relative group">
                 <Lottie
                   animationData={waveAnimation}
@@ -1255,10 +1261,6 @@ const Dashboard = () => {
                       <div className="absolute bottom-0 left-0 w-full h-0.5 bg-purple-500 scale-x-100 sm:scale-x-0 sm:group-hover:scale-x-100 transition-transform origin-left duration-500" />
                     </div>
                   </div>
-
-                
-
-                 
 
                   <CurrentAffairsSlider />
                   <UpgradeBanner />

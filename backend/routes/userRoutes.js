@@ -1,6 +1,6 @@
 const express = require("express");
 const userAuth = require("../middleware/userAuth");
-const { getUserData, trackStreak, getAllUsers, allUserAccordingStreak, getNotifications, updateUserProfile, getUserDetails, updateAvatar, deleteNotification, markAllNotificationsAsRead, markAsRead, newNotification } = require("../controllers/userController");
+const { getUserData, trackStreak, getAllUsers, allUserAccordingStreak, getNotifications, updateUserProfile, getUserDetails, updateAvatar, deleteNotification, markAllNotificationsAsRead, markAsRead, newNotification, addYoutubeApiKey } = require("../controllers/userController");
 
 const userRouter = express.Router();
 
@@ -17,6 +17,7 @@ userRouter.patch("/mark-as-read", userAuth, markAsRead);
 userRouter.post("/new-notification", userAuth, newNotification);
 userRouter.delete("/delete-notification", userAuth, deleteNotification);
 userRouter.post("/mark-all-notifications-as-read", userAuth, markAllNotificationsAsRead);
+userRouter.post("/youtube-api-setup", userAuth, addYoutubeApiKey);
 
 
 

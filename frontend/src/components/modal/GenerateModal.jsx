@@ -332,7 +332,7 @@ const GenerateModal = ({ isOpen, onClose }) => {
            stiffness: 300,
            delay: 0.1,
          }}
-         className="relative bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-700/50 rounded-2xl shadow-xl overflow-hidden w-full max-w-md md:max-w-2xl lg:max-w-3xl"
+         className="relative bg-white dark:bg-gradient-to-l dark:from-gray-900 dark:to-gray-950 border border-gray-200 dark:border-gray-700/50 rounded-2xl shadow-xl overflow-hidden w-full max-w-md md:max-w-2xl lg:max-w-3xl"
        >
          <div className="relative p-4 sm:p-6">
            <button

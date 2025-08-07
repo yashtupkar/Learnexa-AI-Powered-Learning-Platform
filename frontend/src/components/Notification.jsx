@@ -25,7 +25,6 @@ export default function Notifications() {
       );
 
       const receivedNotifications = response.data.notifications || [];
-      console.log(receivedNotifications);
       setNotifications(receivedNotifications);
       if (receivedNotifications.length === 0) {
         if (user?.name) {

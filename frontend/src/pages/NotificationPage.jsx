@@ -24,6 +24,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { userUpdate } from "../redux/authSlice";
+import { Helmet } from "react-helmet-async";
 
 const NotificationPage = () => {
   const [notifications, setNotifications] = useState([]);
@@ -266,6 +267,9 @@ const markAllAsRead = async () => {
 
   return (
     <Layout>
+      <Helmet>
+        <title>Notifications | Learnexa</title>
+      </Helmet>
       <div className="min-h-screen max-w-4xl mx-auto text-zinc-900 dark:text-zinc-100">
         <div className="container mx-auto px-4 py-8">
           <div className="flex justify-between items-center mb-8">
@@ -280,7 +284,6 @@ const markAllAsRead = async () => {
                   : "Important announcements and updates"}
               </p>
             </div>
-           
           </div>
 
           {/* Tabs */}
@@ -356,103 +359,106 @@ const markAllAsRead = async () => {
             </div>
           ) : (
             <div className="space-y-3">
-              {currentNotifications.slice().reverse().map((notification) => (
-                <div
-                  key={notification.id}
-                  className={`rounded-lg overflow-hidden transition-all duration-200 ${
-                    !notification.read && activeTab === "personal"
-                      ? `ring-1 ring-blue-500/30 ${getNotificationColor(
-                          notification.type
-                        )}`
-                      : "bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700"
-                  }`}
-                >
-                  <div className="p-4">
-                    <div className="flex items-start gap-3">
-                      <div className="p-2 rounded-full bg-white dark:bg-zinc-700 border border-zinc-200 dark:border-zinc-600">
-                        {getIconForType(notification.type)}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex justify-between items-start">
-                          <h3
-                            className={`font-medium truncate ${
-                              !notification.read && activeTab === "personal"
-                                ? "text-blue-600 dark:text-blue-400"
-                                : "text-zinc-900 dark:text-zinc-100"
-                            }`}
-                          >
-                            {notification.title}
-                          </h3>
-                          <span className="text-xs text-zinc-500 dark:text-zinc-400 whitespace-nowrap ml-2">
-                            {notification.time}
-                          </span>
+              {currentNotifications
+                .slice()
+                .reverse()
+                .map((notification) => (
+                  <div
+                    key={notification.id}
+                    className={`rounded-lg overflow-hidden transition-all duration-200 ${
+                      !notification.read && activeTab === "personal"
+                        ? `ring-1 ring-blue-500/30 ${getNotificationColor(
+                            notification.type
+                          )}`
+                        : "bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700"
+                    }`}
+                  >
+                    <div className="p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="p-2 rounded-full bg-white dark:bg-zinc-700 border border-zinc-200 dark:border-zinc-600">
+                          {getIconForType(notification.type)}
                         </div>
-
-                        <div
-                          className={`text-sm text-zinc-600 dark:text-zinc-300 mt-1 ${
-                            expandedNotifications[notification.id]
-                              ? ""
-                              : "line-clamp-3"
-                          }`}
-                          onClick={() =>
-                            toggleExpandNotification(notification.id)
-                          }
-                        >
-                          {formatMessage(notification.message)}
-                        </div>
-
-                        {notification.message &&
-                          notification.message.split("\n").length > 2 && (
-                            <button
-                              onClick={() =>
-                                toggleExpandNotification(notification.id)
-                              }
-                              className="text-xs mt-1 text-blue-600 dark:text-blue-400 hover:underline flex items-center"
+                        <div className="flex-1 min-w-0">
+                          <div className="flex justify-between items-start">
+                            <h3
+                              className={`font-medium truncate ${
+                                !notification.read && activeTab === "personal"
+                                  ? "text-blue-600 dark:text-blue-400"
+                                  : "text-zinc-900 dark:text-zinc-100"
+                              }`}
                             >
-                              {expandedNotifications[notification.id] ? (
-                                <>
-                                  <ChevronDown className="w-3 h-3 mr-1" /> Show
-                                  less
-                                </>
-                              ) : (
-                                <>
-                                  <ChevronRight className="w-3 h-3 mr-1" /> Read
-                                  more
-                                </>
-                              )}
-                            </button>
-                          )}
+                              {notification.title}
+                            </h3>
+                            <span className="text-xs text-zinc-500 dark:text-zinc-400 whitespace-nowrap ml-2">
+                              {notification.time}
+                            </span>
+                          </div>
 
-                        {activeTab === "personal" && (
-                          <div className="mt-3 flex gap-2 flex-wrap">
-                            {!notification.read && (
-                              <button
-                                onClick={() => markAsRead(notification._id)}
-                                className="text-xs px-3 py-1.5 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition-colors flex items-center gap-1"
-                              >
-                                <Check className="w-3 h-3" />
-                                Mark as read
-                              </button>
-                            )}
+                          <div
+                            className={`text-sm text-zinc-600 dark:text-zinc-300 mt-1 ${
+                              expandedNotifications[notification.id]
+                                ? ""
+                                : "line-clamp-3"
+                            }`}
+                            onClick={() =>
+                              toggleExpandNotification(notification.id)
+                            }
+                          >
+                            {formatMessage(notification.message)}
+                          </div>
 
-                            {notification.type !== "welcome" && (
+                          {notification.message &&
+                            notification.message.split("\n").length > 2 && (
                               <button
                                 onClick={() =>
-                                  deleteNotification(notification._id)
+                                  toggleExpandNotification(notification.id)
                                 }
-                                className="text-xs px-3 py-1.5 rounded-md bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-600 transition-colors flex items-center gap-1"
+                                className="text-xs mt-1 text-blue-600 dark:text-blue-400 hover:underline flex items-center"
                               >
-                                <X className="w-3 h-3" />
-                                Dismiss
+                                {expandedNotifications[notification.id] ? (
+                                  <>
+                                    <ChevronDown className="w-3 h-3 mr-1" />{" "}
+                                    Show less
+                                  </>
+                                ) : (
+                                  <>
+                                    <ChevronRight className="w-3 h-3 mr-1" />{" "}
+                                    Read more
+                                  </>
+                                )}
                               </button>
                             )}
-                          </div>
-                        )}
+
+                          {activeTab === "personal" && (
+                            <div className="mt-3 flex gap-2 flex-wrap">
+                              {!notification.read && (
+                                <button
+                                  onClick={() => markAsRead(notification._id)}
+                                  className="text-xs px-3 py-1.5 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition-colors flex items-center gap-1"
+                                >
+                                  <Check className="w-3 h-3" />
+                                  Mark as read
+                                </button>
+                              )}
+
+                              {notification.type !== "welcome" && (
+                                <button
+                                  onClick={() =>
+                                    deleteNotification(notification._id)
+                                  }
+                                  className="text-xs px-3 py-1.5 rounded-md bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-600 transition-colors flex items-center gap-1"
+                                >
+                                  <X className="w-3 h-3" />
+                                  Dismiss
+                                </button>
+                              )}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           )}
         </div>

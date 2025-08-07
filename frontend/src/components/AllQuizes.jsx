@@ -82,193 +82,127 @@ const navigate = useNavigate();
     }
   }, [searchQuery, quizzes, sortOption]);
 
-  const getTopicImage = (topic) => {
-    if (!topic) return TOPIC_IMAGES.default;
 
-    const lowerTopic = topic.toLowerCase();
 
-    // Check for specific matches first (exact keyword detection)
-    if (lowerTopic.includes("javascript") || lowerTopic.includes("js"))
-      return TOPIC_IMAGES.javascript;
-    if (lowerTopic.includes("python") || lowerTopic.includes("py"))
-      return TOPIC_IMAGES.python;
-    if (lowerTopic.includes("java") && !lowerTopic.includes("javascript"))
-      return TOPIC_IMAGES.java;
-    if (lowerTopic.includes("c++") || lowerTopic.includes("cpp"))
-      return TOPIC_IMAGES["c++"];
-    if (lowerTopic.includes("c#") || lowerTopic.includes("csharp"))
-      return TOPIC_IMAGES["c#"];
-    if (lowerTopic.includes("php")) return TOPIC_IMAGES.php;
-    if (lowerTopic.includes("ruby")) return TOPIC_IMAGES.ruby;
-    if (lowerTopic.includes("golang") || lowerTopic.includes(" go "))
-      return TOPIC_IMAGES.go;
-    if (lowerTopic.includes("rust")) return TOPIC_IMAGES.rust;
-    if (lowerTopic.includes("swift")) return TOPIC_IMAGES.swift;
-    if (lowerTopic.includes("kotlin")) return TOPIC_IMAGES.kotlin;
+
+  const TOPIC_MAPPINGS = [
+    // Programming Languages
+    { keywords: ["javascript"], image: "javascript" },
+    { keywords: ["python", "py"], image: "python" },
+    { keywords: ["java"], image: "java", exclude: ["javascript"] },
+    { keywords: ["c++", "cpp"], image: "c++" },
+    { keywords: ["c#", "csharp"], image: "c#" },
+    { keywords: ["php"], image: "php" },
+    { keywords: ["ruby"], image: "ruby" },
+    { keywords: ["golang", " go "], image: "go" },
+    { keywords: ["rust"], image: "rust" },
+    { keywords: ["swift"], image: "swift" },
+    { keywords: ["kotlin"], image: "kotlin" },
 
     // Web Development
-    if (lowerTopic.includes("html")) return TOPIC_IMAGES.html;
-    if (lowerTopic.includes("css")) return TOPIC_IMAGES.css;
-    if (lowerTopic.includes("react")) return TOPIC_IMAGES.react;
-    if (lowerTopic.includes("vue")) return TOPIC_IMAGES.vue;
-    if (lowerTopic.includes("angular")) return TOPIC_IMAGES.angular;
-    if (lowerTopic.includes("nodejs") || lowerTopic.includes("node.js"))
-      return TOPIC_IMAGES.nodejs;
-    if (lowerTopic.includes("frontend") || lowerTopic.includes("front-end"))
-      return TOPIC_IMAGES.frontend;
-    if (lowerTopic.includes("backend") || lowerTopic.includes("back-end"))
-      return TOPIC_IMAGES.backend;
-    if (lowerTopic.includes("web dev")) return TOPIC_IMAGES["web development"];
+    { keywords: ["html"], image: "html" },
+    { keywords: ["css"], image: "css" },
+    { keywords: ["react", "react.js"], image: "react" },
+    { keywords: ["vue"], image: "vue" },
+    { keywords: ["angular"], image: "angular" },
+    { keywords: ["nodejs", "node.js"], image: "nodejs" },
+    { keywords: ["frontend", "front-end"], image: "frontend" },
+    { keywords: ["backend", "back-end"], image: "backend" },
+    { keywords: ["web dev"], image: "web development" },
 
     // Data & Analytics
-    if (lowerTopic.includes("database") || lowerTopic.includes("db"))
-      return TOPIC_IMAGES.database;
-    if (lowerTopic.includes("sql")) return TOPIC_IMAGES.sql;
-    if (lowerTopic.includes("data science") || lowerTopic.includes("ds"))
-      return TOPIC_IMAGES["data science"];
-    if (lowerTopic.includes("machine learning") || lowerTopic.includes("ml"))
-      return TOPIC_IMAGES["machine learning"];
-    if (
-      lowerTopic.includes("artificial intelligence") ||
-      lowerTopic.includes("ai")
-    )
-      return TOPIC_IMAGES["artificial intelligence"];
-    if (lowerTopic.includes("analytics")) return TOPIC_IMAGES.analytics;
-    if (lowerTopic.includes("big data")) return TOPIC_IMAGES["big data"];
-    if (lowerTopic.includes("visualization")) return TOPIC_IMAGES.visualization;
+    { keywords: [ "mongodb", "database"], image: "mongodb" },
+    { keywords: ["sql"], image: "sql" },
+    { keywords: ["data science", "ds"], image: "data science" },
+    { keywords: ["machine learning", "ml"], image: "machine learning" },
+    {
+      keywords: ["artificial intelligence", "ai"],
+      image: "artificial intelligence",
+    },
+    { keywords: ["analytics"], image: "analytics" },
+    { keywords: ["big data"], image: "big data" },
+    { keywords: ["visualization"], image: "visualization" },
 
     // Mathematics
-    if (
-      lowerTopic.includes("mathematics") ||
-      lowerTopic.includes("math") ||
-      lowerTopic.includes("maths")
-    )
-      return TOPIC_IMAGES.mathematics;
-    if (lowerTopic.includes("algebra")) return TOPIC_IMAGES.algebra;
-    if (lowerTopic.includes("geometry")) return TOPIC_IMAGES.geometry;
-    if (lowerTopic.includes("calculus")) return TOPIC_IMAGES.calculus;
-    if (lowerTopic.includes("statistics") || lowerTopic.includes("stats"))
-      return TOPIC_IMAGES.statistics;
-    if (lowerTopic.includes("permutation")) return TOPIC_IMAGES.permutation;
-    if (lowerTopic.includes("probability")) return TOPIC_IMAGES.probability;
+    { keywords: ["algebra"], image: "algebra" },
+    { keywords: ["geometry"], image: "geometry" },
+    { keywords: ["calculus"], image: "calculus" },
+    { keywords: ["statistics", "stats"], image: "statistics" },
+    { keywords: ["permutation"], image: "permutation" },
+    { keywords: ["probability"], image: "probability" },
+    { keywords: ["math", "maths", "calculation", "algebra"], image: "algebra" },
 
     // Sciences
-    if (lowerTopic.includes("physics")) return TOPIC_IMAGES.physics;
-    if (lowerTopic.includes("chemistry")) return TOPIC_IMAGES.chemistry;
-    if (lowerTopic.includes("biology")) return TOPIC_IMAGES.biology;
-    if (lowerTopic.includes("astronomy")) return TOPIC_IMAGES.astronomy;
-    if (lowerTopic.includes("medicine")) return TOPIC_IMAGES.medicine;
-    if (lowerTopic.includes("anatomy")) return TOPIC_IMAGES.anatomy;
-    if (lowerTopic.includes("psychology")) return TOPIC_IMAGES.psychology;
-    if (lowerTopic.includes("neuroscience")) return TOPIC_IMAGES.neuroscience;
+    { keywords: ["physics"], image: "physics" },
+    { keywords: ["chemistry"], image: "chemistry" },
+    { keywords: ["biology"], image: "biology" },
 
     // Languages
-    if (lowerTopic.includes("english")) return TOPIC_IMAGES.english;
-    if (lowerTopic.includes("spanish")) return TOPIC_IMAGES.spanish;
-    if (lowerTopic.includes("french")) return TOPIC_IMAGES.french;
-    if (lowerTopic.includes("german")) return TOPIC_IMAGES.german;
-    if (lowerTopic.includes("chinese")) return TOPIC_IMAGES.chinese;
-    if (lowerTopic.includes("japanese")) return TOPIC_IMAGES.japanese;
-    if (lowerTopic.includes("linguistics")) return TOPIC_IMAGES.linguistics;
-
-    // Business & Finance
-    if (lowerTopic.includes("business")) return TOPIC_IMAGES.business;
-    if (lowerTopic.includes("finance")) return TOPIC_IMAGES.finance;
-    if (lowerTopic.includes("marketing")) return TOPIC_IMAGES.marketing;
-    if (lowerTopic.includes("economics")) return TOPIC_IMAGES.economics;
-    if (lowerTopic.includes("accounting")) return TOPIC_IMAGES.accounting;
-    if (lowerTopic.includes("management")) return TOPIC_IMAGES.management;
-    if (lowerTopic.includes("entrepreneurship"))
-      return TOPIC_IMAGES.entrepreneurship;
-
-    // Arts & Creative
-    if (lowerTopic.includes("art") && !lowerTopic.includes("artificial"))
-      return TOPIC_IMAGES.art;
-    if (lowerTopic.includes("music")) return TOPIC_IMAGES.music;
-    if (lowerTopic.includes("photography")) return TOPIC_IMAGES.photography;
-    if (lowerTopic.includes("design")) return TOPIC_IMAGES.design;
-    if (lowerTopic.includes("graphic design"))
-      return TOPIC_IMAGES["graphic design"];
-    if (lowerTopic.includes("writing")) return TOPIC_IMAGES.writing;
-    if (lowerTopic.includes("literature")) return TOPIC_IMAGES.literature;
-    if (lowerTopic.includes("poetry")) return TOPIC_IMAGES.poetry;
+    { keywords: ["english", "english grammer"], image: "english" },
 
     // Technology
-    if (
-      lowerTopic.includes("cyber security") ||
-      lowerTopic.includes("cybersecurity")
-    )
-      return TOPIC_IMAGES["cyber security"];
-    if (lowerTopic.includes("networking")) return TOPIC_IMAGES.networking;
-    if (lowerTopic.includes("cloud")) return TOPIC_IMAGES["cloud computing"];
-    if (lowerTopic.includes("devops")) return TOPIC_IMAGES.devops;
-    if (lowerTopic.includes("blockchain")) return TOPIC_IMAGES.blockchain;
-    if (lowerTopic.includes("cryptocurrency") || lowerTopic.includes("crypto"))
-      return TOPIC_IMAGES.cryptocurrency;
-    if (lowerTopic.includes("iot")) return TOPIC_IMAGES.iot;
-    if (lowerTopic.includes("robotics")) return TOPIC_IMAGES.robotics;
+    { keywords: ["cyber security", "cybersecurity"], image: "cyber security" },
+    { keywords: ["networking"], image: "networking" },
+    { keywords: ["cloud"], image: "cloud computing" },
+    { keywords: ["devops"], image: "devops" },
+    { keywords: ["blockchain"], image: "blockchain" },
+    { keywords: ["cryptocurrency", "crypto"], image: "cryptocurrency" },
+    { keywords: ["iot"], image: "iot" },
+    { keywords: ["robotics"], image: "robotics" },
 
     // Social Sciences
-    if (lowerTopic.includes("history")) return TOPIC_IMAGES.history;
-    if (lowerTopic.includes("geography")) return TOPIC_IMAGES.geography;
-    if (lowerTopic.includes("sociology")) return TOPIC_IMAGES.sociology;
-    if (lowerTopic.includes("anthropology")) return TOPIC_IMAGES.anthropology;
-    if (lowerTopic.includes("philosophy")) return TOPIC_IMAGES.philosophy;
-    if (lowerTopic.includes("politics")) return TOPIC_IMAGES.politics;
-    if (lowerTopic.includes("law")) return TOPIC_IMAGES.law;
+    { keywords: ["history", "wars", "challenges"], image: "history" },
 
     // Data Structures & Algorithms
-    if (lowerTopic.includes("array")) return TOPIC_IMAGES.array;
-    if (lowerTopic.includes("linked list")) return TOPIC_IMAGES["linked list"];
-    if (lowerTopic.includes("binary tree") || lowerTopic.includes("tree"))
-      return TOPIC_IMAGES["binary tree"];
-    if (lowerTopic.includes("graph")) return TOPIC_IMAGES.graph;
-    if (lowerTopic.includes("hash") || lowerTopic.includes("hashmap"))
-      return TOPIC_IMAGES["hash table"];
-    if (lowerTopic.includes("sorting")) return TOPIC_IMAGES.sorting;
-    if (lowerTopic.includes("searching")) return TOPIC_IMAGES.searching;
-    if (lowerTopic.includes("algorithm")) return TOPIC_IMAGES.algorithms;
+    { keywords: ["array"], image: "array" },
+    { keywords: ["linked list"], image: "linked list" },
+    { keywords: ["binary tree", "tree"], image: "binary tree" },
+    { keywords: ["graph"], image: "graph" },
+    { keywords: ["hash", "hashmap"], image: "hash table" },
+    { keywords: ["sorting"], image: "sorting" },
+    { keywords: ["searching"], image: "searching" },
+    { keywords: ["algorithm"], image: "algorithms" },
 
     // Tools & Utilities
-    if (lowerTopic.includes("calendar") || lowerTopic.includes("calander"))
-      return TOPIC_IMAGES.calendar;
-    if (lowerTopic.includes("productivity")) return TOPIC_IMAGES.productivity;
-    if (lowerTopic.includes("organization")) return TOPIC_IMAGES.organization;
-    if (lowerTopic.includes("planning")) return TOPIC_IMAGES.planning;
+    { keywords: ["calendar", "calander"], image: "calendar" },
 
-    // Gaming & Entertainment
-    if (lowerTopic.includes("gaming") || lowerTopic.includes("games"))
-      return TOPIC_IMAGES.gaming;
-    if (lowerTopic.includes("game dev"))
-      return TOPIC_IMAGES["game development"];
-    if (lowerTopic.includes("animation")) return TOPIC_IMAGES.animation;
-    if (lowerTopic.includes("3d")) return TOPIC_IMAGES["3d modeling"];
+    // Reasoning
+    { keywords: ["blood relation"], image: "blood relation" },
+    { keywords: ["direction"], image: "direction" },
+    { keywords: ["aptitude", "quantitive ability"], image: "aptitude" },
 
-    // Health & Fitness
-    if (lowerTopic.includes("health")) return TOPIC_IMAGES.health;
-    if (lowerTopic.includes("fitness")) return TOPIC_IMAGES.fitness;
-    if (lowerTopic.includes("nutrition")) return TOPIC_IMAGES.nutrition;
-    if (lowerTopic.includes("wellness")) return TOPIC_IMAGES.wellness;
+    { keywords: ["coding decoding"], image: "coding decoding" },
+    { keywords: ["current affairs"], image: "ai" },
 
-    // Environment & Nature
-    if (lowerTopic.includes("environment")) return TOPIC_IMAGES.environment;
-    if (lowerTopic.includes("ecology")) return TOPIC_IMAGES.ecology;
-    if (lowerTopic.includes("sustainability"))
-      return TOPIC_IMAGES.sustainability;
-    if (lowerTopic.includes("climate")) return TOPIC_IMAGES["climate change"];
+    { keywords: ["reasoning"], image: "reasoning" },
 
     // General Categories
-    if (lowerTopic.includes("general knowledge"))
-      return TOPIC_IMAGES["general knowledge"];
-    if (lowerTopic.includes("education")) return TOPIC_IMAGES.education;
-    if (lowerTopic.includes("research")) return TOPIC_IMAGES.research;
-    if (lowerTopic.includes("science")) return TOPIC_IMAGES.science;
-    if (lowerTopic.includes("technology")) return TOPIC_IMAGES.technology;
-    if (lowerTopic.includes("engineering")) return TOPIC_IMAGES.engineering;
+    { keywords: ["general knowledge"], image: "general knowledge" },
+    { keywords: ["science"], image: "science" },
+    { keywords: ["technology"], image: "technology" },
+    { keywords: ["engineering"], image: "engineering" },
+  ];
+
+  const getTopicImage = (quiz_title) => {
+    if (!quiz_title) return TOPIC_IMAGES.default;
+
+    const lowerTopic = quiz_title.toLowerCase();
+
+    for (const mapping of TOPIC_MAPPINGS) {
+      const hasKeyword = mapping.keywords.some((keyword) =>
+        lowerTopic.includes(keyword)
+      );
+      const hasExclusion = mapping.exclude?.some((exclude) =>
+        lowerTopic.includes(exclude)
+      );
+
+      if (hasKeyword && !hasExclusion) {
+        return TOPIC_IMAGES[mapping.image];
+      }
+    }
 
     return TOPIC_IMAGES.default;
   };
-
 
   const sortQuizzes = (quizzes) => {
     switch (sortOption) {
@@ -370,7 +304,6 @@ const navigate = useNavigate();
 
     return "bg-gray-100 text-gray-800";
   };
-  // ... (keep your existing getTopicImage, difficultyColor, topicColor functions)
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= paginationData.totalPages) {

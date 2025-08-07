@@ -154,7 +154,7 @@ export function DropdownMenu({ name, avatar, email }) {
                   whileHover={{ backgroundColor: "rgba(100, 116, 139, 0.1)" }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => {
-                    navigate("/profile");
+                    navigate("/settings?tab=subscription");
                     setIsOpen(false);
                   }}
                   className="flex items-center w-full px-4 py-2.5 text-sm 

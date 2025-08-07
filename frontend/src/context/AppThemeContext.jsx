@@ -29,11 +29,7 @@ export function AppThemeProvider({ children }) {
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
-    if (!isDarkMode) {
-      toast.success("Dark mode On");
-    } else {
-      toast.success("Light mode On");
-    }
+ 
    
   };
 

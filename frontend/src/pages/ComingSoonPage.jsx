@@ -10,9 +10,9 @@ const ComingSoonPage = () => {
         <Lottie
           animationData={comingSoonAnimation}
           loop
-          className="w-64 h-44 sm:w-96 sm:h-66 md:w-[32rem] md:h-[22rem]"
+          className="w-64 dark:hidden h-44 sm:w-96 sm:h-66 md:w-[32rem] md:h-[22rem]"
         />
-        <h1 className='text-xl sm:text-2xl md:text-4xl font-light'>We are Working On it..</h1>
+        <h1 className='text-xl sm:text-2xl md:text-4xl dark:text-white font-light'>We are Working On it...</h1>
       </div>
     </Layout>
   );

@@ -4,6 +4,7 @@ import { AppContext } from "../context/AppContext";
 import Layout from "../components/layouts/layout";
 import { Search, ChevronLeft, ChevronRight, X, Bookmark, Share2, MessageSquare, Heart } from "lucide-react";
 import Avatar from "react-avatar";
+import { Helmet } from "react-helmet-async";
 
 const CurrentAffairs = () => {
   const newsGridRef = useRef(null);
@@ -352,6 +353,9 @@ const nextPage = () => {
 
   return (
     <Layout>
+      <Helmet>
+        <title>Current Affairs | Learnexa</title>
+      </Helmet>
       <div className="min-h-screen bg-gray-50 dark:bg-black transition-colors duration-300">
         {/* Full Screen Slider */}
         <FullScreenSlider />
@@ -423,7 +427,7 @@ const nextPage = () => {
                   setCurrentPage(1);
                 }}
                 placeholder="Search Current Affairs..."
-                className="w-full p-4 pl-12 text-lg rounded-xl border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-blue-500/30 focus:border-blue-500 shadow-xl dark:text-white transition-all"
+                className="w-full p-4 pl-12 text-sm md:text-lg rounded-xl border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-blue-500/30 focus:border-blue-500 shadow-xl dark:text-white transition-all"
               />
               <Search
                 className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
@@ -446,7 +450,7 @@ const nextPage = () => {
                     setSelectedCategory(category === "All" ? null : category);
                     setCurrentPage(1);
                   }}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  className={`px-4 py-2 text-xs md:text-sm rounded-full  font-medium transition-colors ${
                     (selectedCategory === null && category === "All") ||
                     selectedCategory === category
                       ? "bg-blue-600 text-white"

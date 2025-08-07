@@ -232,7 +232,8 @@ import { useDispatch } from "react-redux";
 import { loginStart, loginSuccess, loginFailure } from "../redux/authSlice";
 import bgImage from "../assets/bg-signup.jpg";
 import logo from "../assets/learnexa-logo.png";
-
+import { Helmet } from "react-helmet-async";
+import GlobalLoader from "../components/GlobalLoader";
 
 const LogInPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -276,9 +277,16 @@ const LogInPage = () => {
     }
   };
 
+    if (isLoading) {
+      <GlobalLoader />;
+    }
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 flex flex-col lg:flex-row items-center justify-center p-4 md:p-8">
       {/* Left Side - Image */}
+      <Helmet>
+        <title>Log In - Learnexa</title>
+      </Helmet>
       <div className="hidden lg:flex lg:w-1/2 xl:w-2/5 h-full items-center justify-center p-8">
         <div className="relative w-full h-full max-w-2xl max-h-[80vh] rounded-3xl overflow-hidden shadow-2xl">
           <img

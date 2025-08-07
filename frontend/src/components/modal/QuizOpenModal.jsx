@@ -40,12 +40,15 @@ const QuizOpenModal = ({ quiz, isOpen, onClose }) => {
   return (
     <>
       {/* Backdrop with fade-in animation */}
-      <div className="fixed inset-0 bg-black/70 backdrop-blur-sm  z-50" onClick={onClose} />
+      <div
+        className="fixed inset-0 bg-black/30 backdrop-blur-sm  z-50"
+        onClick={onClose}
+      />
 
       {/* Modal with slide-up animation */}
       <div className="fixed inset-0 flex items-center justify-center p-4 z-50">
         <div
-          className="bg-white dark:bg-zinc-900 rounded-2xl  overflow-hidden w-full max-w-lg"
+          className="bg-white dark:bg-gradient-to-l dark:from-gray-900 dark:to-gray-950 rounded-2xl  overflow-hidden w-full max-w-lg"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header with gradient background */}
@@ -127,7 +130,6 @@ const QuizOpenModal = ({ quiz, isOpen, onClose }) => {
               <button
                 onClick={async () => {
                   navigate(`/quiz/${quiz._id}`);
-                 
                 }}
                 className="bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700 text-white py-3 px-6 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0"
               >
@@ -135,10 +137,7 @@ const QuizOpenModal = ({ quiz, isOpen, onClose }) => {
                 Start Quiz
               </button>
 
-              <button className="bg-purple-500 hover:bg-purple-600 dark:bg-purple-600 dark:hover:bg-purple-700 text-white py-3 px-6 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0">
-                <Users className="w-5 h-5" />
-                Challenge Friends
-              </button>
+         
             </div>
 
             {/* Additional metadata */}

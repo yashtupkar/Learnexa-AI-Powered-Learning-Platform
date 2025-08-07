@@ -9,24 +9,24 @@ import { Provider } from 'react-redux'
 import store from './redux/store.js'
 import { AppThemeProvider } from './context/AppThemeContext.jsx'
 import { ModalProvider } from './context/ModalContext.jsx'
-
+import { HelmetProvider } from "react-helmet-async";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <AppContextProvider>
-      <BrowserRouter>
-        <ModalProvider>
-          <AppThemeProvider>
-            <GoogleOAuthProvider
-              clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
-            >
-             
+    <HelmetProvider>
+      <AppContextProvider>
+        <BrowserRouter>
+          <ModalProvider>
+            <AppThemeProvider>
+              <GoogleOAuthProvider
+                clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
+              >
                 <App />
-          
-            </GoogleOAuthProvider>
-          </AppThemeProvider>
-        </ModalProvider>
-      </BrowserRouter>
-    </AppContextProvider>
+              </GoogleOAuthProvider>
+            </AppThemeProvider>
+          </ModalProvider>
+        </BrowserRouter>
+      </AppContextProvider>
+    </HelmetProvider>
   </Provider>
 );

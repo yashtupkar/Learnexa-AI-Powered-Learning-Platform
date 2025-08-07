@@ -9,6 +9,7 @@ import {
   Star,
 } from "lucide-react";
 import { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 
 const SubjectTopicsPage = () => {
   const { subject } = useParams();
@@ -237,6 +238,9 @@ const SubjectTopicsPage = () => {
 
   return (
     <Layout>
+      <Helmet>
+        <title>{subject} | Learnexa</title>
+      </Helmet>
       <div className="min-h-screen bg-gray-50 text-gray-900 dark:bg-black dark:text-white transition-colors duration-200">
         <div className="container mx-auto px-4 sm:px-6 py-8">
           {/* Header Section */}
@@ -362,7 +366,6 @@ const SubjectTopicsPage = () => {
                         </p>
 
                         <div className="flex justify-between items-center">
-                        
                           <div className="flex items-center text-sm">
                             Start practicing
                             <ArrowRight className="ml-1 w-4 h-4" />
@@ -387,8 +390,6 @@ const SubjectTopicsPage = () => {
               )}
             </motion.div>
           )}
-
-   
         </div>
       </div>
     </Layout>

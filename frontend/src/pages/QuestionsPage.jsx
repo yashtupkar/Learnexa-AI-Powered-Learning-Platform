@@ -24,6 +24,7 @@ import {
 import Layout from "../components/layouts/layout";
 import toast from "react-hot-toast";
 import { StreakUpdate } from "../../utils/streakService";
+import { Helmet } from "react-helmet-async";
 
 const QuestionsPage = () => {
   const questionsContainerRef = useRef(null);
@@ -211,6 +212,9 @@ const QuestionsPage = () => {
 
   return (
     <Layout>
+      <Helmet>
+        <title>{subject}| Learnexa</title>
+      </Helmet>
       <div
         className={`flex flex-col lg:flex-row gap-4 ${
           fullScreen ? "fixed inset-0 z-50 bg-white dark:bg-black" : ""

@@ -29,6 +29,7 @@ import {
   Copy,
   Bookmark,
   TrendingUp,
+  BookOpen,
 } from "lucide-react";
 import Layout from "../components/layouts/layout";
 import axios from "axios";
@@ -38,6 +39,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import Confetti from "react-confetti";
+import { Helmet } from "react-helmet-async";
+import TOPIC_IMAGES from "../../utils/quizImages";
 
 const MyQuizzes = () => {
   const navigate = useNavigate();
@@ -319,6 +322,125 @@ const MyQuizzes = () => {
 
   const filteredQuizzes = getFilteredQuizzes();
 
+  const TOPIC_MAPPINGS = [
+    // Programming Languages
+    { keywords: ["javascript"], image: "javascript" },
+    { keywords: ["python", "py"], image: "python" },
+    { keywords: ["java"], image: "java", exclude: ["javascript"] },
+    { keywords: ["c++", "cpp"], image: "c++" },
+    { keywords: ["c#", "csharp"], image: "c#" },
+    { keywords: ["php"], image: "php" },
+    { keywords: ["ruby"], image: "ruby" },
+    { keywords: ["golang", " go "], image: "go" },
+    { keywords: ["rust"], image: "rust" },
+    { keywords: ["swift"], image: "swift" },
+    { keywords: ["kotlin"], image: "kotlin" },
+
+    // Web Development
+    { keywords: ["html"], image: "html" },
+    { keywords: ["css"], image: "css" },
+    { keywords: ["react", "react.js"], image: "react" },
+    { keywords: ["vue"], image: "vue" },
+    { keywords: ["angular"], image: "angular" },
+    { keywords: ["nodejs", "node.js"], image: "nodejs" },
+    { keywords: ["frontend", "front-end"], image: "frontend" },
+    { keywords: ["backend", "back-end"], image: "backend" },
+    { keywords: ["web dev"], image: "web development" },
+
+    // Data & Analytics
+    { keywords: ["mongodb", "database"], image: "mongodb" },
+    { keywords: ["sql"], image: "sql" },
+    { keywords: ["data science", "ds"], image: "data science" },
+    { keywords: ["machine learning", "ml"], image: "machine learning" },
+    {
+      keywords: ["artificial intelligence", "ai"],
+      image: "artificial intelligence",
+    },
+    { keywords: ["analytics"], image: "analytics" },
+    { keywords: ["big data"], image: "big data" },
+    { keywords: ["visualization"], image: "visualization" },
+
+    // Mathematics
+    { keywords: ["algebra"], image: "algebra" },
+    { keywords: ["geometry"], image: "geometry" },
+    { keywords: ["calculus"], image: "calculus" },
+    { keywords: ["statistics", "stats"], image: "statistics" },
+    { keywords: ["permutation"], image: "permutation" },
+    { keywords: ["probability"], image: "probability" },
+    { keywords: ["math", "maths", "calculation", "algebra"], image: "algebra" },
+
+    // Sciences
+    { keywords: ["physics"], image: "physics" },
+    { keywords: ["chemistry"], image: "chemistry" },
+    { keywords: ["biology"], image: "biology" },
+
+    // Languages
+    { keywords: ["english", "english grammer"], image: "english" },
+
+    // Technology
+    { keywords: ["cyber security", "cybersecurity"], image: "cyber security" },
+    { keywords: ["networking"], image: "networking" },
+    { keywords: ["cloud"], image: "cloud computing" },
+    { keywords: ["devops"], image: "devops" },
+    { keywords: ["blockchain"], image: "blockchain" },
+    { keywords: ["cryptocurrency", "crypto"], image: "cryptocurrency" },
+    { keywords: ["iot"], image: "iot" },
+    { keywords: ["robotics"], image: "robotics" },
+
+    // Social Sciences
+    { keywords: ["history", "wars", "challenges"], image: "history" },
+
+    // Data Structures & Algorithms
+    { keywords: ["array"], image: "array" },
+    { keywords: ["linked list"], image: "linked list" },
+    { keywords: ["binary tree", "tree"], image: "binary tree" },
+    { keywords: ["graph"], image: "graph" },
+    { keywords: ["hash", "hashmap"], image: "hash table" },
+    { keywords: ["sorting"], image: "sorting" },
+    { keywords: ["searching"], image: "searching" },
+    { keywords: ["algorithm"], image: "algorithms" },
+
+    // Tools & Utilities
+    { keywords: ["calendar", "calander"], image: "calendar" },
+
+    // Reasoning
+    { keywords: ["blood relation"], image: "blood relation" },
+    { keywords: ["direction"], image: "direction" },
+    { keywords: ["aptitude", "quantitive ability"], image: "aptitude" },
+
+    { keywords: ["coding decoding"], image: "coding decoding" },
+    { keywords: ["current affairs"], image: "ai" },
+
+    { keywords: ["reasoning"], image: "reasoning" },
+
+    // General Categories
+    { keywords: ["general knowledge"], image: "general knowledge" },
+    { keywords: ["science"], image: "science" },
+    { keywords: ["technology"], image: "technology" },
+    { keywords: ["engineering"], image: "engineering" },
+  ];
+
+  const getTopicImage = (quizTitle) => {
+    if (!quizTitle) return TOPIC_IMAGES.default;
+
+    const lowerTopic = quizTitle.toLowerCase();
+
+    for (const mapping of TOPIC_MAPPINGS) {
+      const hasKeyword = mapping.keywords.some((keyword) =>
+        lowerTopic.includes(keyword)
+      );
+      const hasExclusion = mapping.exclude?.some((exclude) =>
+        lowerTopic.includes(exclude)
+      );
+
+      if (hasKeyword && !hasExclusion) {
+        return TOPIC_IMAGES[mapping.image] || TOPIC_IMAGES.default;
+      }
+    }
+
+    return TOPIC_IMAGES.default;
+  };
+
   const getTopicIcon = (topic) => {
     if (!topic) return <File className="w-5 h-5 text-white" />;
 
@@ -441,6 +563,9 @@ const MyQuizzes = () => {
 
   return (
     <Layout>
+      <Helmet>
+        <title>My Quizzes | Learnexa</title>
+      </Helmet>
       <div className="min-h-screen w-full bg-gradient-to-b from-gray-50 to-gray-100 dark:from-black dark:to-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header Section */}
@@ -450,8 +575,8 @@ const MyQuizzes = () => {
             className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4"
           >
             <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-3">
-                <Folder className="w-8 h-8 text-purple-500" />
+              <h1 className="text-3xl  dark:text-white  flex items-center gap-3">
+                <Folder className="w-8 h-8 dark:text-white" />
                 My Quizzes
               </h1>
               <p className="text-gray-500 dark:text-gray-400 mt-1">
@@ -479,159 +604,11 @@ const MyQuizzes = () => {
                 <Plus className="w-5 h-5" />
                 <span className="hidden sm:inline">New Quiz</span>
               </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2 px-3 py-2 border text-sm dark:text-gray-300 border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-                onClick={() => setShowFilters(!showFilters)}
-              >
-                <Filter size={16} />
-                <span className="hidden sm:inline">Filters</span>
-              </motion.button>
+        
             </div>
           </motion.div>
 
-          {/* Filters Panel */}
-          <AnimatePresence>
-            {showFilters && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                className="mb-6 overflow-hidden"
-              >
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-5">
-                  <div className="flex justify-between items-center mb-4">
-                    <h3 className="font-medium text-gray-900 dark:text-white">
-                      Filters
-                    </h3>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={clearAllFilters}
-                        className="text-sm text-purple-600 hover:text-purple-800 dark:text-purple-400 dark:hover:text-purple-300"
-                      >
-                        Clear All
-                      </button>
-                      <button
-                        onClick={() => setShowFilters(false)}
-                        className="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
-                      >
-                        <X className="w-5 h-5" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
-                        Sort By
-                      </h4>
-                      <div className="flex flex-col gap-2">
-                        {[
-                          { value: "recent", label: "Most Recent" },
-                          { value: "oldest", label: "Oldest" },
-                          { value: "high-score", label: "Highest Score" },
-                          { value: "low-score", label: "Lowest Score" },
-                          { value: "a-z", label: "A-Z" },
-                          { value: "z-a", label: "Z-A" },
-                          { value: "most-questions", label: "Most Questions" },
-                          {
-                            value: "least-questions",
-                            label: "Least Questions",
-                          },
-                        ].map((option) => (
-                          <label
-                            key={option.value}
-                            className="flex items-center gap-2 cursor-pointer"
-                          >
-                            <input
-                              type="radio"
-                              name="sort"
-                              value={option.value}
-                              checked={sortOption === option.value}
-                              onChange={() => setSortOption(option.value)}
-                              className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 dark:border-gray-600 dark:bg-gray-700"
-                            />
-                            <span className="text-sm text-gray-700 dark:text-gray-300">
-                              {option.label}
-                            </span>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
-                        Topics
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {availableTopics.map((topic) => (
-                          <motion.button
-                            key={topic}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => toggleTopicFilter(topic)}
-                            className={`px-3 py-1 text-xs rounded-full transition-colors flex items-center gap-1 ${
-                              selectedTopics.includes(topic)
-                                ? "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300"
-                                : "bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
-                            }`}
-                          >
-                            {getTopicIcon(topic)}
-                            {topic}
-                          </motion.button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
-                        Quick Actions
-                      </h4>
-                      <div className="flex flex-col gap-2">
-                        <button
-                          className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
-                          onClick={() =>
-                            toast.promise(
-                              new Promise((resolve) =>
-                                setTimeout(resolve, 1000)
-                              ),
-                              {
-                                loading: "Preparing export...",
-                                success: "Export started successfully",
-                                error: "Export failed",
-                              }
-                            )
-                          }
-                        >
-                          <Download className="w-4 h-4" />
-                          Export All Quizzes
-                        </button>
-                        <button
-                          className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
-                          onClick={clearAllFilters}
-                        >
-                          <X className="w-4 h-4" />
-                          Clear Filters
-                        </button>
-                        <button
-                          className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
-                          onClick={() => {
-                            setActiveTab("favorites");
-                            setShowFilters(false);
-                          }}
-                        >
-                          <Star className="w-4 h-4" />
-                          View Favorites
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
+     
           {/* Tabs */}
           <div className="mb-6">
             <div className="flex space-x-1 overflow-x-auto pb-2 scrollbar-hide">
@@ -639,9 +616,7 @@ const MyQuizzes = () => {
                 { id: "all", label: "All Quizzes" },
                 { id: "completed", label: "Completed" },
                 { id: "generated", label: "Generated" },
-                { id: "attempted", label: "Attempted" },
-                { id: "generated-attempted", label: "Generated & Attempted" },
-                { id: "favorites", label: "Favorites" },
+
               ].map((tab) => (
                 <motion.button
                   key={tab.id}
@@ -654,7 +629,6 @@ const MyQuizzes = () => {
                       : "text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
                   }`}
                 >
-                  {tab.id === "favorites" && <Star className="w-4 h-4" />}
                   {tab.label}
                 </motion.button>
               ))}
@@ -728,169 +702,204 @@ const MyQuizzes = () => {
                 )}
               </div>
 
-              <motion.div
-                layout
-                className="grid grid-cols-1 md:grid-cols-2  gap-5"
-              >
-                <AnimatePresence>
-                  {filteredQuizzes.map((quiz) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6">
+                {filteredQuizzes.map((quiz, index) => {
+                  const quizWithDefaults = {
+                    quiz_title:
+                      quiz.quiz_title || quiz.title || "Untitled Quiz",
+                    topic: quiz.topic || "General",
+                    grade: quiz.grade || "Beginner",
+                    quiz_timer: quiz.quiz_timer || 0,
+                    questions: quiz.questions || [],
+                    difficultyLevel: quiz.difficultyLevel || "Medium",
+                    createdAt:
+                      quiz.createdAt ||
+                      quiz.submittedAt ||
+                      new Date().toISOString(),
+                    ...quiz,
+                  };
+
+                  // Check if quiz has been attempted
+                  const hasAttempted = quiz.status === "completed";
+                  const latestScore =
+                    typeof quiz.score === "object"
+                      ? quiz.score.percentage
+                      : quiz.questions?.length
+                      ? Math.round((quiz.score / quiz.questions.length) * 100)
+                      : 0;
+                  const scoreColor =
+                    latestScore >= 70
+                      ? "bg-green-500"
+                      : latestScore >= 50
+                      ? "bg-yellow-500"
+                      : "bg-red-500";
+
+                  const handleCardClick = () => {
+                    setSelectedQuiz(quizWithDefaults);
+                  };
+
+                  return (
                     <motion.div
-                      key={quiz._id}
-                      layout
+                      key={quiz._id || index}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      transition={{ duration: 0.2 }}
-                      className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow relative group"
+                      transition={{ duration: 0.3, delay: index * 0.05 }}
+                      whileHover={{ y: -4 }}
+                      className="group relative flex flex-col bg-white dark:bg-zinc-900 rounded-xl shadow-md hover:shadow-lg border border-gray-200 dark:border-zinc-700 cursor-pointer overflow-hidden transition-all duration-200 h-full"
                     >
-                      <div className="p-5">
-                        <div className="flex justify-between items-start mb-3">
-                          <div className="flex items-center gap-3">
-                            <div
-                              className={`p-2 rounded-lg ${getStatusColor(
-                                quiz.status || "unknown"
-                              )}`}
-                            >
-                              {getTopicIcon(quiz.topic)}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <h3 className="font-medium capitalize max-w-[400px] text-gray-900 dark:text-white truncate">
-                                {quiz.quiz_title || quiz.title}
-                              </h3>
-                              <p className="text-xs capitalize text-gray-500 dark:text-gray-400 truncate">
-                                {quiz.topic || "No topic specified"}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <button
-                              onClick={() => handleQuizAction("favorite", quiz)}
-                              className={`p-1 rounded-full ${
-                                quiz.favorite
-                                  ? "text-yellow-400 hover:text-yellow-500"
-                                  : "text-gray-400 hover:text-yellow-400 dark:text-gray-500 dark:hover:text-yellow-400"
-                              }`}
-                            >
-                              <Star
-                                className={`w-5 h-5 ${
-                                  quiz.favorite ? "fill-current" : ""
-                                }`}
-                              />
-                            </button>
-                            <div className="relative">
-                              <button
-                                onClick={() =>
-                                  setShowQuizActions(
-                                    showQuizActions === quiz._id
-                                      ? null
-                                      : quiz._id
-                                  )
-                                }
-                                className="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
-                              >
-                                <MoreVertical className="w-5 h-5" />
-                              </button>
+                      {/* Image Header with Score Badge */}
+                      <div className="relative h-44 sm:h-48 overflow-hidden flex-shrink-0">
+                        <img
+                          src={getTopicImage(quizWithDefaults.topic)}
+                          alt={quizWithDefaults.topic}
+                          loading="lazy"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          onError={(e) => {
+                            e.target.src =
+                              "https://via.placeholder.com/300x200?text=Quiz";
+                            e.target.className =
+                              "w-full h-full object-cover bg-gray-200 dark:bg-zinc-700";
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
-                              {showQuizActions === quiz._id && (
-                                <motion.div
-                                  initial={{ opacity: 0, y: -10 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: -10 }}
-                                  className="absolute right-0 z-50 mt-2 w-48 origin-top-right rounded-md bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg focus:outline-none"
-                                >
-                                  <div className="py-1">
-                                    <button
-                                      onClick={() =>
-                                        handleQuizAction("view", quiz)
-                                      }
-                                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
-                                    >
-                                      <Eye className="w-4 h-4" />
-                                      View Details
-                                    </button>
-                                    {quiz.type === "generated" && (
-                                      <button
-                                        onClick={() =>
-                                          handleQuizAction("edit", quiz)
-                                        }
-                                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
-                                      >
-                                        <Edit className="w-4 h-4" />
-                                        Edit
-                                      </button>
-                                    )}
-                                    <button
-                                      onClick={() =>
-                                        handleQuizAction("share", quiz)
-                                      }
-                                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
-                                    >
-                                      <Share2 className="w-4 h-4" />
-                                      Share
-                                    </button>
-                                    <button
-                                      onClick={() =>
-                                        handleQuizAction("delete", quiz)
-                                      }
-                                      className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
-                                    >
-                                      <Trash2 className="w-4 h-4" />
-                                      Delete
-                                    </button>
-                                  </div>
-                                </motion.div>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
-                          <div className="flex items-center gap-2">
-                            <span
-                              className={`text-xs px-2 py-1 rounded-full ${getStatusColor(
-                                quiz.status || "unknown"
-                              )}`}
-                            >
-                              {getStatusText(quiz.status || "unknown")}
+                        {/* Score Badge (only if attempted) */}
+                        {hasAttempted && (
+                          <div
+                            className={`absolute top-4 right-4 ${scoreColor} text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg border-2 border-white dark:border-zinc-800`}
+                          >
+                            <span className="font-bold text-sm">
+                              {latestScore}%
                             </span>
-                            {quiz.status === "completed" && quiz.score && (
-                              <span className="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 flex items-center gap-1">
-                                <BarChart2 className="w-3 h-3" />
-                                {typeof quiz.score === "object"
-                                  ? `${quiz.score.percentage}%`
-                                  : `${Math.round(
-                                      (quiz.score /
-                                        (quiz.questions?.length || 1)) *
-                                        100
-                                    )}%`}
-                              </span>
-                            )}
                           </div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
-                            <Clock className="w-3 h-3" />
-                            {formatDate(quiz.submittedAt || quiz.createdAt)}
+                        )}
+
+                        {/* Difficulty Badge */}
+                        <div className="absolute bottom-4 left-4 flex items-center gap-2">
+                          <span
+                            className={`text-xs px-2 py-1 rounded-md capitalize font-medium ${
+                              quizWithDefaults.difficultyLevel?.toLowerCase() ===
+                              "beginner"
+                                ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                                : quizWithDefaults.difficultyLevel?.toLowerCase() ===
+                                  "intermediate"
+                                ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+                                : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+                            }`}
+                          >
+                            {quizWithDefaults.difficultyLevel || "Medium"}
+                          </span>
+
+                          {/* Attempted Badge */}
+                          {hasAttempted && (
+                            <span className="text-xs px-2 py-1 rounded-md bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                              Attempted
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="absolute flex flex-col items-end gap-2 bottom-4 right-4">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (quiz.type === "generated") {
+                                navigate(`/quiz/${quiz._id}`);
+                              } else {
+                                navigate(`/quiz/${quiz.quizId || quiz._id}`);
+                              }
+                            }}
+                            className={`flex w-fit items-center gap-1 ${
+                              hasAttempted
+                                ? "bg-yellow-500 hover:bg-yellow-600"
+                                : "bg-green-500 hover:bg-green-600"
+                            } text-white px-3 py-1.5 rounded shadow-md text-sm font-medium transition-colors`}
+                          >
+                            {hasAttempted ? "Retake" : "Start"}
+                            <ChevronRight size={14} className="ml-1" />
+                          </button>
+                          {hasAttempted && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/quiz-result/${quiz._id}`);
+                              }}
+                              className={`flex items-center gap-1 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded shadow-md text-sm font-medium transition-colors`}
+                            >
+                              View Result
+                              <FileText size={14} className="ml-1" />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Content Area */}
+                      <div className="p-5 flex flex-col flex-grow">
+                        <div className="mb-3 min-h-[72px]">
+                          <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+                            <Clock size={12} className="mr-1" />
+                            {formatDate(quizWithDefaults.createdAt)}
+                          </div>
+                          <h2 className="text-lg font-semibold text-gray-800 dark:text-white line-clamp-2 mb-1">
+                            {quizWithDefaults.quiz_title}
+                          </h2>
+                        </div>
+
+                        {/* Metadata */}
+                        <div className="mt-auto">
+                          <div className="flex flex-wrap gap-2 mb-3">
+                            <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+                              <BookOpen size={12} className="mr-1" />
+                              {quizWithDefaults.grade} Level
+                            </div>
+                            <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+                              <BarChart2 size={12} className="mr-1" />
+                              {quiz.question_type || "MCQ"}
+                            </div>
+                          </div>
+
+                          {/* Stats */}
+                          <div className="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-zinc-700">
+                            <div className="flex items-center gap-2">
+                              <div className="flex items-center text-xs text-gray-600 dark:text-gray-300">
+                                <FileText size={12} className="mr-1" />
+                                {quizWithDefaults.questions.length} Qs
+                              </div>
+                              <div className="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
+                              <div className="flex items-center text-xs text-gray-600 dark:text-gray-300">
+                                <Clock size={12} className="mr-1" />
+                                {quizWithDefaults.quiz_timer || 0} min
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleQuizAction("favorite", quiz);
+                                }}
+                                className={`p-1 rounded-full ${
+                                  quiz.favorite
+                                    ? "text-yellow-400 hover:text-yellow-500"
+                                    : "text-gray-400 hover:text-yellow-400 dark:text-gray-500 dark:hover:text-yellow-400"
+                                }`}
+                              >
+                                <Star
+                                  className={`w-4 h-4 ${
+                                    quiz.favorite ? "fill-current" : ""
+                                  }`}
+                                />
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
 
-                      <div className="border-t border-gray-100 dark:border-gray-700 px-5 py-3 bg-gray-50 dark:bg-gray-700/30 flex justify-between items-center rounded-b-xl">
-                        <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
-                          <FileText className="w-4 h-4" />
-                          {quiz.questions?.length || 0} questions
-                        </div>
-                        <motion.button
-                          whileHover={{ x: 2 }}
-                          className="text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 flex items-center gap-1 text-sm font-medium"
-                          onClick={() => setSelectedQuiz(quiz)}
-                        >
-                          View Details
-                          <ChevronRight className="w-4 h-4" />
-                        </motion.button>
-                      </div>
+                      {/* Bottom Accent Bar */}
+                      <div className="absolute inset-x-0 bottom-0 h-1.5 bg-gradient-to-r from-blue-500 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                     </motion.div>
-                  ))}
-                </AnimatePresence>
-              </motion.div>
+                  );
+                })}
+              </div>
             </>
           )}
         </div>

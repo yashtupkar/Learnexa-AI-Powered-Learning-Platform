@@ -133,7 +133,7 @@ const Footer = () => {
               {[
                 { name: "Home", href: "/" },
                 { name: "About Us", href: "/about-us" },
-                { name: "Pricing", href: "/pricing" },
+                { name: "Plans", href: "/plans" },
                 { name: "How It Works", href: "/how-it-works" },
               ].map((item) => (
                 <li key={item.name}>
@@ -195,13 +195,13 @@ const Footer = () => {
             </p>
             <div className="flex space-x-6 text-sm">
               <a
-                href="#privacy"
+                href="/privacy-policy"
                 className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
               >
                 Privacy Policy
               </a>
               <a
-                href="#terms"
+                href="/terms"
                 className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
               >
                 Terms of Service
