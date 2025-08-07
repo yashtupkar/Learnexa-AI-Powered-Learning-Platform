@@ -75,6 +75,11 @@ app.post("/upload", upload.single("file"), (req, res) => {
   });
 });
 
+//cron job for backend render awake
+app.get('/ping', (req, res) => {
+  res.send('pong');
+})
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server started on PORT: ${PORT}`);
