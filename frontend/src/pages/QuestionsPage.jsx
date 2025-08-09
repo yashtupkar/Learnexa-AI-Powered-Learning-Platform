@@ -21,11 +21,13 @@ import {
   RefreshCw,
   AlertCircle,
   ImageIcon,
+  Folder,
 } from "lucide-react";
 import Layout from "../components/layouts/layout";
 import toast from "react-hot-toast";
 import { StreakUpdate } from "../../utils/streakService";
 import { Helmet } from "react-helmet-async";
+import { IoFolderOpen } from "react-icons/io5";
 
 const QuestionsPage = () => {
   const questionsContainerRef = useRef(null);
@@ -39,6 +41,10 @@ const QuestionsPage = () => {
   const [likedQuestions, setLikedQuestions] = useState({});
   const [savedQuestions, setSavedQuestions] = useState({});
   const [fullScreen, setFullScreen] = useState(false);
+  const [topics, setTopics] = useState([]);
+  const [topicsLoading, setTopicsLoading] = useState(true);
+  const [topicSortBy, setTopicSortBy] = useState('alphabetical'); // 'alphabetical' or 'difficulty'
+
   const { backend_URL } = useContext(AppContext);
   const { subject, topic } = useParams();
 
@@ -59,6 +65,76 @@ const QuestionsPage = () => {
     fetchQuestions();
   }, [backend_URL, subject, topic]);
 
+  useEffect(() => {
+    const fetchTopics = async () => {
+      setTopicsLoading(true);
+      setError(null);
+      try {
+        const response = await axios.post(
+          `${backend_URL}/api/questions/topics`,
+          { subject }
+        );
+        const formattedTopics = response.data.topics.map((topic) => ({
+          title: formatTopicName(topic),
+          link: `/${subject}/${topic}`,
+          difficulty: getTopicDifficulty(topic),
+        }));
+        setTopics(formattedTopics);
+        setTopicsLoading(false);
+      } catch (err) {
+        console.error("Failed to fetch topics:", err);
+        setError("Failed to load topics. Please try again later.");
+        setTopicsLoading(false);
+      } 
+    };
+
+    if (subject) {
+      fetchTopics();
+    }
+  }, [subject, backend_URL]);
+
+  // Format topic name from "blood-relation" to "Blood Relation"
+  const formatTopicName = (topic) => {
+    return topic
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
+  // Determine topic difficulty (can be enhanced with actual difficulty data from API)
+  const getTopicDifficulty = (topic) => {
+    // This is a placeholder implementation
+    // In a real application, this could be based on data from the API
+    const difficultyMap = {
+      "probability": "Hard",
+      "permutation-and-combination": "Hard",
+      "time-and-work": "Medium",
+      "percentage": "Easy",
+      "profit-and-loss": "Medium",
+      "simple-interest": "Easy",
+      "compound-interest": "Medium",
+      "problems-on-train": "Hard",
+    };
+    
+    return difficultyMap[topic] || "Medium";
+  };
+  
+  // Sort topics based on selected sort method
+  const getSortedTopics = () => {
+    if (!topics.length) return [];
+    
+    const difficultyOrder = { 'Easy': 1, 'Medium': 2, 'Hard': 3 };
+    
+    if (topicSortBy === 'alphabetical') {
+      return [...topics].sort((a, b) => a.title.localeCompare(b.title));
+    } else if (topicSortBy === 'difficulty') {
+      return [...topics].sort((a, b) => {
+        return difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty];
+      });
+    }
+    
+    return topics;
+  };
  
   const questionsPerPage = 5;
   const totalPages = Math.ceil(questions.length / questionsPerPage);
@@ -240,27 +316,29 @@ const QuestionsPage = () => {
                     :: {topic.replace(/-/g, " ")}
                   </span>
                 </h1>
-                <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-1">
-                  <a
-                    href="/dashboard"
-                    className="hover:text-blue-500 transition-colors"
-                  >
-                    Dashboard
-                  </a>{" "}
-                  <ChevronsRight className="mx-1 text-green-500 w-4 h-4" />{" "}
-                  <a
-                    href={`/${subject}`}
-                    className="capitalize hover:text-blue-500 transition-colors"
-                  >
-                    {subject}
-                  </a>
-                  <ChevronsRight className="mx-1 text-green-500 w-4 h-4" />{" "}
-                  <a
-                    href={`/${subject}/${topic}`}
-                    className="capitalize hover:text-blue-500 transition-colors"
-                  >
-                    {topic}
-                  </a>
+                <div className="flex flex-col sm:flex-row sm:items-center text-sm text-gray-500 dark:text-gray-400 mt-1 space-y-1 sm:space-y-0">
+                  <div className="flex items-center flex-wrap gap-x-1">
+                    <a
+                      href="/dashboard"
+                      className="hover:text-blue-500 transition-colors whitespace-nowrap"
+                    >
+                      Dashboard
+                    </a>
+                    <ChevronsRight className="text-green-500 w-4 h-4 flex-shrink-0" />
+                    <a
+                      href={`/${subject}`}
+                      className="capitalize hover:text-blue-500 transition-colors whitespace-nowrap"
+                    >
+                      {subject.replace(/-/g, " ")}
+                    </a>
+                    <ChevronsRight className="text-green-500 w-4 h-4 flex-shrink-0" />
+                    <a
+                      href={`/${subject}/${topic}`}
+                      className="capitalize hover:text-blue-500 transition-colors whitespace-nowrap"
+                    >
+                      {topic.replace(/-/g, " ")}
+                    </a>
+                  </div>
                 </div>
               </div>
 
@@ -298,71 +376,9 @@ const QuestionsPage = () => {
                         <p className="text-gray-800 dark:text-zinc-200 mb-3">
                           {question.questionText}
                         </p>
-
-                        {/* Display Diagrams if they exist */}
-                        {question.diagrams && question.diagrams.length > 0 && (
-                          <div className="mt-4 space-y-3">
-                            {question.diagrams.map((diagram, diagramIndex) => (
-                              <div
-                                key={diagramIndex}
-                                className=" dark:bg-white rounded-lg p-4 border border-gray-200 dark:border-zinc-700"
-                              >
-                                <div className="flex flex-col items-center">
-                                  <img
-                                    src={diagram.url}
-                                    alt={
-                                      diagram.caption ||
-                                      `Diagram ${diagramIndex + 1}`
-                                    }
-                                    className="max-w-full h-auto max-h-80 object-contain rounded-lg  mb-2"
-                                    style={{ maxHeight: "320px" }}
-                                    loading="lazy"
-                                    onError={(e) => {
-                                      e.target.style.display = "none";
-                                      e.target.nextSibling.style.display =
-                                        "block";
-                                    }}
-                                  />
-                                  <div className="hidden text-red-500 dark:text-red-400 text-sm p-2 border border-red-200 dark:border-red-800 rounded bg-red-50 dark:bg-red-900/20">
-                                    Failed to load image
-                                  </div>
-                                  {diagram.caption && (
-                                    <p className="text-sm text-gray-600 dark:text-gray-400 text-center mt-2 italic">
-                                      {diagram.caption}
-                                    </p>
-                                  )}
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-
-                        {/* Display single diagram for backward compatibility */}
-                        {question.diagram && (
-                          <div className="mt-4">
-                            <div className=" dark:bg-zinc-800 rounded-lg p-4 border border-gray-200 dark:border-zinc-700">
-                              <div className="flex flex-col items-center">
-                                <img
-                                  src={question.diagram}
-                                  alt="Question diagram"
-                                  className="max-w-full h-auto max-h-80 object-contain rounded-lg shadow-sm"
-                                  style={{ maxHeight: "320px" }}
-                                  loading="lazy"
-                                  onError={(e) => {
-                                    e.target.style.display = "none";
-                                    e.target.nextSibling.style.display =
-                                      "block";
-                                  }}
-                                />
-                                <div className="hidden text-red-500 dark:text-red-400 text-sm p-2 border border-red-200 dark:border-red-800 rounded bg-red-50 dark:bg-red-900/20">
-                                  Failed to load image
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        )}
                       </div>
                     </div>
+
                     <div className="md:flex hidden space-x-2">
                       <button
                         onClick={() => toggleLike(questionId)}
@@ -392,6 +408,66 @@ const QuestionsPage = () => {
                       </button>
                     </div>
                   </div>
+
+                  {/* Display Diagrams if they exist */}
+                  {question.diagrams && question.diagrams.length > 0 && (
+                    <div className="mt-4 space-y-3 mb-2 md:mb-4">
+                      {question.diagrams.map((diagram, diagramIndex) => (
+                        <div
+                          key={diagramIndex}
+                          className=" dark:bg-white rounded-lg p-4 border border-gray-200 dark:border-zinc-700"
+                        >
+                          <div className="flex flex-col items-center">
+                            <img
+                              src={diagram.url}
+                              alt={
+                                diagram.caption || `Diagram ${diagramIndex + 1}`
+                              }
+                              className="max-w-full h-auto max-h-80 object-contain rounded-lg  mb-2"
+                              style={{ maxHeight: "320px" }}
+                              loading="lazy"
+                              onError={(e) => {
+                                e.target.style.display = "none";
+                                e.target.nextSibling.style.display = "block";
+                              }}
+                            />
+                            <div className="hidden text-red-500 dark:text-red-400 text-sm p-2 border border-red-200 dark:border-red-800 rounded bg-red-50 dark:bg-red-900/20">
+                              Failed to load image
+                            </div>
+                            {diagram.caption && (
+                              <p className="text-sm text-gray-600 dark:text-gray-400 text-center mt-2 italic">
+                                {diagram.caption}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Display single diagram for backward compatibility */}
+                  {question.diagram && (
+                    <div className="mt-4 mb-2 md:mb-4">
+                      <div className=" dark:bg-zinc-800 rounded-lg p-4 border border-gray-200 dark:border-zinc-700">
+                        <div className="flex flex-col items-center">
+                          <img
+                            src={question.diagram}
+                            alt="Question diagram"
+                            className="max-w-full h-auto max-h-80 object-contain rounded-lg shadow-sm"
+                            style={{ maxHeight: "320px" }}
+                            loading="lazy"
+                            onError={(e) => {
+                              e.target.style.display = "none";
+                              e.target.nextSibling.style.display = "block";
+                            }}
+                          />
+                          <div className="hidden text-red-500 dark:text-red-400 text-sm p-2 border border-red-200 dark:border-red-800 rounded bg-red-50 dark:bg-red-900/20">
+                            Failed to load image
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Options */}
                   <div className="space-y-3 mb-4">
@@ -668,24 +744,48 @@ const QuestionsPage = () => {
 
             {/* Quick Links */}
             <div className="bg-gray-50 dark:bg-zinc-700/30 rounded-xl p-4">
-              <h2 className="text-lg font-bold text-gray-800 dark:text-white mb-3">
-                Quick Links
-              </h2>
+              <div className="mb-3">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-lg font-bold text-gray-800 dark:text-white flex items-center">
+                    <IoFolderOpen size={20} className="mr-2 text-yellow-500" />
+                    Quick Links
+                  </h2>
+                </div>
+              </div>
               <div className="space-y-2">
-                {[
-                  "Problems on Train",
-                  "Probability",
-                  "Permutation and Combination",
-                  "Simple Interest",
-                ].map((item) => (
-                  <a
-                    key={item}
-                    href="#"
-                    className="block px-3 py-2 text-sm rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-700/50 text-gray-700 dark:text-gray-300 transition-colors"
-                  >
-                    {item}
-                  </a>
-                ))}
+                {topicsLoading ? (
+                  <div className="py-4 space-y-2">
+                    <div className="h-8 bg-gray-200 dark:bg-zinc-700 rounded-lg animate-pulse"></div>
+                    <div className="h-8 bg-gray-200 dark:bg-zinc-700 rounded-lg animate-pulse"></div>
+                    <div className="h-8 bg-gray-200 dark:bg-zinc-700 rounded-lg animate-pulse"></div>
+                  </div>
+                ) : topics.length > 0 ? (
+                  <>
+                    {getSortedTopics().slice(0, 5).map((topic) => (
+                      <a
+                        key={topic.title}
+                        href={topic.link}
+                        className="flex items-center px-3 py-2 text-sm rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-700/50 text-gray-700 dark:text-gray-300 transition-colors"
+                      >
+                        <IoFolderOpen size={16} className="mr-2 text-yellow-500" />
+
+                        <span>{topic.title}</span>
+                      </a>
+                    ))}
+                    {topics.length > 5 && (
+                      <a
+                        href={`/${subject}`}
+                        className="block text-center px-3 py-2 text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                      >
+                        View all {topics.length} topics
+                      </a>
+                    )}
+                  </>
+                ) : (
+                  <p className="text-sm text-gray-500 dark:text-gray-400 italic">
+                    No topics available for this subject.
+                  </p>
+                )}
               </div>
             </div>
           </div>

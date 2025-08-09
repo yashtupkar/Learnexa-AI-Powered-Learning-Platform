@@ -177,31 +177,38 @@ const ReadingComprehensionPage = () => {
                     </span>
                   </h1>
                 </div>
-                <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-1 ml-10">
+                <div className="flex flex-wrap items-center text-sm text-gray-500 dark:text-gray-400 mt-1 ml-2 sm:ml-10 gap-y-1 gap-x-2">
                   <a
                     href="/dashboard"
-                    className="hover:text-blue-500 transition-colors"
+                    className="hover:text-blue-500 transition-colors whitespace-nowrap"
                   >
                     Dashboard
-                  </a>{" "}
-                  <ChevronsRight className="mx-1 text-green-500 w-4 h-4" />{" "}
+                  </a>
+
+                  <ChevronsRight className="text-green-500 w-4 h-4 flex-shrink-0" />
+
                   <a
-                    href={`/verbal-ability`}
-                    className="capitalize hover:text-blue-500 transition-colors"
+                    href="/verbal-ability"
+                    className="capitalize hover:text-blue-500 transition-colors whitespace-nowrap"
                   >
                     Verbal Ability
                   </a>
-                  <ChevronsRight className="mx-1 text-green-500 w-4 h-4" />{" "}
+
+                  <ChevronsRight className="text-green-500 w-4 h-4 flex-shrink-0" />
+
                   <a
-                    href={`/verbal-ability/reading-comprehension`}
-                    className="capitalize hover:text-blue-500 transition-colors"
+                    href="/verbal-ability/reading-comprehension"
+                    className="capitalize hover:text-blue-500 transition-colors whitespace-nowrap"
                   >
                     Reading Comprehension
                   </a>
-                  <ChevronsRight className="mx-1 text-green-500 w-4 h-4" />{" "}
+
+                  <ChevronsRight className="text-green-500 w-4 h-4 flex-shrink-0" />
+
                   <a
-                    href={`/verbal-ability/reading-comprehension`}
-                    className="capitalize hover:text-blue-500 transition-colors"
+                    href="/verbal-ability/reading-comprehension"
+                    className="capitalize hover:text-blue-500 transition-colors whitespace-nowrap truncate max-w-[180px] sm:max-w-none"
+                    title={passageData.passageTitle}
                   >
                     {passageData.passageTitle}
                   </a>
@@ -442,11 +449,12 @@ const ReadingComprehensionPage = () => {
                   Back to Top
                 </button>
                 <button
-                  onClick={() => navigate(`/${subject}/${topic}`)}
+                  onClick={() => navigate(`/verbal-ability/reading-comprehension`)}
+
                   className="w-full px-3 py-2 text-sm rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-700/50 text-gray-700 dark:text-gray-300 transition-colors flex items-center"
                 >
                   <BookOpen size={16} className="mr-2" />
-                  More {topic} Passages
+                  More Passages
                 </button>
               </div>
             </div>
