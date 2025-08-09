@@ -883,6 +883,8 @@ import {
   Sparkles,
   Bug,
   Crown,
+  FileText,
+  LayoutPanelLeft,
 } from "lucide-react";
 import { ThemeToggle } from "./ThemeTogler";
 import Avatar from "boring-avatars";
@@ -1179,7 +1181,7 @@ export default function Sidebar({
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 p-4 overflow-y-auto">
+          <nav className="flex-1 p-4 overflow-y-auto scrollbar-custom">
             <div className="space-y-1.5">
               <SidebarItem
                 icon={<Home />}
@@ -1224,13 +1226,26 @@ export default function Sidebar({
                 label="Logical Reasoning"
                 to="/logical-reasoning"
                 collapsed={isCollapsed}
-
                 isNew={true}
               />
               <SidebarItem
                 icon={<BookA />}
                 label="Verbal Reasoning"
                 to="/verbal-reasoning"
+                collapsed={isCollapsed}
+                isNew={true}
+              />
+              <SidebarItem
+                icon={< LayoutPanelLeft/>}
+                label="Non-Verbal Reasoning"
+                to="/non-verbal-reasoning"
+                collapsed={isCollapsed}
+              
+              />
+              <SidebarItem
+                icon={<FileText />}
+                label="Verbal Ability"
+                to="/verbal-ability"
                 collapsed={isCollapsed}
                 isNew={true}
               />
@@ -1258,7 +1273,7 @@ export default function Sidebar({
               label="Upgrade to Pro"
               to="/plans"
               collapsed={isCollapsed}
-              upgrade={true} 
+              upgrade={true}
             />
           </nav>
           {/* Footer */}

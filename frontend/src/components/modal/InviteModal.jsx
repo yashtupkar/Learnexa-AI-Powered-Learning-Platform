@@ -15,15 +15,33 @@ const InviteModal = ({ isOpen, onClose }) => {
     user?.username || user?.name || "guest"
   }`;
 
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(inviteUrl);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error("Failed to copy:", err);
-    }
-  };
+const handleCopy = async () => {
+const invitationMessage = `🌟 Hey friend!  
+
+I’ve been using Learnexa – an AI-powered learning platform that’s making studying fun, smart, and super effective! 📚✨  
+
+You’ll get:  
+✅ AI-generated quizzes to test your skills  
+✅ Aptitude, reasoning & coding practice  
+✅ Distraction-free YouTube learning  
+✅ Real progress tracking & challenges
+and more...  
+
+It’s perfect if you’re preparing for placements, competitive exams, or just want to sharpen your mind. 🧠💡  
+
+🎯 Let’s learn and grow together!  
+Click here to join using my invite link: ${inviteUrl}  
+
+🚀 Start today and see the difference!`;
+  try {
+    await navigator.clipboard.writeText(invitationMessage);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  } catch (err) {
+    console.error("Failed to copy:", err);
+  }
+};
+
 
   if (!isOpen) return null;
 
@@ -102,7 +120,14 @@ const InviteModal = ({ isOpen, onClose }) => {
                <motion.button
                  whileHover={{ scale: 1.05, rotate: 5 }}
                  whileTap={{ scale: 0.95 }}
-                 className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center cursor-pointer justify-center bg-[#25D366] text-white hover:bg-[#128C7E] hover:shadow-lg transition-all duration-300`}
+                 onClick={() => {
+                      
+                   window.open(
+                     `https://wa.me/?text=${encodeURIComponent(inviteUrl)}`,
+                     "_blank"
+                   );
+                 }}
+                 className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center cursor-pointer justify-center bg-[#25D366] text-white hover:bg-[#128C7E] hover:shadow-lg transition-all duration-300"
                >
                  <FaWhatsapp className="w-5 h-5 sm:w-6 sm:h-6" />
                </motion.button>

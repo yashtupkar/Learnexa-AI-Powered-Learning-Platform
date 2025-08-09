@@ -137,6 +137,11 @@ import AboutUs from "./pages/AboutUsPage";
 import PrivacyPolicy from "./components/Legal/PrivacyPolicy";
 import TermsAndConditions from "./components/Legal/T&C";
 import InvitationLanding from "./pages/invitationPage";
+import RcTopics from "./pages/RcTopics";
+import ReadingComprehensionPage from "./pages/ReadingComprehensionPage";
+import BulkQuestionUpload from "./pages/BulkQuestionsUpload";
+
+
 
 
 const App = () => {
@@ -165,13 +170,22 @@ const App = () => {
         <Route path="/streak" element={<StreakMap />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/help-center" element={<HelpSupportPage />} />
-        <Route path="/invitation" element={<InvitationLanding/>} />
+        <Route path="/invitation" element={<InvitationLanding />} />
 
         <Route
           path="/hr-interview/question/:id"
           element={<HRQuestionDetailPage />}
         />
         <Route path="/:subject/:topic" element={<QuestionsPage />} />
+        <Route
+          path="/verbal-ability/reading-comprehension"
+          element={<RcTopics />}
+        />
+        <Route
+          path="/verbal-ability/reading-comprehension/:id"
+          element={<ReadingComprehensionPage/>}
+        />
+        <Route path="/bulk-upload" element={<BulkQuestionUpload/>} />
         <Route path="/:subject/:topic/edit" element={<QuestionEditPage />} />
         <Route path="/study-tube/search=:query" element={<SearchResults />} />
 

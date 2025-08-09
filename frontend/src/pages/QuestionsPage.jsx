@@ -20,6 +20,7 @@ import {
   Moon,
   RefreshCw,
   AlertCircle,
+  ImageIcon,
 } from "lucide-react";
 import Layout from "../components/layouts/layout";
 import toast from "react-hot-toast";
@@ -45,7 +46,7 @@ const QuestionsPage = () => {
     const fetchQuestions = async () => {
       try {
         const response = await axios.get(
-          `${backend_URL}/api/indiabix/questions/${subject}/${topic}`
+          `${backend_URL}/api/questions/questions/${subject}/${topic}`
         );
         setQuestions(response.data.questions || []);
         setLoading(false);
@@ -227,7 +228,7 @@ const QuestionsPage = () => {
           }`}
           ref={questionsContainerRef}
         >
-          <div className="max-w-4xl  mx-auto">
+          <div className="max-w-4xl mx-auto">
             {/* Header */}
             <div className="flex p-4 md:p-0 justify-between items-center mb-2 md:mb-6">
               <div>
@@ -263,7 +264,7 @@ const QuestionsPage = () => {
                 </div>
               </div>
 
-              <div className=" hidden md:flex items-center space-x-2">
+              <div className="hidden md:flex items-center space-x-2">
                 <button
                   onClick={() => setFullScreen(!fullScreen)}
                   className="p-2 cursor-pointer rounded-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
@@ -293,11 +294,76 @@ const QuestionsPage = () => {
                       <span className="text-sm font-semibold bg-gradient-to-br from-indigo-600 to-indigo-400 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-1">
                         {index + indexOfFirstQuestion + 1}
                       </span>
-                      <p className="text-gray-800 dark:text-zinc-200 flex-1">
-                        {question.questionText}
-                      </p>
+                      <div className="flex-1">
+                        <p className="text-gray-800 dark:text-zinc-200 mb-3">
+                          {question.questionText}
+                        </p>
+
+                        {/* Display Diagrams if they exist */}
+                        {question.diagrams && question.diagrams.length > 0 && (
+                          <div className="mt-4 space-y-3">
+                            {question.diagrams.map((diagram, diagramIndex) => (
+                              <div
+                                key={diagramIndex}
+                                className=" dark:bg-white rounded-lg p-4 border border-gray-200 dark:border-zinc-700"
+                              >
+                                <div className="flex flex-col items-center">
+                                  <img
+                                    src={diagram.url}
+                                    alt={
+                                      diagram.caption ||
+                                      `Diagram ${diagramIndex + 1}`
+                                    }
+                                    className="max-w-full h-auto max-h-80 object-contain rounded-lg  mb-2"
+                                    style={{ maxHeight: "320px" }}
+                                    loading="lazy"
+                                    onError={(e) => {
+                                      e.target.style.display = "none";
+                                      e.target.nextSibling.style.display =
+                                        "block";
+                                    }}
+                                  />
+                                  <div className="hidden text-red-500 dark:text-red-400 text-sm p-2 border border-red-200 dark:border-red-800 rounded bg-red-50 dark:bg-red-900/20">
+                                    Failed to load image
+                                  </div>
+                                  {diagram.caption && (
+                                    <p className="text-sm text-gray-600 dark:text-gray-400 text-center mt-2 italic">
+                                      {diagram.caption}
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Display single diagram for backward compatibility */}
+                        {question.diagram && (
+                          <div className="mt-4">
+                            <div className=" dark:bg-zinc-800 rounded-lg p-4 border border-gray-200 dark:border-zinc-700">
+                              <div className="flex flex-col items-center">
+                                <img
+                                  src={question.diagram}
+                                  alt="Question diagram"
+                                  className="max-w-full h-auto max-h-80 object-contain rounded-lg shadow-sm"
+                                  style={{ maxHeight: "320px" }}
+                                  loading="lazy"
+                                  onError={(e) => {
+                                    e.target.style.display = "none";
+                                    e.target.nextSibling.style.display =
+                                      "block";
+                                  }}
+                                />
+                                <div className="hidden text-red-500 dark:text-red-400 text-sm p-2 border border-red-200 dark:border-red-800 rounded bg-red-50 dark:bg-red-900/20">
+                                  Failed to load image
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <div className="md:flex hidden  space-x-2">
+                    <div className="md:flex hidden space-x-2">
                       <button
                         onClick={() => toggleLike(questionId)}
                         className={`p-1.5 rounded-full ${
@@ -423,13 +489,28 @@ const QuestionsPage = () => {
                       )}
                     </button>
 
-                    <button
-                      onClick={() => copyToClipboard(question.questionText)}
-                      className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors flex items-center"
-                    >
-                      <Clipboard size={16} className="mr-1" />
-                      Copies
-                    </button>
+                    <div className="flex items-center space-x-2">
+                      {/* Image indicator */}
+                      {(question.diagrams && question.diagrams.length > 0) ||
+                      question.diagram ? (
+                        <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+                          <ImageIcon size={14} className="mr-1" />
+                          {question.diagrams
+                            ? `${question.diagrams.length} image${
+                                question.diagrams.length > 1 ? "s" : ""
+                              }`
+                            : "1 image"}
+                        </div>
+                      ) : null}
+
+                      <button
+                        onClick={() => copyToClipboard(question.questionText)}
+                        className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors flex items-center"
+                      >
+                        <Clipboard size={16} className="mr-1" />
+                        Copy
+                      </button>
+                    </div>
                   </div>
 
                   {/* Explanation */}
@@ -442,8 +523,56 @@ const QuestionsPage = () => {
                       <div className="text-gray-700 dark:text-yellow-100">
                         {renderSmart(question.explanation)}
                       </div>
+
+                      {/* Show solution if available */}
+                      {question.solution && (
+                        <div className="mt-4 pt-4 border-t border-yellow-300 dark:border-yellow-700">
+                          <h4 className="font-medium text-yellow-800 dark:text-yellow-200 mb-2">
+                            Detailed Solution:
+                          </h4>
+                          <div className="text-gray-700 dark:text-yellow-100">
+                            {renderSmart(question.solution)}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
+
+                  {/* Mobile Actions */}
+                  <div className="md:hidden flex justify-between items-center mt-4 pt-4 border-t border-gray-200 dark:border-zinc-700">
+                    <div className="flex space-x-4">
+                      <button
+                        onClick={() => toggleLike(questionId)}
+                        className={`flex items-center text-sm ${
+                          isLiked
+                            ? "text-red-500"
+                            : "text-gray-500 hover:text-red-500"
+                        } transition-colors`}
+                      >
+                        <Heart
+                          size={16}
+                          fill={isLiked ? "currentColor" : "none"}
+                          className="mr-1"
+                        />
+                        Like
+                      </button>
+                      <button
+                        onClick={() => toggleSave(questionId)}
+                        className={`flex items-center text-sm ${
+                          isSaved
+                            ? "text-blue-500"
+                            : "text-gray-500 hover:text-blue-500"
+                        } transition-colors`}
+                      >
+                        <Bookmark
+                          size={16}
+                          fill={isSaved ? "currentColor" : "none"}
+                          className="mr-1"
+                        />
+                        Save
+                      </button>
+                    </div>
+                  </div>
                 </div>
               );
             })}
@@ -532,7 +661,7 @@ const QuestionsPage = () => {
                   Save Notes
                 </button>
                 <button className="px-3 border border-gray-200 dark:border-zinc-700 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors text-sm">
-                  Copies
+                  Copy
                 </button>
               </div>
             </div>

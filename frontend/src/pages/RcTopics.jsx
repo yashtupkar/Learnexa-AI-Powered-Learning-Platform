@@ -161,9 +161,9 @@
 //     "verbal-ability": [
 //       {
 //         title: "Spotting errors",
-     
+
 //         link: "/verbal-ability/spotting-errors",
-      
+
 //       },
 //       {
 //         title: "Grammar",
@@ -383,9 +383,8 @@
 
 // export default SubjectTopicsPage;
 
-
 import { motion } from "framer-motion";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Layout from "../components/layouts/layout";
 import {
   ChevronsRight,
@@ -400,16 +399,16 @@ import { IoFolderOpen } from "react-icons/io5";
 import axios from "axios";
 import { AppContext } from "../context/AppContext";
 
-const SubjectTopicsPage = () => {
+const RcTopics = () => {
   const { subject } = useParams();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [savedTopics, setSavedTopics] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [topics, setTopics] = useState([]);
   const [error, setError] = useState(null);
 
-
-  const {backend_URL} = useContext(AppContext);
+  const { backend_URL } = useContext(AppContext);
 
   // Fetch topics when subject changes
   useEffect(() => {
@@ -417,13 +416,11 @@ const SubjectTopicsPage = () => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await axios.post(`${backend_URL}/api/questions/topics`, { subject });
-        const formattedTopics = response.data.topics.map((topic) => ({
-          title: formatTopicName(topic),
-          link: `/${subject}/${topic}`,
-          difficulty: getTopicDifficulty(topic),
-        }));
-        setTopics(formattedTopics);
+        const response = await axios.get(
+          `${backend_URL}/api/questions/reading-comprehension`
+        );
+        console.log(response.data.readingComprehensionPassage);
+        setTopics(response.data.readingComprehensionPassage);
       } catch (err) {
         console.error("Failed to fetch topics:", err);
         setError("Failed to load topics. Please try again later.");
@@ -432,40 +429,8 @@ const SubjectTopicsPage = () => {
       }
     };
 
-    if (subject) {
-      fetchTopics();
-    }
-  }, [subject]);
-
-  // Format topic name from "blood-relation" to "Blood Relation"
-  const formatTopicName = (topic) => {
-    return topic
-      .split("-")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  };
-
-  // Get description for topic (you can expand this with more descriptions)
-  const getTopicDescription = (topic) => {
-    const descriptions = {
-      "blood-relation": "Analyze family relationships and solve problems",
-      calendar: "Solve calendar-based problems and date calculations",
-      clock: "Solve problems related to time and clock angles",
-      // Add more descriptions as needed
-    };
-    return descriptions[topic] || `Practice ${formatTopicName(topic)} problems`;
-  };
-
-  // Assign difficulty levels (you can customize this)
-  const getTopicDifficulty = (topic) => {
-    const difficulties = {
-      "blood-relation": "Easy",
-      calendar: "Medium",
-      clock: "Medium",
-      // Add more difficulties as needed
-    };
-    return difficulties[topic] || "Medium";
-  };
+    fetchTopics();
+  }, []);
 
   // Color palette for topic cards
   const colorPalette = [
@@ -482,30 +447,6 @@ const SubjectTopicsPage = () => {
     "bg-gradient-to-br from-lime-500 to-lime-700",
     "bg-gradient-to-br from-amber-500 to-amber-700",
   ];
-
-  // Toggle saved topic
-  const toggleSavedTopic = (topicTitle) => {
-    setSavedTopics((prev) =>
-      prev.includes(topicTitle)
-        ? prev.filter((title) => title !== topicTitle)
-        : [...prev, topicTitle]
-    );
-  };
-
-  // Filter topics based on search term
- const filteredTopics = topics
-  .map((topic, index) => ({
-    ...topic,
-    color: colorPalette[index % colorPalette.length],
-    isSaved: savedTopics.includes(topic.title),
-  }))
-  .filter((topic) => {
-    const searchLower = searchTerm.toLowerCase();
-    return (
-      topic.title.toLowerCase().includes(searchLower) ||
-      (topic.description && topic.description.toLowerCase().includes(searchLower))
-    );
-  });
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -541,26 +482,14 @@ const SubjectTopicsPage = () => {
     exit: { opacity: 0 },
   };
 
-  const DifficultyBadge = ({ level }) => {
-    const colors = {
-      Easy: "bg-green-100 text-green-800",
-      Medium: "bg-yellow-100 text-yellow-800",
-      Hard: "bg-red-100 text-red-800",
-    };
-
-    return (
-      <span className={`text-xs px-2 py-1 rounded-full ${colors[level]}`}>
-        {level}
-      </span>
-    );
+  const handleTopicClick = (id) => {
+    navigate(`/verbal-ability/reading-comprehension/${id}`);
   };
 
   return (
     <Layout>
       <Helmet>
-        <title>
-          {subject ? `${formatTopicName(subject)}` : "Topics"} | Learnexa
-        </title>
+        <title>Reading Comprehension Topics | Learnexa</title>
       </Helmet>
       <div className="min-h-screen bg-gray-50 text-gray-900 dark:bg-black dark:text-white ">
         <div className="container mx-auto px-4 sm:px-6 py-8">
@@ -568,7 +497,7 @@ const SubjectTopicsPage = () => {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
             <div>
               <h1 className="text-3xl  text-gray-800 dark:text-white capitalize">
-                {subject ? formatTopicName(subject) : "All"} Topics
+                Reading Comprehension Topics
               </h1>
               <p className="text-gray-600 dark:text-gray-300 mt-1">
                 Master these topics to ace your exams
@@ -609,7 +538,7 @@ const SubjectTopicsPage = () => {
                       href={`/${subject}`}
                       className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white capitalize"
                     >
-                      {subject ? formatTopicName(subject) : "Topics"}
+                      Reading Comprehension
                     </a>
                   </div>
                 </li>
@@ -650,31 +579,27 @@ const SubjectTopicsPage = () => {
               initial="hidden"
               animate="visible"
             >
-              {filteredTopics.length > 0 ? (
-                filteredTopics.map((topic, index) => (
+              {topics.length > 0 ? (
+                topics.map((topic, index) => (
                   <motion.div
                     key={index}
                     variants={cardVariants}
                     whileHover="hover"
-                    className="relative rounded-xl overflow-hidden shadow-sm transition-all duration-200"
+                    className="relative rounded-xl overflow-hidden shadow-sm transition-all duration-200 cursor-pointer"
+                    onClick={() => handleTopicClick(topic._id)}
                   >
-                    <a
-                      href={topic.link}
-                      className={`block h-full bg-white dark:bg-zinc-900 text-white`}
-                    >
+                    <div className="block h-full bg-white dark:bg-zinc-900 text-white">
                       <div className="p-4 h-full items-center flex gap-2">
                         <IoFolderOpen size={34} className="text-yellow-500" />
                         <div className="flex flex-col">
                           <div className="flex justify-between items-start">
                             <h2 className="text-sm md:text-lg text-black dark:text-white">
-                              {topic.title}
+                              {topic.passageTitle}
                             </h2>
-                         
                           </div>
-                      
                         </div>
                       </div>
-                    </a>
+                    </div>
                   </motion.div>
                 ))
               ) : (
@@ -698,4 +623,4 @@ const SubjectTopicsPage = () => {
   );
 };
 
-export default SubjectTopicsPage;
+export default RcTopics;

@@ -366,7 +366,7 @@ const QuestionEditPage = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `${backend_URL}/api/indiabix/questions/${subject}/${topic}`
+          `${backend_URL}/api/questions/questions/${subject}/${topic}`
         );
         setQuestions(response.data.questions || []);
         setLoading(false);
@@ -466,7 +466,7 @@ const QuestionEditPage = () => {
 
     try {
       setSavingStates((prev) => ({ ...prev, [questionId]: true }));
-      await axios.delete(`${backend_URL}/api/indiabix/update-question/${questionId}`);
+      await axios.delete(`${backend_URL}/api/questions/update-question/${questionId}`);
 
       const updatedQuestions = [...questions];
       updatedQuestions.splice(questionIndex, 1);
@@ -559,7 +559,7 @@ const QuestionEditPage = () => {
       if (questionId.startsWith("new-")) {
         // Create new question
         response = await axios.post(
-          `${backend_URL}/api/indiabix/questions`,
+          `${backend_URL}/api/questions/questions`,
           updateData
         );
 
@@ -570,7 +570,7 @@ const QuestionEditPage = () => {
       } else {
         // Update existing question
         response = await axios.put(
-          `${backend_URL}/api/indiabix/update-question/${questionId}`,
+          `${backend_URL}/api/questions/update-question/${questionId}`,
           updateData
           );
           toast.success("Question Updated successfully!")
@@ -597,7 +597,7 @@ const QuestionEditPage = () => {
 
       // After all saves are complete, refresh the data
       const response = await axios.get(
-        `${backend_URL}/api/indiabix/update-question/${subject}/${topic}`
+        `${backend_URL}/api/questions/update-question/${subject}/${topic}`
       );
       setQuestions(response.data.questions || []);
 

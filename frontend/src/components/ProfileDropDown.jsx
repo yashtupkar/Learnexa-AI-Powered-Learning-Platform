@@ -42,7 +42,7 @@ export function DropdownMenu({ name, avatar, email }) {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/login");
+    navigate("/");
   };
 
   

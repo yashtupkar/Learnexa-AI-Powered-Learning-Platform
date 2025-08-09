@@ -6,7 +6,7 @@ const Question = require("../models/questionsModel");
 
 
 // API endpoint to fetch questions
-router.post("/questions", async (req, res) => {
+const fetchQuestionBySubjecTopic = async (req, res) => {
   try {
     const { subject, topic } = req.body;
 
@@ -71,14 +71,81 @@ router.post("/questions", async (req, res) => {
       details: error.message,
     });
   }
-});
+};
+
+//fetch topics on based on subject
+const fetchTopicsBySubject = async (req, res) => {
+  try {
+    const { subject } = req.body;
+
+    if (!subject) {
+      return res.status(400).json({ error: "Subject is required" });
+    }
+
+    const topics = await Question.distinct("category", { subject: subject.toLowerCase() });
+    res.json({
+      success: true,
+      subject,
+      topics
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({
+      error: "Failed to fetch topics",
+      details: error.message,
+    });
+  }
+};
+
+//fetch all the reading comprehension passage where questionType is reading-comprehension
+const fetchReadingComprehensionPassage = async (req, res) => {
+  try {
+
+    const readingComprehensionPassage = await Question.find({ 
+      questionType: "reading-comprehension"
+    });
+    res.json({
+      success: true,
+      readingComprehensionPassage
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({
+      error: "Failed to fetch reading comprehension passage",
+      details: error.message,
+    });
+  }
+};
+
+//fetch rc by id
+const fetchRcById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const rc = await Question.findById(id);
+    if (!rc) {
+      return res.status(404).json({ error: "Reading comprehension passage not found" });
+    }
+    res.json({
+      success: true,
+      rc
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({
+      error: "Failed to fetch reading comprehension passage",
+      details: error.message,
+    });
+  }
+};
+
+
 
 
 
 
 
 // API endpoint to get questions from database by topic
-router.get("/questions/:subject/:topic", async (req, res) => {
+const getQuestionByTopic= async (req, res) => {
   try {
     const { topic, subject } = req.params;
     const { limit = 20, page = 1 } = req.query;
@@ -113,9 +180,9 @@ router.get("/questions/:subject/:topic", async (req, res) => {
       details: error.message,
     });
   }
-});
+};
 
-router.put("/update-question/:id", async (req, res) => {
+const updateQuestion =  async (req, res) => {
   try {
     const { id } = req.params;
     const updateData = req.body;
@@ -174,6 +241,42 @@ router.put("/update-question/:id", async (req, res) => {
       details: error.message,
     });
   }
-});
+};
 
-module.exports = router;
+
+
+//bulk questions insertion
+const bulkInsertQuestions = async (req, res) => {
+  try {
+    const questions = req.body;
+    if (!Array.isArray(questions) || questions.length === 0) {
+      return res.status(400).json({ error: "Invalid questions data" });
+    }
+    const insertedQuestions = await Question.insertMany(questions);
+    res.status(201).json({
+      success: true,
+      message: "Questions inserted successfully",
+      questions: insertedQuestions
+    });
+  } catch (error) {
+    console.error("Error inserting questions:", error);
+    res.status(500).json({
+      error: "Failed to insert questions",
+      details: error.message,
+    });
+  }
+};
+
+
+module.exports = {
+    updateQuestion,
+    getQuestionByTopic,
+  fetchQuestionBySubjecTopic,
+  fetchTopicsBySubject,
+  fetchReadingComprehensionPassage,
+  fetchRcById,
+  bulkInsertQuestions,
+
+
+
+};

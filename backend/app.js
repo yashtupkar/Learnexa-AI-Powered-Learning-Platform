@@ -8,11 +8,11 @@ const userRouter = require("./routes/userRoutes");
 const quizRouter = require("./routes/quizRoutes");
 const newsRouter = require("./routes/newsRoute");
 const interviewRouter = require("./routes/interviewRoute");
-const indiabixRouter = require("./routes/indiaBixRoute");
 const notificationRouter = require("./routes/notificationRoute");
 require("./cornJobs/newsCorn");
 require("./cornJobs/resetStreakCron");
 const upload = require("./multer/upload"); 
+const questionRouter = require("./routes/questionRoutes");
 
 
 const app = express();
@@ -58,8 +58,9 @@ app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use('/api/quiz', quizRouter);
 app.use('/api/news', newsRouter);
-app.use('/api/indiabix', indiabixRouter);
-app.use('/api/notification', notificationRouter)
+app.use('/api/notification', notificationRouter);
+app.use('/api/questions', questionRouter);
+
 
 app.post("/upload", upload.single("file"), (req, res) => {
   console.log("File Uploaded:", req.file); // Debugging
