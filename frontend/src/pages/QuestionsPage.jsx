@@ -28,6 +28,7 @@ import toast from "react-hot-toast";
 import { StreakUpdate } from "../../utils/streakService";
 import { Helmet } from "react-helmet-async";
 import { IoFolderOpen } from "react-icons/io5";
+import GlobalLoader from "../components/GlobalLoader";
 
 const QuestionsPage = () => {
   const questionsContainerRef = useRef(null);
@@ -257,9 +258,7 @@ const QuestionsPage = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center dark:bg-black items-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
+      <GlobalLoader/>
     );
   }
 
