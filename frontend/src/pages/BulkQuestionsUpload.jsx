@@ -3292,7 +3292,10 @@ const subjectTopics = {
     { label: "Ages", value: "ages" },
     { label: "Calendars", value: "calendars" },
     { label: "Clocks", value: "clocks" },
-    { label: "Permutations and Combinations", value: "permutations-combinations" },
+    {
+      label: "Permutations and Combinations",
+      value: "permutations-combinations",
+    },
     { label: "Probability", value: "probability" },
     { label: "Geometry", value: "geometry" },
     { label: "Mensuration", value: "mensuration" },
@@ -3313,7 +3316,7 @@ const subjectTopics = {
     { label: "Odd Man Out and Series", value: "odd-man-out-series" },
     { label: "Area", value: "area" },
     { label: "Volume and Surface Area", value: "volume-surface-area" },
-    { label: "Numbers", value: "numbers" }
+    { label: "Numbers", value: "numbers" },
   ],
 
   "logical-reasoning": [
@@ -3335,7 +3338,7 @@ const subjectTopics = {
     { label: "Theme Detection", value: "theme-detection" },
     { label: "Cause and Effect", value: "cause-effect" },
     { label: "Statement and Argument", value: "statement-argument" },
-    { label: "Logical Deduction", value: "logical-deduction" }
+    { label: "Logical Deduction", value: "logical-deduction" },
   ],
 
   "verbal-reasoning": [
@@ -3350,7 +3353,10 @@ const subjectTopics = {
     { label: "Seating Arrangement", value: "seating-arrangement" },
     { label: "Mathematical Operations", value: "mathematical-operations" },
     { label: "Arithmetic Reasoning", value: "arithmetic-reasoning" },
-    { label: "Number, Ranking and Time Sequence", value: "number-ranking-time-sequence" },
+    {
+      label: "Number, Ranking and Time Sequence",
+      value: "number-ranking-time-sequence",
+    },
     { label: "Statements and Arguments", value: "statements-arguments" },
     { label: "Statement and Assumption", value: "statement-assumption" },
     { label: "Passage and Conclusions", value: "passage-conclusions" },
@@ -3365,7 +3371,7 @@ const subjectTopics = {
     { label: "Cube and Cuboid", value: "cube-cuboid" },
     { label: "Character Puzzles", value: "character-puzzles" },
     { label: "Data Sufficiency", value: "data-sufficiency" },
-    { label: "Verification of Truth", value: "verification-truth" }
+    { label: "Verification of Truth", value: "verification-truth" },
   ],
 
   "non-verbal-reasoning": [
@@ -3375,7 +3381,10 @@ const subjectTopics = {
     { label: "Mirror Images", value: "mirror-images" },
     { label: "Water Images", value: "water-images" },
     { label: "Embedded Figures", value: "embedded-figures" },
-    { label: "Completion of Incomplete Pattern", value: "completion-incomplete-pattern" },
+    {
+      label: "Completion of Incomplete Pattern",
+      value: "completion-incomplete-pattern",
+    },
     { label: "Figure Matrix", value: "figure-matrix" },
     { label: "Paper Cutting", value: "paper-cutting" },
     { label: "Paper Folding", value: "paper-folding" },
@@ -3387,15 +3396,21 @@ const subjectTopics = {
     { label: "Dot Situation", value: "dot-situation" },
     { label: "Image Analysis", value: "image-analysis" },
     { label: "Pattern Completion", value: "pattern-completion" },
-    { label: "Figure Formation and Analysis", value: "figure-formation-analysis" },
+    {
+      label: "Figure Formation and Analysis",
+      value: "figure-formation-analysis",
+    },
     { label: "Counting of Figures", value: "counting-figures" },
     { label: "Analytical Reasoning", value: "analytical-reasoning" },
-    { label: "Shape Construction", value: "shape-construction" }
+    { label: "Shape Construction", value: "shape-construction" },
   ],
 
   "verbal-ability": [
     { label: "Reading Comprehension", value: "reading-comprehension" },
     { label: "Para Jumbles", value: "para-jumbles" },
+    { label: "Articles", value: "articles" },
+    { label: "Sentence Completion", value: "sentence-completion" },
+
     { label: "Para Completion", value: "para-completion" },
     { label: "Sentence Correction", value: "sentence-correction" },
     { label: "Error Spotting", value: "error-spotting" },
@@ -3418,16 +3433,19 @@ const subjectTopics = {
     { label: "Selecting Words", value: "selecting-words" },
     { label: "Sentence Formation", value: "sentence-formation" },
     { label: "Ordering of Words", value: "ordering-of-words" },
-    { label: "Completing Statements", value: "completing-statements" },
+    { label: "Completing Statements", value: "statement-completion" },
     { label: "Ordering of Sentences", value: "ordering-of-sentences" },
     { label: "Paragraph Formation", value: "paragraph-formation" },
-    { label: "Verbal Analogies", value: "verbal-analogies" }
+    { label: "Verbal Analogies", value: "verbal-analogies" },
   ],
 
   "reading-comprehension": [
     { label: "Factual Passages", value: "factual-passages" },
     { label: "Inferential Passages", value: "inferential-passages" },
-    { label: "Critical Reasoning Passages", value: "critical-reasoning-passages" },
+    {
+      label: "Critical Reasoning Passages",
+      value: "critical-reasoning-passages",
+    },
     { label: "Literary Passages", value: "literary-passages" },
     { label: "Scientific Passages", value: "scientific-passages" },
     { label: "Historical Passages", value: "historical-passages" },
@@ -3444,8 +3462,8 @@ const subjectTopics = {
     { label: "Legal Passages", value: "legal-passages" },
     { label: "Educational Passages", value: "educational-passages" },
     { label: "Cultural Passages", value: "cultural-passages" },
-    { label: "General Knowledge", value: "general-knowledge" }
-  ]
+    { label: "General Knowledge", value: "general-knowledge" },
+  ],
 };
 
 
@@ -3479,7 +3497,7 @@ const subjectTopics = {
   
   // JSON Import states
   const [showJsonImport, setShowJsonImport] = useState(false);
-  const [jsonInput, setJsonInput] = useState("");
+  const [jsonInput, setJsonInput] = useState("{ \n \"questions\":  \n}");
   const [jsonError, setJsonError] = useState("");
   
   const fileInputRefs = useRef([]);
@@ -4279,7 +4297,7 @@ const subjectTopics = {
         {/* JSON Import Modal */}
         {showJsonImport && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="bg-white dark:bg-zinc-900 rounded-lg p-6 w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
                   Import Questions from JSON
@@ -4407,7 +4425,7 @@ const subjectTopics = {
 
         {/* Saved Drafts Section */}
         {showDrafts && savedDrafts.length > 0 && (
-          <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+          <div className="mb-6 p-4 bg-gray-50 dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800">
             <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-3">
               Saved Drafts
             </h3>
@@ -4415,7 +4433,7 @@ const subjectTopics = {
               {savedDrafts.map((draft) => (
                 <div
                   key={draft.id}
-                  className="flex items-center justify-between p-3 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600"
+                  className="flex items-center justify-between p-3 bg-white dark:bg-zinc-800 rounded border border-gray-200 dark:border-gray-600"
                 >
                   <div className="flex-1">
                     <p className="text-sm font-medium text-gray-800 dark:text-white">
@@ -4464,7 +4482,7 @@ const subjectTopics = {
           {questions.map((question, qIndex) => (
             <div
               key={qIndex}
-              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700"
+              className="bg-white dark:bg-zinc-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700"
             >
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
@@ -4531,7 +4549,7 @@ const subjectTopics = {
                   Subject
                 </label>
                 <select
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-700 dark:bg-zinc-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                   value={question.subject}
                   onChange={(e) => {
                     handleInputChange(qIndex, "subject", e.target.value);
@@ -4553,7 +4571,7 @@ const subjectTopics = {
                   Topic/Category
                 </label>
                 <select
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-zinc-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                   value={question.category}
                   onChange={(e) =>
                     handleInputChange(qIndex, "category", e.target.value)

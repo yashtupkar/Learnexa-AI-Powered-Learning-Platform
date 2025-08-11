@@ -145,43 +145,71 @@ const fetchRcById = async (req, res) => {
 
 
 // API endpoint to get questions from database by topic
-const getQuestionByTopic= async (req, res) => {
+// const getQuestionByTopic= async (req, res) => {
+//   try {
+//     const { topic, subject } = req.params;
+//     const { limit = 20, page = 1 } = req.query;
+    
+//     const skip = (parseInt(page) - 1) * parseInt(limit);
+    
+    
+//     // Query the database for questions
+//     const questions = await Question.find({ 
+//       category: topic.toLowerCase(),
+//       subject: subject.toLowerCase()
+//     })
+//     .skip(skip)
+//     .limit(parseInt(limit))
+//     .exec();
+    
+//     // Get total count for pagination
+//     const totalCount = await Question.countDocuments({ 
+//       category: topic.toLowerCase(),
+//     });
+    
+//     res.json({
+//       success: true,
+//       topic,
+//       totalQuestions: questions.length,
+//       questions
+//     });
+//   } catch (error) {
+//     console.error("Error:", error);
+//     res.status(500).json({
+//       error: "Failed to fetch questions from database",
+//       details: error.message,
+//     });
+//   }
+// };
+const getQuestionByTopic = async (req, res) => {
   try {
     const { topic, subject } = req.params;
-    const { limit = 20, page = 1 } = req.query;
-    
-    const skip = (parseInt(page) - 1) * parseInt(limit);
-    
-    
-    // Query the database for questions
-    const questions = await Question.find({ 
+
+    // Query the database for all questions matching the topic and subject
+    const questions = await Question.find({
       category: topic.toLowerCase(),
-      subject: subject.toLowerCase()
-    })
-    .skip(skip)
-    .limit(parseInt(limit))
-    .exec();
-    
-    // Get total count for pagination
-    const totalCount = await Question.countDocuments({ 
-      category: topic.toLowerCase(),
-    });
-    
+      subject: subject.toLowerCase(),
+    }).exec();
+
+    // Get total count (same as questions.length in this case)
+    const totalCount = questions.length;
+
     res.json({
       success: true,
       topic,
-      totalQuestions: questions.length,
-      questions
+      subject,
+      totalQuestions: totalCount,
+      questions,
     });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({
+      success: false,
       error: "Failed to fetch questions from database",
       details: error.message,
     });
   }
 };
-
 const updateQuestion =  async (req, res) => {
   try {
     const { id } = req.params;

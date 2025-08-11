@@ -22,6 +22,8 @@ import {
   AlertCircle,
   ImageIcon,
   Folder,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import Layout from "../components/layouts/layout";
 import toast from "react-hot-toast";
@@ -232,30 +234,150 @@ const QuestionsPage = () => {
    questionsContainerRef.current?.scrollIntoView({ behavior: "smooth" });
  };
 
+//  const getVisiblePages = (currentPage, totalPages) => {
+//    const visiblePages = [];
+//    const maxVisible = 5;
+
+//    if (totalPages <= maxVisible) {
+//      // Show all pages if total is small
+//      for (let i = 1; i <= totalPages; i++) {
+//        visiblePages.push(i);
+//      }
+//    } else {
+//      // Always show first page
+//      visiblePages.push(1);
+
+//      let startPage = Math.max(2, currentPage - 1);
+//      let endPage = Math.min(totalPages - 1, currentPage + 1);
+
+//      if (currentPage <= 3) {
+//        endPage = 4;
+//      } else if (currentPage >= totalPages - 2) {
+//        startPage = totalPages - 3;
+//      }
+
+//      // Add dots before if needed
+//      if (startPage > 2) {
+//        visiblePages.push("...");
+//      }
+
+//      // Add middle pages
+//      for (let i = startPage; i <= endPage; i++) {
+//        visiblePages.push(i);
+//      }
+
+//      // Add dots after if needed
+//      if (endPage < totalPages - 1) {
+//        visiblePages.push("...");
+//      }
+
+//      // Always show last page
+//      if (totalPages > 1) {
+//        visiblePages.push(totalPages);
+//      }
+//    }
+
+//    return visiblePages;
+//  };
+const Pagination = ({ currentPage, totalPages, paginate }) => {
   const getVisiblePages = () => {
     const visiblePages = [];
-    const maxVisible = 5;
+    const maxVisible = 5; // Maximum pages to show without ellipsis
 
     if (totalPages <= maxVisible) {
+      // Show all pages if total is small
       for (let i = 1; i <= totalPages; i++) {
         visiblePages.push(i);
       }
     } else {
-      let start = Math.max(currentPage - Math.floor(maxVisible / 2), 1);
-      let end = Math.min(start + maxVisible - 1, totalPages);
+      // Always show first page
+      visiblePages.push(1);
 
-      if (end - start + 1 < maxVisible) {
-        start = Math.max(end - maxVisible + 1, 1);
+      let startPage = Math.max(2, currentPage - 1);
+      let endPage = Math.min(totalPages - 1, currentPage + 1);
+
+      // Adjust when near the start or end
+      if (currentPage <= 3) {
+        endPage = 4;
+      } else if (currentPage >= totalPages - 2) {
+        startPage = totalPages - 3;
       }
 
-      for (let i = start; i <= end; i++) {
+      // Add ellipsis if needed
+      if (startPage > 2) {
+        visiblePages.push("...");
+      }
+
+      // Add middle pages
+      for (let i = startPage; i <= endPage; i++) {
         visiblePages.push(i);
       }
+
+      // Add ellipsis if needed
+      if (endPage < totalPages - 1) {
+        visiblePages.push("...");
+      }
+
+      // Always show last page
+      visiblePages.push(totalPages);
     }
 
     return visiblePages;
   };
 
+  return (
+    <div className="flex justify-center mt-8">
+      <nav className="flex items-center gap-1">
+        {/* Previous Button */}
+        <button
+          onClick={() => paginate(currentPage - 1)}
+          disabled={currentPage === 1}
+          className={`px-3 py-1 flex gap-2 rounded-md bg-white shadow dark:bg-zinc-900 ${
+            currentPage === 1
+              ? "text-gray-400 dark:text-gray-600 cursor-not-allowed"
+              : "text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-zinc-700"
+          }`}
+        >
+          &laquo; <span className="hidden md:block">Previous</span>
+        </button>
+
+        {/* Page Numbers */}
+        {getVisiblePages().map((page, index) =>
+          page === "..." ? (
+            <span key={`ellipsis-${index}`} className="px-3 py-1 text-gray-500">
+              ...
+            </span>
+          ) : (
+            <button
+              key={page}
+              onClick={() => paginate(page)}
+              className={`px-3 py-1 rounded-md shadow ${
+                currentPage === page
+                  ? "bg-blue-600 text-white"
+                  : "bg-white dark:bg-zinc-900 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-zinc-700"
+              }`}
+            >
+              {page}
+            </button>
+          )
+        )}
+
+        {/* Next Button */}
+        <button
+          onClick={() => paginate(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className={`px-3 py-1 flex gap-2 rounded-md bg-white shadow dark:bg-zinc-900 ${
+            currentPage === totalPages
+              ? "text-gray-400 dark:text-gray-600 cursor-not-allowed"
+              : "text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-zinc-700"
+          }`}
+        >
+          <span className="hidden md:block">Next</span> &raquo;
+        </button>
+      </nav>
+    </div>
+  );
+};
   if (loading) {
     return (
       <GlobalLoader/>
@@ -373,7 +495,7 @@ const QuestionsPage = () => {
                       </span>
                       <div className="flex-1">
                         <p className="text-gray-800 dark:text-zinc-200 mb-3">
-                          {question.questionText}
+                          {renderSmart(question.questionText)}
                         </p>
                       </div>
                     </div>
@@ -654,59 +776,11 @@ const QuestionsPage = () => {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex flex-col sm:flex-row justify-between items-center mt-8 mb-4 md:mb-0 gap-4">
-                <div className="text-sm text-gray-500 dark:text-gray-400">
-                  Showing {indexOfFirstQuestion + 1}-
-                  {Math.min(indexOfLastQuestion, questions.length)} of{" "}
-                  {questions.length}
-                </div>
-
-                <div className="flex items-center space-x-1">
-                  <button
-                    onClick={goToFirstPage}
-                    disabled={currentPage === 1}
-                    className="p-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors"
-                  >
-                    <ChevronsLeft size={16} />
-                  </button>
-                  <button
-                    onClick={goToPrevPage}
-                    disabled={currentPage === 1}
-                    className="p-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors"
-                  >
-                    <ChevronDown size={16} className="transform rotate-90" />
-                  </button>
-
-                  {getVisiblePages().map((number) => (
-                    <button
-                      key={number}
-                      onClick={() => paginate(number)}
-                      className={`w-10 h-10 text-xs rounded-lg border transition-colors ${
-                        currentPage === number
-                          ? "bg-blue-600 text-white border-blue-600"
-                          : "bg-white dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700"
-                      }`}
-                    >
-                      {number}
-                    </button>
-                  ))}
-
-                  <button
-                    onClick={goToNextPage}
-                    disabled={currentPage === totalPages}
-                    className="p-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors"
-                  >
-                    <ChevronDown size={16} className="transform -rotate-90" />
-                  </button>
-                  <button
-                    onClick={goToLastPage}
-                    disabled={currentPage === totalPages}
-                    className="p-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors"
-                  >
-                    <ChevronsRight size={16} />
-                  </button>
-                </div>
-              </div>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                paginate={paginate}
+              />
             )}
           </div>
         </div>
@@ -760,17 +834,22 @@ const QuestionsPage = () => {
                   </div>
                 ) : topics.length > 0 ? (
                   <>
-                    {getSortedTopics().slice(0, 5).map((topic) => (
-                      <a
-                        key={topic.title}
-                        href={topic.link}
-                        className="flex items-center px-3 py-2 text-sm rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-700/50 text-gray-700 dark:text-gray-300 transition-colors"
-                      >
-                        <IoFolderOpen size={16} className="mr-2 text-yellow-500" />
+                    {getSortedTopics()
+                      .slice(0, 5)
+                      .map((topic) => (
+                        <a
+                          key={topic.title}
+                          href={topic.link}
+                          className="flex items-center px-3 py-2 text-sm rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-700/50 text-gray-700 dark:text-gray-300 transition-colors"
+                        >
+                          <IoFolderOpen
+                            size={16}
+                            className="mr-2 text-yellow-500"
+                          />
 
-                        <span>{topic.title}</span>
-                      </a>
-                    ))}
+                          <span>{topic.title}</span>
+                        </a>
+                      ))}
                     {topics.length > 5 && (
                       <a
                         href={`/${subject}`}

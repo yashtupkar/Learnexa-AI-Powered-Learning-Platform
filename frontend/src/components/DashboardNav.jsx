@@ -80,7 +80,7 @@ export default function DashboardNav({
           </div>
 
           {/* Right Section - Actions */}
-          <div className="flex items-center space-x-3 sm:space-x-4">
+          <div className="flex items-center space-x-2">
             {/* Mobile Search Toggle */}
 
             {/* Create New Button (Desktop) */}
@@ -95,7 +95,7 @@ export default function DashboardNav({
             {/* Help Center */}
             <button
               onClick={() => navigate("/help-center")}
-              className="hidden sm:block p-2 rounded-lg cursor-pointer text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100/80 dark:hover:bg-gray-800/80 transition-all duration-200"
+              className="hidden sm:block p-1 rounded-lg cursor-pointer text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100/80 dark:hover:bg-gray-800/80 transition-all duration-200"
               aria-label="Help"
             >
               <HelpCircle size={20} />

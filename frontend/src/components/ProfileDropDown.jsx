@@ -51,13 +51,14 @@ export function DropdownMenu({ name, avatar, email }) {
 
   return (
     <>
-      <div className="relative" ref={dropdownRef}>
+      <div className="relative h-9 w-9" ref={dropdownRef}>
         <button
           onClick={() => setIsOpen(!isOpen)}
           aria-expanded={isOpen}
           aria-haspopup="true"
+          className="m-auto"
         >
-          <div className="relative group">
+          <div className="relative group ">
             <div className="ring-2 ring-transparent group-hover:ring-indigo-500/30 rounded-full transition-all duration-200">
               {avatar ? (
                 <img
