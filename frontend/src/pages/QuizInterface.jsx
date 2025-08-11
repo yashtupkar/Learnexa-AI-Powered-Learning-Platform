@@ -1625,7 +1625,7 @@ const prevQuestion = () => {
               {/* Sidebar Header */}
               <div className="flex items-center justify-between mb-6 md:mb-8">
                 <div>
-                  <h3 className="text-lg md:text-xl line-clamp-1 font-bold bg-white bg-clip-text text-transparent">
+                  <h3 className="text-lg md:text-xl line-clamp-1 font-bold dark:text-white ">
                     {quizData.quiz_title}
                   </h3>
                   <p className="text-xs md:text-sm dark:text-gray-400 text-gray-500 mt-1">
@@ -1735,17 +1735,17 @@ const prevQuestion = () => {
               {/* Action Buttons */}
               <div className="space-y-3 md:space-y-4 pt-4 md:pt-6 border-t border-gray-200 dark:border-zinc-700">
                 <div className="grid grid-cols-2 gap-2 md:gap-3 text-xs md:text-sm">
-                  <div className="flex items-center justify-between p-2 md:p-3 bg-blue-50 rounded-lg">
+                  <div className="flex items-center justify-between p-2 md:p-3 bg-blue-50 dark:bg-blue-900/30 border border-blue-600 rounded-lg">
                     <span className="text-blue-700 font-medium">Answered</span>
-                    <span className="text-blue-900 font-bold">
+                    <span className="dark:text-white  font-bold">
                       {Object.keys(answers).length}/{quizData.questions.length}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between p-2 md:p-3 bg-purple-50 rounded-lg">
-                    <span className="text-purple-700 font-medium">
+                  <div className="flex items-center justify-between p-2 md:p-3 bg-purple-50 dark:bg-purple-900/30 border border-purple-600 rounded-lg">
+                    <span className="text-purple-600 font-medium">
                       Bookmarked
                     </span>
-                    <span className="text-purple-900 font-bold">
+                    <span className="dark:text-white  font-bold">
                       {bookmarkedQuestions.length}
                     </span>
                   </div>
@@ -1808,7 +1808,15 @@ const prevQuestion = () => {
                 </motion.button>
 
                 <div className="flex items-center space-x-2 md:space-x-3 pt-3 md:pt-4 border-t border-gray-200 dark:border-zinc-700">
-                  <Avatar name={user?.name} size={32} variant="bean" />
+                  {user.avatar ? (
+                                 <img
+                                   src={user.avatar}
+                                   alt={user.name}
+                                   className="w-9 h-9 rounded-full object-cover"
+                                 />
+                               ) : (
+                                 <Avatar name={user.name} size={38} variant="bean" />
+                               )}
                   <div className="flex-1 min-w-0">
                     <p className="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-200 truncate">
                       {user?.name}
@@ -1826,9 +1834,9 @@ const prevQuestion = () => {
 
         {/* Main Content - Scrollable */}
         <div className="flex-1 overflow-y-auto">
-          <div className="w-full md:max-w-3xl mx-auto py-18">
+          <div className="w-full md:max-w-3xl mx-auto py-16">
             {/* Enhanced Progress Bar - Hidden on mobile */}
-            <div className="mb-2 sticky top-14 md:mb-6 bg-white z-30 dark:bg-black p-4 md:p-4 md:rounded-xl md:shadow-sm dark:shadow-gray-700/50">
+            <div className="mb-2 sticky top-16  md:mb-6 bg-white z-30 dark:bg-black px-3 py-2 md:p-4 md:rounded-xl shadow-sm dark:shadow-gray-700/50">
               <div className="flex justify-between items-center mb-2">
                 <div className="flex items-center space-x-2">
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -1886,7 +1894,7 @@ const prevQuestion = () => {
                         setShowExplanation(false);
                       }
                     }}
-                    className={`w-8 h-8 rounded-md text-xs flex items-center justify-center transition-all ${
+                    className={`w-6 h-6 md:w-8 md:h-8 rounded-md text-xs flex items-center justify-center transition-all ${
                       index === currentQuestion
                         ? "bg-gradient-to-br from-indigo-600 to-indigo-400 text-white shadow-md"
                         : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"

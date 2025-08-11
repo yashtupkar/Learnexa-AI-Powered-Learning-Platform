@@ -140,6 +140,7 @@ import InvitationLanding from "./pages/invitationPage";
 import RcTopics from "./pages/RcTopics";
 import ReadingComprehensionPage from "./pages/ReadingComprehensionPage";
 import BulkQuestionUpload from "./pages/BulkQuestionsUpload";
+import PaymentCheckoutPage from "./pages/PaymentCheckoutPage";
 
 
 
@@ -183,9 +184,9 @@ const App = () => {
         />
         <Route
           path="/verbal-ability/reading-comprehension/:id"
-          element={<ReadingComprehensionPage/>}
+          element={<ReadingComprehensionPage />}
         />
-        <Route path="/bulk-upload" element={<BulkQuestionUpload/>} />
+        <Route path="/bulk-upload" element={<BulkQuestionUpload />} />
         <Route path="/:subject/:topic/edit" element={<QuestionEditPage />} />
         <Route path="/study-tube/search=:query" element={<SearchResults />} />
 
@@ -211,6 +212,7 @@ const App = () => {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsAndConditions />} />
         <Route path="/about-us" element={<AboutUs />} />
+        <Route path="/checkout" element={<PaymentCheckoutPage />} />
       </Routes>
     </>
   );

@@ -1260,7 +1260,8 @@ const StudyTube = () => {
           `maxResults=20&` +
           `q=${encodeURIComponent(finalQuery)}&` +
           `type=video&` +
-          `key=${YOUTUBE_API_KEY}`
+        `videoDuration=medium&` +
+        `key=${YOUTUBE_API_KEY}`
       );
 
       if (!youtubeResponse.ok) throw new Error("YouTube API error");

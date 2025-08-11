@@ -636,7 +636,7 @@ const QuizQuestionRenderer = ({
       initial="hidden"
       animate="visible"
       exit="exit"
-      className="rounded-xl h-[70vh] md:h-fit md:rounded-2xl p-4 sm:p-6 md:p-8 mb-6 md:mb-8 bg-white  md:shadow-xl md:border border-gray-100 dark:bg-zinc-900 dark:border-gray-700 dark:shadow-2xl transition-colors duration-300 select-none"
+      className="rounded-xl h-[70vh] md:h-fit md:rounded-2xl p-4 sm:p-6 md:p-0 mb-6 md:mb-8 bg-transparent   dark:shadow-2xl transition-colors duration-300 select-none"
       style={{
         WebkitUserSelect: "none",
         MozUserSelect: "none",
@@ -682,7 +682,7 @@ const QuizQuestionRenderer = ({
                           className={`flex items-center text-xs space-x-1 md:space-x-2 px-2 py-1 md:px-3 md:py-1.5 rounded-full border  ${questionTypeInfo.bgColor} ${questionTypeInfo.textColor} ${questionTypeInfo.borderColor}`}
                         >
                           <questionTypeInfo.icon className="w-3 h-3 md:w-4 md:h-4" />
-                          <span className="font-semibold uppercase tracking-wide">
+                          <span className="text-xs capitalize tracking-wide">
                           {questionTypeInfo.label}
                           </span>
                         </motion.div>
