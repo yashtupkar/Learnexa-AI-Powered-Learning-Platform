@@ -98,7 +98,7 @@ const Footer = () => {
 
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 lg:gap-6">
           {/* Contact Section */}
           <div className="lg:col-span-1">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
@@ -133,8 +133,70 @@ const Footer = () => {
               {[
                 { name: "Home", href: "/" },
                 { name: "About Us", href: "/about-us" },
-                { name: "Plans", href: "/plans" },
-                { name: "How It Works", href: "/how-it-works" },
+                { name: "Pricing", href: "/plans" },
+                { name: "Contact Us", href: "/contact-us" },
+              ].map((item) => (
+                <li key={item.name}>
+                  <a
+                    href={item.href}
+                    className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
+                  >
+                    {item.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="lg:col-span-1">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
+              Learning Resources
+            </h3>
+            <ul className="space-y-3">
+              {[
+                { name: "Aptitude", href: "/practice/aptitude" },
+
+                { name: "Verbal Ability", href: "/practice/verbal-ability" },
+
+                {
+                  name: "Logical Reasoning",
+                  href: "/practice/logical-reasoning",
+                },
+                {
+                  name: "Verbal Reasoning",
+                  href: "/practice/verbal-reasoning",
+                },
+                {
+                  name: "Non Verbal Reasoning",
+                  href: "/practice/non-verbal-reasoning",
+                },
+              ].map((item) => (
+                <li key={item.name}>
+                  <a
+                    href={item.href}
+                    className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
+                  >
+                    {item.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="lg:col-span-1">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
+              Features
+            </h3>
+            <ul className="space-y-3">
+              {[
+                { name: "Ai Quiz generation", href: "/create?tab=quiz" },
+                { name: "PDF to Quiz", href: "/create?tab=pdf" },
+                { name: "Coding challenges", href: "/create?tab=coding" },
+                { name: "Study Tube", href: "/studytube" },
+
+
+                { name: "Current Affairs", href: "/current-affairs" },
+
+              
               ].map((item) => (
                 <li key={item.name}>
                   <a
@@ -149,7 +211,7 @@ const Footer = () => {
           </div>
 
           {/* Newsletter Section */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-2">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
               Stay Updated
             </h3>

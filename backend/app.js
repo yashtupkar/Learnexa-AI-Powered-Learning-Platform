@@ -78,40 +78,6 @@ app.post("/upload", upload.single("file"), (req, res) => {
 });
 
 //for report issue
-// app.post("/api/send-report", upload.single("attachment"), async (req, res) => {
-//   try {
-//     const { email, issue, issueType } = req.body;
-//     const attachment = req.file;
-
-//     const mailOptions = {
-//       from: `"User:" <${email}>`,
-//       to: process.env.SENDER_EMAIL,
-//       subject: `New ${issueType} Report from ${email}`,
-//       text: `Email: ${email}\nIssue Type: ${issueType}\n\n${issue}`,
-//       html: `
-//         <h1>New ${issueType} Report</h1>
-//         <p><strong>From:</strong> ${email}</p>
-//         <p><strong>Type:</strong> ${issueType}</p>
-//         <h3>Description:</h3>
-//         <p>${issue.replace(/\n/g, "<br>")}</p>
-//       `,
-//       attachments: attachment
-//         ? [
-//             {
-//               filename: attachment.originalname,
-//               content: attachment.buffer,
-//             },
-//           ]
-//         : [],
-//     };
-
-//     await transporter.sendMail(mailOptions);
-//     res.status(200).json({ message: "Report submitted successfully!" });
-//   } catch (error) {
-//     console.error("Error sending email:", error);
-//     res.status(500).json({ message: "Failed to send report" });
-//   }
-// });
 app.post("/api/send-report", upload.single("attachment"), async (req, res) => {
   try {
     console.log("=== EMAIL DEBUG START ===");
@@ -255,37 +221,14 @@ app.post("/api/send-report", upload.single("attachment"), async (req, res) => {
   }
 });
 
-// Test route to verify transporter configuration
-app.get("/api/test-email-config", async (req, res) => {
-  try {
-    console.log("Testing email configuration...");
-
-    // Verify transporter
-    await transporter.verify();
-    console.log("SMTP connection verified successfully!");
-
-    res.status(200).json({
-      message: "Email configuration is working!",
-      config: {
-        host: transporter.options.host,
-        port: transporter.options.port,
-        secure: transporter.options.secure,
-        senderEmail: process.env.SENDER_EMAIL ? "Set" : "Not set",
-      },
-    });
-  } catch (error) {
-    console.error("SMTP verification failed:", error);
-    res.status(500).json({
-      message: "Email configuration failed",
-      error: error.message,
-    });
-  }
-});
-
-
 //cron job for backend render awake
 app.get('/ping', (req, res) => {
   res.send('pong');
+});
+
+//404 page not found
+app.use((req, res) => {
+  return res.status(404).send("Page not found");
 })
 
 // Start the server

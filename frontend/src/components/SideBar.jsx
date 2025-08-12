@@ -1217,35 +1217,34 @@ export default function Sidebar({
               <SidebarItem
                 icon={<ChartSpline />}
                 label="Aptitude"
-                to="/aptitude"
+                to="/practice/aptitude"
                 collapsed={isCollapsed}
                 isNew={true}
               />
               <SidebarItem
                 icon={<ChartPie />}
                 label="Logical Reasoning"
-                to="/logical-reasoning"
+                to="/practice/logical-reasoning"
                 collapsed={isCollapsed}
                 isNew={true}
               />
               <SidebarItem
                 icon={<BookA />}
                 label="Verbal Reasoning"
-                to="/verbal-reasoning"
+                to="/practice/verbal-reasoning"
                 collapsed={isCollapsed}
                 isNew={true}
               />
               <SidebarItem
-                icon={< LayoutPanelLeft/>}
+                icon={<LayoutPanelLeft />}
                 label="Non-Verbal Reasoning"
-                to="/non-verbal-reasoning"
+                to="/practice/non-verbal-reasoning"
                 collapsed={isCollapsed}
-              
               />
               <SidebarItem
                 icon={<FileText />}
                 label="Verbal Ability"
-                to="/verbal-ability"
+                to="/practice/verbal-ability"
                 collapsed={isCollapsed}
                 isNew={true}
               />

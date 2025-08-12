@@ -11,6 +11,7 @@ import {
   PaintBucket,
   Brush,
   Bell,
+  Flame,
 
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -137,6 +138,19 @@ export function DropdownMenu({ name, avatar, email }) {
                 >
                   <Users className="h-4 w-4 mr-3" />
                   <span>Invite Users</span>
+                </motion.button>
+                <motion.button
+                  whileHover={{ backgroundColor: "rgba(100, 116, 139, 0.1)" }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => {
+                    navigate("/streak");
+                    setIsOpen(false);
+                  }}
+                  className="flex items-center w-full px-4 py-2.5 text-sm 
+                             text-gray-700 dark:text-gray-300 rounded-md transition-colors"
+                >
+                  <Flame className="h-4 w-4 mr-3" />
+                  <span>Streak Leaderboard</span>
                 </motion.button>
                 <motion.button
                   whileHover={{ backgroundColor: "rgba(100, 116, 139, 0.1)" }}

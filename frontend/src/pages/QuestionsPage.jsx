@@ -79,7 +79,7 @@ const QuestionsPage = () => {
         );
         const formattedTopics = response.data.topics.map((topic) => ({
           title: formatTopicName(topic),
-          link: `/${subject}/${topic}`,
+          link: `/practice/${subject}/${topic}`,
           difficulty: getTopicDifficulty(topic),
         }));
         setTopics(formattedTopics);

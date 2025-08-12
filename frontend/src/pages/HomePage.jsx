@@ -10,6 +10,7 @@ import VideoPlayer from '../components/HomePageComponents/VideoComponent'
 import Testimonial from '../components/HomePageComponents/Testimonial'
 import FAQSection from '../components/HomePageComponents/FAQSection'
 import ContactForm from '../components/HomePageComponents/ContactForm'
+import PlansAndPricing from '../components/PlansAndPricing'
 
 const HomePage = () => {
   return (
@@ -25,6 +26,7 @@ const HomePage = () => {
       <CallToAction />
       <Testimonial />
       <FAQSection />
+      <PlansAndPricing/>
       <ContactForm/>
       <Footer />
     </div>

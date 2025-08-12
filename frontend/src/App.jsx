@@ -141,6 +141,8 @@ import RcTopics from "./pages/RcTopics";
 import ReadingComprehensionPage from "./pages/ReadingComprehensionPage";
 import BulkQuestionUpload from "./pages/BulkQuestionsUpload";
 import PaymentCheckoutPage from "./pages/PaymentCheckoutPage";
+import NotFound from "./pages/NotFound";
+import ContactUs from "./pages/ContactUsPage";
 
 
 
@@ -151,13 +153,14 @@ const App = () => {
       <Toaster />
       <Routes>
         {/* Public routes without layout */}
+        <Route path="*" element={<NotFound />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LogInPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/verify-account" element={<EmailVerify />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/contact-us" element={<ContactUs />} />
 
-        <Route path="/login" element={<LogInPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/create" element={<CreateQuiz />} />
         <Route path="/quiz/:quizId" element={<QuizInterface />} />
@@ -177,7 +180,7 @@ const App = () => {
           path="/hr-interview/question/:id"
           element={<HRQuestionDetailPage />}
         />
-        <Route path="/:subject/:topic" element={<QuestionsPage />} />
+        <Route path="/practice/:subject/:topic" element={<QuestionsPage />} />
         <Route
           path="/verbal-ability/reading-comprehension"
           element={<RcTopics />}
@@ -190,7 +193,7 @@ const App = () => {
         <Route path="/:subject/:topic/edit" element={<QuestionEditPage />} />
         <Route path="/study-tube/search=:query" element={<SearchResults />} />
 
-        <Route path="/:subject" element={<SubjectTopicsPage />} />
+        <Route path="/practice/:subject" element={<SubjectTopicsPage />} />
         <Route
           path="/video/:videoId"
           element={

@@ -1,640 +1,355 @@
-// import React, { useState, useEffect } from "react";
-// import { useRef } from "react";
-// import { motion, useInView, useAnimation } from "framer-motion";
-// import {
-//   Sun,
-//   Moon,
-//   Star,
-//   Users,
-//   BookOpen,
-//   Award,
-//   Mail,
-//   ArrowRight,
-//   CheckCircle,
-//   Sparkles,
-//   Heart,
-//   Coffee,
-//   Zap,
-//   Clock,
-//   Bookmark,
-//   BookText,
-//   GraduationCap,
-// } from "lucide-react";
-
-// const AnimatedSection = ({ children, className = "", delay = 0 }) => {
-//   const controls = useAnimation();
-//   const ref = React.useRef(null);
-//   const inView = useInView(ref, {
-//     threshold: 0.1,
-//     once: true,
-//   });
-
-//   useEffect(() => {
-//     if (inView) {
-//       controls.start("visible");
-//     }
-//   }, [controls, inView]);
-
-//   const variants = {
-//     hidden: { opacity: 0, y: 50 },
-//     visible: {
-//       opacity: 1,
-//       y: 0,
-//       transition: {
-//         duration: 0.8,
-//         delay,
-//         ease: "easeOut",
-//       },
-//     },
-//   };
-
-//   return (
-//     <motion.div
-//       ref={ref}
-//       initial="hidden"
-//       animate={controls}
-//       variants={variants}
-//       className={className}
-//     >
-//       {children}
-//     </motion.div>
-//   );
-// };
-
-// const CounterAnimation = ({ end, suffix = "", duration = 2 }) => {
-//   const [count, setCount] = useState(0);
-//   const controls = useAnimation();
-//   const ref = useRef(null);
-//   const inView = useInView(ref, {
-//     threshold: 0.5,
-//     once: true,
-//   });
-
-//   useEffect(() => {
-//     if (inView) {
-//       let startTime = null;
-//       const animate = (currentTime) => {
-//         if (startTime === null) startTime = currentTime;
-//         const progress = Math.min(
-//           (currentTime - startTime) / (duration * 1000),
-//           1
-//         );
-//         setCount(Math.floor(progress * end));
-
-//         if (progress < 1) {
-//           requestAnimationFrame(animate);
-//         }
-//       };
-//       requestAnimationFrame(animate);
-//     }
-//   }, [inView, end, duration]);
-
-//   return (
-//     <span ref={ref} className="font-bold text-3xl lg:text-4xl">
-//       {count.toLocaleString()}
-//       {suffix}
-//     </span>
-//   );
-// };
-
-// function AboutUs() {
-//   const [isDark, setIsDark] = useState(false);
-//   const [email, setEmail] = useState("");
-
-//   useEffect(() => {
-//     if (isDark) {
-//       document.documentElement.classList.add("dark");
-//     } else {
-//       document.documentElement.classList.remove("dark");
-//     }
-//   }, [isDark]);
-
-//   const toggleTheme = () => setIsDark(!isDark);
-
-//   const handleNewsletterSubmit = (e) => {
-//     e.preventDefault();
-//     console.log("Newsletter subscription:", email);
-//     setEmail("");
-//   };
-
-//   const stats = [
-//     { icon: Clock, value: 10, suffix: "+", label: "Hours of Learning" },
-//     { icon: Users, value: 2, suffix: "M+", label: "Success Stories" },
-//     { icon: BookOpen, value: 2.5, suffix: "K+", label: "Reviews" },
-//   ];
-
-//   const features = [
-//     {
-//       icon: GraduationCap,
-//       title: "Expert-Led Courses",
-//       description:
-//         "Learn from industry professionals with real-world experience",
-//     },
-//     {
-//       icon: BookText,
-//       title: "Interactive Resources",
-//       description: "Engaging materials that enhance your learning experience",
-//     },
-//     {
-//       icon: Bookmark,
-//       title: "Real-World Skills",
-//       description:
-//         "Practical knowledge you can apply immediately in your career",
-//     },
-//   ];
-
-//   return (
-//     <div
-//       className={`min-h-screen transition-colors duration-300 ${
-//         isDark ? "dark" : ""
-//       }`}
-//     >
-//       <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
-//         {/* Theme Toggle */}
-//         <motion.button
-//           initial={{ opacity: 0, scale: 0.8 }}
-//           animate={{ opacity: 1, scale: 1 }}
-//           transition={{ duration: 0.5 }}
-//           onClick={toggleTheme}
-//           className="fixed top-6 right-6 z-50 p-3 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
-//           whileHover={{ scale: 1.1 }}
-//           whileTap={{ scale: 0.95 }}
-//         >
-//           {isDark ? (
-//             <Sun className="w-5 h-5 text-yellow-500" />
-//           ) : (
-//             <Moon className="w-5 h-5 text-gray-600" />
-//           )}
-//         </motion.button>
-
-//         {/* Hero Section */}
-//         <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-purple-900 overflow-hidden">
-//           <div className="container mx-auto px-6 relative z-10">
-//             <div className="grid lg:grid-cols-2 gap-12 items-center">
-//               <motion.div
-//                 initial={{ opacity: 0, x: -50 }}
-//                 animate={{ opacity: 1, x: 0 }}
-//                 transition={{ duration: 1, ease: "easeOut" }}
-//               >
-//                 <motion.div
-//                   initial={{ opacity: 0, y: 20 }}
-//                   animate={{ opacity: 1, y: 0 }}
-//                   transition={{ duration: 0.6, delay: 0.2 }}
-//                   className="inline-flex items-center px-4 py-2 bg-blue-100 dark:bg-blue-900/30 rounded-full text-blue-600 dark:text-blue-400 text-sm font-medium mb-6"
-//                 >
-//                   <Sparkles className="w-4 h-4 mr-2" />
-//                   About Sparkly
-//                 </motion.div>
-
-//                 <motion.h1
-//                   initial={{ opacity: 0, y: 30 }}
-//                   animate={{ opacity: 1, y: 0 }}
-//                   transition={{ duration: 0.8, delay: 0.3 }}
-//                   className="text-4xl lg:text-6xl font-bold mb-6"
-//                 >
-//                   Unlocking Potential Through Learning
-//                 </motion.h1>
-
-//                 <motion.p
-//                   initial={{ opacity: 0, y: 20 }}
-//                   animate={{ opacity: 1, y: 0 }}
-//                   transition={{ duration: 0.6, delay: 0.5 }}
-//                   className="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed"
-//                 >
-//                   Sparkly is an innovative learning platform designed to empower
-//                   individuals with expert-led courses, interactive resources,
-//                   and real-world skills.
-//                 </motion.p>
-
-//                 <motion.div
-//                   initial={{ opacity: 0, y: 20 }}
-//                   animate={{ opacity: 1, y: 0 }}
-//                   transition={{ duration: 0.6, delay: 0.7 }}
-//                   className="flex flex-col sm:flex-row gap-4"
-//                 >
-//                   <button className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transform hover:scale-105 transition-all duration-300 flex items-center justify-center font-semibold">
-//                     Explore courses
-//                     <ArrowRight className="w-5 h-5 ml-2" />
-//                   </button>
-//                 </motion.div>
-
-//                 <motion.div
-//                   initial={{ opacity: 0, y: 20 }}
-//                   animate={{ opacity: 1, y: 0 }}
-//                   transition={{ duration: 0.6, delay: 0.9 }}
-//                   className="mt-8 flex items-center text-gray-500 dark:text-gray-400"
-//                 >
-//                   <div className="flex -space-x-2 mr-4">
-//                     {[1, 2, 3].map((i) => (
-//                       <img
-//                         key={i}
-//                         src={`https://randomuser.me/api/portraits/${
-//                           i % 2 === 0 ? "women" : "men"
-//                         }/${i + 20}.jpg`}
-//                         alt="User"
-//                         className="w-10 h-10 rounded-full border-2 border-white dark:border-gray-800"
-//                       />
-//                     ))}
-//                   </div>
-//                   <div>
-//                     <div className="flex items-center">
-//                       {[1, 2, 3, 4, 5].map((i) => (
-//                         <Star
-//                           key={i}
-//                           className="w-4 h-4 text-yellow-400 fill-current"
-//                         />
-//                       ))}
-//                     </div>
-//                     <span className="text-sm">From 2.5K Reviews</span>
-//                   </div>
-//                 </motion.div>
-//               </motion.div>
-
-//               <motion.div
-//                 initial={{ opacity: 0, x: 50 }}
-//                 animate={{ opacity: 1, x: 0 }}
-//                 transition={{ duration: 1, delay: 0.4 }}
-//                 className="relative"
-//               >
-//                 <div className="relative rounded-2xl overflow-hidden shadow-xl">
-//                   <img
-//                     src="https://images.pexels.com/photos/3184325/pexels-photo-3184325.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-//                     alt="Students learning"
-//                     className="w-full h-auto object-cover"
-//                   />
-//                 </div>
-//               </motion.div>
-//             </div>
-//           </div>
-//         </section>
-
-//         {/* Features Section */}
-//         <section className="py-16 bg-white dark:bg-gray-900">
-//           <div className="container mx-auto px-6">
-//             <AnimatedSection className="text-center mb-12">
-//               <h2 className="text-3xl lg:text-4xl font-bold mb-6">
-//                 Transform Knowledge
-//               </h2>
-//               <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-//                 At Sparkly, we are committed to delivering top-notch education
-//                 that motivates, empowers, and helps you realize your full
-//                 potential.
-//               </p>
-//             </AnimatedSection>
-
-//             <div className="grid md:grid-cols-3 gap-8">
-//               {features.map((feature, index) => (
-//                 <AnimatedSection key={index} delay={index * 0.2}>
-//                   <motion.div
-//                     whileHover={{ y: -5 }}
-//                     className="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl"
-//                   >
-//                     <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mb-4">
-//                       <feature.icon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-//                     </div>
-//                     <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-//                     <p className="text-gray-600 dark:text-gray-400">
-//                       {feature.description}
-//                     </p>
-//                   </motion.div>
-//                 </AnimatedSection>
-//               ))}
-//             </div>
-//           </div>
-//         </section>
-
-//         {/* Stats Section */}
-//         <section className="py-16 bg-gray-50 dark:bg-gray-800">
-//           <div className="container mx-auto px-6">
-//             <div className="grid md:grid-cols-3 gap-8">
-//               {stats.map((stat, index) => (
-//                 <AnimatedSection key={index} delay={index * 0.2}>
-//                   <div className="text-center p-6">
-//                     <div className="flex justify-center mb-4">
-//                       <stat.icon className="w-8 h-8 text-blue-600 dark:text-blue-400" />
-//                     </div>
-//                     <div className="text-3xl font-bold mb-2">
-//                       <CounterAnimation end={stat.value} suffix={stat.suffix} />
-//                     </div>
-//                     <p className="text-gray-600 dark:text-gray-400">
-//                       {stat.label}
-//                     </p>
-//                   </div>
-//                 </AnimatedSection>
-//               ))}
-//             </div>
-//           </div>
-//         </section>
-
-//         {/* Newsletter Section */}
-//         <section className="py-16 bg-white dark:bg-gray-900">
-//           <div className="container mx-auto px-6">
-//             <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-8 md:p-12">
-//               <div className="grid lg:grid-cols-2 gap-8 items-center">
-//                 <AnimatedSection>
-//                   <div className="text-white">
-//                     <h2 className="text-2xl lg:text-3xl font-bold mb-4">
-//                       Subscribe to our newsletter for updates
-//                     </h2>
-//                     <p className="text-blue-100 mb-6">
-//                       Stay informed with the latest news, insights, and updates
-//                       delivered straight to your inbox
-//                     </p>
-
-//                     <form
-//                       onSubmit={handleNewsletterSubmit}
-//                       className="flex flex-col sm:flex-row gap-3"
-//                     >
-//                       <input
-//                         type="email"
-//                         value={email}
-//                         onChange={(e) => setEmail(e.target.value)}
-//                         placeholder="Email address"
-//                         className="flex-1 px-4 py-3 rounded-lg text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white/30"
-//                         required
-//                       />
-//                       <button
-//                         type="submit"
-//                         className="px-6 py-3 bg-white text-blue-600 rounded-lg hover:bg-gray-100 transition-colors duration-300 font-semibold flex items-center justify-center"
-//                       >
-//                         Submit
-//                       </button>
-//                     </form>
-//                   </div>
-//                 </AnimatedSection>
-
-//                 <AnimatedSection delay={0.3}>
-//                   <div className="grid grid-cols-2 gap-4">
-//                     <div className="bg-white/10 p-4 rounded-lg text-center">
-//                       <div className="text-2xl font-bold mb-1">2.5M+</div>
-//                       <div className="text-sm text-blue-100">
-//                         Engaged Learners
-//                       </div>
-//                     </div>
-//                     <div className="bg-white/10 p-4 rounded-lg text-center">
-//                       <div className="text-2xl font-bold mb-1">5K+</div>
-//                       <div className="text-sm text-blue-100">
-//                         Courses Available
-//                       </div>
-//                     </div>
-//                     <div className="bg-white/10 p-4 rounded-lg text-center">
-//                       <div className="text-2xl font-bold mb-1">800+</div>
-//                       <div className="text-sm text-blue-100">
-//                         Expert Mentors
-//                       </div>
-//                     </div>
-//                     <div className="bg-white/10 p-4 rounded-lg text-center">
-//                       <div className="text-2xl font-bold mb-1">2.5K+</div>
-//                       <div className="text-sm text-blue-100">
-//                         Subject Categories
-//                       </div>
-//                     </div>
-//                   </div>
-//                 </AnimatedSection>
-//               </div>
-//             </div>
-//           </div>
-//         </section>
-
-//         {/* Footer */}
-//         <footer className="py-12 bg-gray-900 dark:bg-black text-white">
-//           <div className="container mx-auto px-6">
-//             <div className="flex flex-col md:flex-row justify-between items-center">
-//               <div className="flex items-center space-x-2 mb-4 md:mb-0">
-//                 <div className="p-2 bg-blue-600 rounded-lg">
-//                   <Sparkles className="w-6 h-6" />
-//                 </div>
-//                 <span className="text-xl font-bold">Sparkly</span>
-//               </div>
-//               <div className="flex items-center space-x-6">
-//                 <Coffee className="w-5 h-5" />
-//                 <span className="text-gray-400">Made with passion</span>
-//               </div>
-//             </div>
-//           </div>
-//         </footer>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default AboutUs;
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import {
   BookOpen,
-  GraduationCap,
   Users,
-  Globe,
   Award,
+  Target,
+  Heart,
+  Zap,
+  Globe,
+  Trophy,
+  Star,
+  ArrowRight,
+  Play,
+  CheckCircle,
+  Lightbulb,
+  Rocket,
+  Shield,
+  TrendingUp,
+  Brain,
+  Code,
+  GraduationCap,
+  Medal,
   Clock,
-  ChevronDown,
-  Linkedin,
 } from "lucide-react";
-import Layout from "../components/layouts/layout";
+import Navbar from "../components/NavigationBar";
+import { Helmet } from "react-helmet-async";
+import Footer from "../components/footer";
 
-// Animation variants
-const sectionVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.8,
-      staggerChildren: 0.2,
-      when: "beforeChildren",
-    },
-  },
-};
+export default function AboutUs() {
+  const [activeTab, setActiveTab] = useState("mission");
 
-// Components
-function FeatureCard({ icon: Icon, title, description }) {
-  return (
-    <motion.div
-      className="bg-white p-6 rounded-xl border border-gray-200 shadow-md"
-      whileHover={{ y: -5 }}
-      transition={{ type: "spring", stiffness: 300 }}
-    >
-      <div className="flex items-center gap-3 mb-4">
-        <div className="p-2 rounded-lg bg-blue-100 text-blue-600">
-          <Icon className="w-6 h-6" />
-        </div>
-        <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-      </div>
-      <p className="text-gray-600 text-sm leading-relaxed">{description}</p>
-    </motion.div>
-  );
-}
-
-function TeamMemberCard({ name, role, image, socialLinks }) {
-  return (
-    <motion.div
-      className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-md"
-      whileHover={{ y: -5 }}
-      transition={{ type: "spring", stiffness: 300 }}
-    >
-      <div className="relative h-64 w-full">
-        <img
-          src={image}
-          alt={name}
-          className="w-full h-full object-cover object-center"
-        />
-      </div>
-
-      <div className="p-6 text-center">
-        <h3 className="text-xl font-semibold text-gray-900">{name}</h3>
-        <p className="text-gray-500 text-sm mb-4">{role}</p>
-
-        <div className="flex justify-center gap-3">
-          {socialLinks.map((link, index) => (
-            <a
-              key={index}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-sm"
-            >
-              <Linkedin size={18} />
-              <span>Connect</span>
-            </a>
-          ))}
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-function AboutUs() {
-  const philosophySteps = [
-    {
-      title: "Vision",
-      description:
-        "To democratize education through accessible, high-quality learning experiences for everyone, everywhere.",
-      icon: Globe,
-    },
-    {
-      title: "Mission",
-      description:
-        "To empower learners and educators with innovative tools that make teaching and learning more effective and engaging.",
-      icon: Award,
-    },
-  ];
-
-  const metrics = [
+  const stats = [
     {
       icon: Users,
-      value: "10,000+",
+      number: "50,000+",
       label: "Active Learners",
+      description: "Students trust our platform",
     },
     {
       icon: BookOpen,
-      value: "500+",
-      label: "Courses",
+      number: "500+",
+      label: "Courses Available",
+      description: "Across multiple domains",
     },
     {
-      icon: GraduationCap,
-      value: "95%",
-      label: "Completion Rate",
+      icon: Award,
+      number: "95%",
+      label: "Success Rate",
+      description: "Students achieve their goals",
     },
     {
-      icon: Clock,
-      value: "24/7",
-      label: "Access",
+      icon: Globe,
+      number: "100+",
+      label: "Countries",
+      description: "Global learning community",
     },
   ];
 
   const features = [
     {
-      icon: BookOpen,
-      title: "Comprehensive Courses",
-      description:
-        "Access to a wide range of courses across multiple disciplines.",
+      icon: Brain,
+      title: "AI-Powered Learning",
+      description: "Personalized learning paths adapted to your pace and style",
+    },
+    {
+      icon: Code,
+      title: "Hands-on Practice",
+      description: "Real-world projects and coding challenges",
     },
     {
       icon: Users,
-      title: "Expert Instructors",
-      description: "Learn from industry professionals and academic experts.",
+      title: "Community Support",
+      description: "Learn together with peers and mentors",
     },
     {
-      icon: GraduationCap,
-      title: "Certification",
-      description: "Earn recognized certificates upon course completion.",
+      icon: Trophy,
+      title: "Achievement System",
+      description: "Track progress with badges and certificates",
     },
     {
-      icon: Globe,
-      title: "Global Community",
-      description: "Connect with learners from around the world.",
+      icon: Clock,
+      title: "Flexible Schedule",
+      description: "Learn at your own pace, anytime, anywhere",
+    },
+    {
+      icon: Shield,
+      title: "Quality Assured",
+      description: "Curated content by industry experts",
     },
   ];
 
-  const teamMembers = [
-    {
-      name: "Jane Smith",
-      role: "Founder & CEO",
-      image: "/assets/team1.jpg",
-      socialLinks: [{ url: "https://linkedin.com" }],
-    },
-    {
-      name: "John Doe",
-      role: "CTO",
-      image: "/assets/team2.jpg",
-      socialLinks: [{ url: "https://linkedin.com" }],
-    },
+  const team = [
     {
       name: "Sarah Johnson",
-      role: "Head of Education",
-      image: "/assets/team3.jpg",
-      socialLinks: [{ url: "https://linkedin.com" }],
+      role: "CEO & Co-Founder",
+      image:
+        "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face",
+      bio: "Former Google engineer with 10+ years in EdTech",
     },
     {
-      name: "Michael Brown",
-      role: "Product Manager",
-      image: "/assets/team4.jpg",
-      socialLinks: [{ url: "https://linkedin.com" }],
+      name: "Michael Chen",
+      role: "CTO & Co-Founder",
+      image:
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face",
+      bio: "AI researcher passionate about personalized learning",
+    },
+    {
+      name: "Emily Rodriguez",
+      role: "Head of Content",
+      image:
+        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
+      bio: "Educational psychologist with curriculum expertise",
+    },
+    {
+      name: "David Kumar",
+      role: "Head of Engineering",
+      image:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
+      bio: "Full-stack developer building scalable platforms",
     },
   ];
 
+  const values = [
+    {
+      icon: Heart,
+      title: "Student-Centric",
+      description: "Every decision we make puts learners first",
+    },
+    {
+      icon: Lightbulb,
+      title: "Innovation",
+      description: "Constantly evolving with latest technology",
+    },
+    {
+      icon: Users,
+      title: "Inclusivity",
+      description: "Making quality education accessible to all",
+    },
+    {
+      icon: Target,
+      title: "Excellence",
+      description: "Committed to delivering the highest quality",
+    },
+  ];
+
+  const milestones = [
+    {
+      year: "2019",
+      title: "Founded",
+      description: "Started with a vision to revolutionize online learning",
+    },
+    {
+      year: "2020",
+      title: "First 1,000 Users",
+      description: "Reached our first milestone during the pandemic",
+    },
+    {
+      year: "2021",
+      title: "AI Integration",
+      description: "Launched personalized learning recommendations",
+    },
+    {
+      year: "2022",
+      title: "Global Expansion",
+      description: "Expanded to serve students in 50+ countries",
+    },
+    {
+      year: "2023",
+      title: "50K+ Students",
+      description: "Built a thriving community of learners",
+    },
+    {
+      year: "2024",
+      title: "Industry Recognition",
+      description: "Won Best EdTech Platform award",
+    },
+  ];
+
+  const tabContent = {
+    mission: {
+      title: "Our Mission",
+      content:
+        "To democratize quality education by making it accessible, engaging, and effective for learners worldwide. We believe that everyone deserves the opportunity to learn, grow, and achieve their potential regardless of their background or circumstances.",
+    },
+    vision: {
+      title: "Our Vision",
+      content:
+        "To become the world's most trusted learning platform, empowering millions of learners to transform their lives through education. We envision a future where learning is personalized, interactive, and available to everyone, everywhere.",
+    },
+    story: {
+      title: "Our Story",
+      content:
+        "Founded in 2019 by two passionate educators and technologists, our platform was born from the frustration of traditional one-size-fits-all education. We saw students struggling with outdated methods and decided to create something better - a platform that adapts to each learner's unique needs.",
+    },
+  };
+
   return (
-    <Layout>
-      <div className="min-h-screen bg-gray-50">
+    <>
+      <Navbar />
+      <Helmet>
+        <title>About Us | Learnexa</title>
+
+</Helmet>
+      <div className="min-h-screen bg-white dark:bg-black text-gray-900 dark:text-white">
         {/* Hero Section */}
-        <section className="pt-24 pb-16 px-4 text-center">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-4xl font-bold text-gray-900 mb-6">
-              Transforming Education Through Innovation
-            </h1>
-            <p className="text-xl text-gray-600 mb-8">
-              At Learnexa, we're committed to making quality education
-              accessible to everyone.
-            </p>
+        <section className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-cover bg-center bg-no-repeat" style={{
+          backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/assets/about-bg.jpg')`,
+          backgroundAttachment: 'fixed'
+        }}>
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-center mb-16"
+            >
+              <motion.div
+                initial={{ scale: 0.9 }}
+                whileInView={{ scale: 1 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+                className="inline-flex items-center justify-center px-4 py-2 rounded-full mb-6 backdrop-blur-sm bg-gray-100/90 dark:bg-white/5 border border-gray-200 dark:border-white/10"
+              >
+                <Users className="w-4 h-4 mr-2 text-indigo-500 dark:text-indigo-400" />
+                <span className="text-sm bg-gradient-to-r from-indigo-500 to-indigo-400 dark:from-indigo-400 dark:to-indigo-300 bg-clip-text text-transparent">
+                  About Learnexa
+                </span>
+              </motion.div>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold mb-6 bg-gradient-to-r from-white to-indigo-400 bg-clip-text text-transparent">
+                Empowering Learners
+                <br />
+                <span className="text-indigo-600 dark:text-indigo-400">
+                  Worldwide
+                </span>
+              </h1>
+              <p className="text-lg max-w-3xl mx-auto text-white  leading-relaxed">
+                We're on a mission to make quality education accessible to
+                everyone. Our AI-powered platform adapts to your learning style,
+                helping you achieve your goals faster and more effectively.
+              </p>
+            </motion.div>
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+              {stats.map((stat, index) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="text-center p-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/90 dark:bg-gray-950/90 backdrop-blur-sm hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-300"
+                >
+                  <div className="w-12 h-12 bg-gradient-to-r from-indigo-500 to-indigo-400 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <stat.icon className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="text-2xl sm:text-3xl font-bold mb-2">
+                    {stat.number}
+                  </div>
+                  <div className="font-semibold mb-1">{stat.label}</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                    {stat.description}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* Philosophy Section */}
-        <section className="py-16 px-4 bg-white">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-              Our Philosophy
-            </h2>
+        {/* Mission, Vision, Story Tabs */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900/50">
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              {/* Tab Navigation */}
+              <div className="flex flex-wrap justify-center mb-8 p-1 bg-gray-200 dark:bg-gray-800 rounded-xl">
+                {Object.keys(tabContent).map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+                      activeTab === tab
+                        ? "bg-white dark:bg-gray-700 text-indigo-600 dark:text-indigo-400 shadow-sm"
+                        : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                    }`}
+                  >
+                    {tabContent[tab].title}
+                  </button>
+                ))}
+              </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
-              {philosophySteps.map((step, index) => (
+              {/* Tab Content */}
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className="text-center"
+              >
+                <h2 className="text-3xl font-semibold mb-6">
+                  {tabContent[activeTab].title}
+                </h2>
+                <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+                  {tabContent[activeTab].content}
+                </p>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Features Grid */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl sm:text-4xl font-semibold mb-4">
+                Why Choose Our Platform
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Discover what makes our learning platform unique and effective
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {features.map((feature, index) => (
                 <motion.div
-                  key={index}
-                  className="bg-gray-50 p-8 rounded-xl"
+                  key={feature.title}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
                   viewport={{ once: true }}
+                  whileHover={{ y: -5 }}
+                  className="p-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-300"
                 >
-                  <div className="flex items-center mb-4">
-                    <div className="p-3 rounded-full bg-blue-100 text-blue-600">
-                      <step.icon className="w-6 h-6" />
-                    </div>
-                    <h3 className="text-2xl font-semibold ml-4">
-                      {step.title}
-                    </h3>
+                  <div className="w-12 h-12 bg-gradient-to-r from-indigo-500 to-indigo-400 rounded-lg flex items-center justify-center mb-4">
+                    <feature.icon className="w-6 h-6 text-white" />
                   </div>
-                  <p className="text-gray-600">{step.description}</p>
+                  <h3 className="text-xl font-semibold mb-3">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {feature.description}
+                  </p>
                 </motion.div>
               ))}
             </div>
@@ -642,80 +357,188 @@ function AboutUs() {
         </section>
 
         {/* Team Section */}
-        <section className="py-16 px-4">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-              Our Team
-            </h2>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {teamMembers.map((member, index) => (
-                <TeamMemberCard
-                  key={index}
-                  name={member.name}
-                  role={member.role}
-                  image={member.image}
-                  socialLinks={member.socialLinks}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Metrics */}
-        <section className="py-16 px-4 bg-blue-600 text-white">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12">Our Impact</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-              {metrics.map((item, index) => (
-                <div key={index} className="p-6">
-                  <item.icon className="w-10 h-10 mx-auto mb-4" />
-                  <div className="text-3xl font-bold mb-2">{item.value}</div>
-                  <div className="text-sm">{item.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Features */}
-        <section className="py-16 px-4 bg-white">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-              Why Choose Learnexa?
-            </h2>
-            <div className="grid sm:grid-cols-2 gap-6">
-              {features.map((feature, index) => (
-                <FeatureCard
-                  key={index}
-                  icon={feature.icon}
-                  title={feature.title}
-                  description={feature.description}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section className="py-16 px-4 bg-gray-50">
-          <div className="max-w-3xl mx-auto text-center">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">
-              Start Learning Today
-            </h3>
-            <a
-              href="/signup"
-              className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-medium"
+        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900/50">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
             >
-              Join Now
-            </a>
+              <h2 className="text-3xl sm:text-4xl font-semibold mb-4">
+                Meet Our Team
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                The passionate people behind our platform
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {team.map((member, index) => (
+                <motion.div
+                  key={member.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  whileHover={{ y: -5 }}
+                  className="text-center p-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-300"
+                >
+                  <div className="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden">
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">{member.name}</h3>
+                  <p className="text-indigo-600 dark:text-indigo-400 font-medium mb-3">
+                    {member.role}
+                  </p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {member.bio}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </section>
 
-     
+        {/* Values Section */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl sm:text-4xl font-semibold mb-4">
+                Our Values
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                The principles that guide everything we do
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {values.map((value, index) => (
+                <motion.div
+                  key={value.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="text-center p-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-300"
+                >
+                  <div className="w-16 h-16 bg-gradient-to-r from-indigo-500 to-indigo-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <value.icon className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">{value.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {value.description}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Timeline Section */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900/50">
+          <div className="max-w-6xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl sm:text-4xl font-semibold mb-4">
+                Our Journey
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Key milestones in our mission to transform education
+              </p>
+            </motion.div>
+
+            <div className="relative">
+              {/* Timeline Line */}
+              <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-indigo-500 to-indigo-400 rounded-full"></div>
+
+              <div className="space-y-8">
+                {milestones.map((milestone, index) => (
+                  <motion.div
+                    key={milestone.year}
+                    initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                    className={`flex items-center ${
+                      index % 2 === 0 ? "flex-row" : "flex-row-reverse"
+                    }`}
+                  >
+                    <div className="flex-1 px-8">
+                      <div
+                        className={`p-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 ${
+                          index % 2 === 0 ? "text-right" : "text-left"
+                        }`}
+                      >
+                        <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">
+                          {milestone.year}
+                        </div>
+                        <h3 className="text-xl font-semibold mb-2">
+                          {milestone.title}
+                        </h3>
+                        <p className="text-gray-600 dark:text-gray-400">
+                          {milestone.description}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Timeline dot */}
+                    <div className="w-4 h-4 bg-indigo-600 rounded-full border-4 border-white dark:border-gray-950 z-10"></div>
+
+                    <div className="flex-1"></div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white"
+            >
+              <h2 className="text-3xl sm:text-4xl font-semibold mb-4">
+                Ready to Start Learning?
+              </h2>
+              <p className="text-xl mb-8 text-indigo-100">
+                Join thousands of learners who are already transforming their
+                careers
+              </p>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-white text-indigo-600 px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 inline-flex items-center space-x-2"
+              >
+                <span>Get Started Today</span>
+                <ArrowRight className="w-5 h-5" />
+              </motion.button>
+            </motion.div>
+          </div>
+        </section>
       </div>
-    </Layout>
+      <Footer/>
+    </>
   );
 }
-
-export default AboutUs;

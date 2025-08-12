@@ -420,7 +420,7 @@ const SubjectTopicsPage = () => {
         const response = await axios.post(`${backend_URL}/api/questions/topics`, { subject });
         const formattedTopics = response.data.topics.map((topic) => ({
           title: formatTopicName(topic),
-          link: `/${subject}/${topic}`,
+          link: `/practice/${subject}/${topic}`,
           difficulty: getTopicDifficulty(topic),
         }));
         setTopics(formattedTopics);
@@ -606,7 +606,7 @@ const SubjectTopicsPage = () => {
                   <div className="flex items-center">
                     <ChevronsRight className="w-4 h-4 text-green-500 mx-1" />
                     <a
-                      href={`/${subject}`}
+                      href={`/practice/${subject}`}
                       className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white capitalize"
                     >
                       {subject ? formatTopicName(subject) : "Topics"}
@@ -669,9 +669,7 @@ const SubjectTopicsPage = () => {
                             <h2 className="text-sm md:text-lg text-black dark:text-white">
                               {topic.title}
                             </h2>
-                         
                           </div>
-                      
                         </div>
                       </div>
                     </a>
