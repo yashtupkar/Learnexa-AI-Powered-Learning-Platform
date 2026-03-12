@@ -143,6 +143,10 @@ import BulkQuestionUpload from "./pages/BulkQuestionsUpload";
 import PaymentCheckoutPage from "./pages/PaymentCheckoutPage";
 import NotFound from "./pages/NotFound";
 import ContactUs from "./pages/ContactUsPage";
+import InterviewLayout from "./pages/interview/InterviewLayout";
+import InterviewSetup from "./pages/interview/InterviewSetup";
+import InterviewSession from "./pages/interview/InterviewSession";
+import InterviewResult from "./pages/interview/InterviewResult";
 
 
 
@@ -169,7 +173,12 @@ const App = () => {
         <Route path="/challenge/:id" element={<ChallengeFriendPage />} />
         <Route path="/current-affairs" element={<CurrentAffairs />} />
         <Route path="/study-plan" element={<HRInterviewPage />} />
-        <Route path="/interview" element={<ComingSoonPage />} />
+        <Route path="/interview" element={<InterviewLayout />}>
+          <Route index element={<Navigate to="setup" replace />} />
+          <Route path="setup" element={<InterviewSetup />} />
+          <Route path="session" element={<InterviewSession />} />
+          <Route path="result" element={<InterviewResult />} />
+        </Route>
         <Route path="/practice-arena" element={<PracticeArena />} />
         <Route path="/streak" element={<StreakMap />} />
         <Route path="/settings" element={<SettingsPage />} />

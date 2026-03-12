@@ -13,6 +13,7 @@ require("./cornJobs/newsCorn");
 require("./cornJobs/resetStreakCron");
 const upload = require("./multer/upload"); 
 const questionRouter = require("./routes/questionRoutes");
+const vapiInterviewRouter = require("./routes/vapiInterviewRoutes");
 const  transporter  = require("./config/nodemailer");
 
 
@@ -61,6 +62,7 @@ app.use('/api/quiz', quizRouter);
 app.use('/api/news', newsRouter);
 app.use('/api/notification', notificationRouter);
 app.use('/api/questions', questionRouter);
+app.use('/api/vapi-interview', vapiInterviewRouter);
 
 //for uploading images to claudinary
 app.post("/upload", upload.single("file"), (req, res) => {

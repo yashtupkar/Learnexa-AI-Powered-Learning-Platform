@@ -245,7 +245,7 @@ const Layout = ({ children }) => {
           <main className="main-content scrollbar-custom dark:bg-black flex-1 overflow-y-auto">
             <StudyTimerModal />
             {children}
-            <Footer />
+            {location.pathname !== "/interview" && <Footer />}
           </main>
         </div>
       </div>

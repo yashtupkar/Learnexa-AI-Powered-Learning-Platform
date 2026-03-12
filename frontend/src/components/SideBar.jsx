@@ -925,6 +925,7 @@ export function SidebarItem({
   const hasSubItems = subItems && subItems.length > 0;
   const isActive =
     location.pathname === to ||
+    location.pathname.startsWith(`${to}/`) ||
     (hasSubItems && subItems.some((item) => location.pathname === item.to));
 
   // Special styling for upgrade button

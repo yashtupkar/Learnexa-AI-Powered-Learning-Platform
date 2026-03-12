@@ -1092,8 +1092,8 @@ const Dashboard = () => {
                   key={tab}
                   onClick={() => setActiveTab(tab)}
                   className={`px-4 py-2 text-sm font-medium rounded-full whitespace-nowrap transition-colors capitalize ${activeTab === tab
-                      ? "bg-blue-100 text-blue-800 dark:bg-blue-800/50 dark:text-blue-100"
-                      : "text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                    ? "bg-blue-100 text-blue-800 dark:bg-blue-800/50 dark:text-blue-100"
+                    : "text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
                     }`}
                 >
                   {tab}
@@ -1507,12 +1507,12 @@ const Dashboard = () => {
                           <div key={index} className="flex items-center">
                             <span
                               className={`w-3 h-3 rounded-full mr-2 ${index === 0
-                                  ? "bg-blue-500"
-                                  : index === 1
-                                    ? "bg-green-500"
-                                    : index === 2
-                                      ? "bg-purple-500"
-                                      : "bg-amber-500"
+                                ? "bg-blue-500"
+                                : index === 1
+                                  ? "bg-green-500"
+                                  : index === 2
+                                    ? "bg-purple-500"
+                                    : "bg-amber-500"
                                 }`}
                             ></span>
                             <span className="text-sm text-gray-700 dark:text-gray-300">

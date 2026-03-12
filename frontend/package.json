@@ -14,6 +14,7 @@
     "@react-oauth/google": "^0.12.2",
     "@reduxjs/toolkit": "^2.8.2",
     "@tailwindcss/vite": "^4.1.7",
+    "@vapi-ai/web": "^2.5.2",
     "axios": "^1.9.0",
     "boring-avatar": "^1.7.0",
     "boring-avatars": "^1.11.2",
