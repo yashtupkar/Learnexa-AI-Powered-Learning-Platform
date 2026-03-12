@@ -141,7 +141,7 @@ const StreakMap = () => {
   );
   const { user } = useSelector((state) => state.auth);
 
-  const calculateCurrentStreak = (activeDates) => {
+  const calculateCurrentStreak = (activeDates, backendCurrentStreak) => {
     if (!activeDates || activeDates.length === 0) return 0;
 
     // Sort dates in descending order
@@ -152,33 +152,43 @@ const StreakMap = () => {
     // Convert to YYYY-MM-DD format for comparison
     const formatDate = (date) => new Date(date).toISOString().split("T")[0];
 
-    let streak = 1;
     const today = new Date();
     const yesterday = new Date(today);
     yesterday.setDate(yesterday.getDate() - 1);
 
-    // Check if today's activity exists
     const todayFormatted = formatDate(today);
+    const yesterdayFormatted = formatDate(yesterday);
     const lastDateFormatted = formatDate(sortedDates[0]);
 
-    // If last activity wasn't today, streak is 0
-    if (lastDateFormatted !== todayFormatted) return 0;
+    // If we have backend data, trust it if today or yesterday was active
+    if (backendCurrentStreak !== undefined && backendCurrentStreak > 0) {
+      if (lastDateFormatted === todayFormatted || lastDateFormatted === yesterdayFormatted) {
+        return backendCurrentStreak;
+      }
+    }
 
-    // Check consecutive days backward
-    for (let i = 1; i < sortedDates.length; i++) {
-      const currentDate = new Date(sortedDates[i]);
-      const prevDate = new Date(sortedDates[i - 1]);
+    // Fallback manual calculation
+    let streak = 0;
+    if (lastDateFormatted === todayFormatted || lastDateFormatted === yesterdayFormatted) {
+      streak = 1;
+      // Check consecutive days backward
+      for (let i = 1; i < sortedDates.length; i++) {
+        const currentDate = new Date(sortedDates[i]);
+        const prevDate = new Date(sortedDates[i - 1]);
 
-      currentDate.setHours(0, 0, 0, 0);
-      prevDate.setHours(0, 0, 0, 0);
+        currentDate.setHours(0, 0, 0, 0);
+        prevDate.setHours(0, 0, 0, 0);
 
-      const diffTime = prevDate - currentDate;
-      const diffDays = diffTime / (1000 * 60 * 60 * 24);
+        const diffTime = prevDate - currentDate;
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
 
-      if (diffDays === 1) {
-        streak++;
-      } else {
-        break;
+        if (diffDays === 1) {
+          streak++;
+        } else if (diffDays === 0) {
+          continue; // same day activity
+        } else {
+          break;
+        }
       }
     }
 
@@ -198,7 +208,8 @@ const StreakMap = () => {
       );
 
       const activeDates = response.data.activeDates || [];
-      const currentStreak = calculateCurrentStreak(activeDates);
+      const backendCurrentStreak = response.data.currentStreak;
+      const currentStreak = calculateCurrentStreak(activeDates, backendCurrentStreak);
 
       setStreakData({
         currentStreak,
@@ -206,6 +217,7 @@ const StreakMap = () => {
         streakFreezes: 0,
         activeDates,
         streakHistory: response.data.streakHistory || [],
+        isTodayActive: activeDates.some(d => new Date(d).toDateString() === new Date().toDateString())
       });
 
       // Calculate stats based on active dates
@@ -323,13 +335,25 @@ const StreakMap = () => {
             </span>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-bold mb-2">
-            Current Streak
-          </h1>
-          <p className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 max-w-md">
-            {currentQuote}
-          </p>
-        </div>
+          <div className="mt-4 flex flex-col items-center">
+             <div className="flex gap-2 mb-2">
+               {streakData.isTodayActive ? (
+                 <div className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-4 py-1.5 rounded-full text-sm font-bold flex items-center gap-2 border border-green-200 dark:border-green-800 animate-bounce">
+                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                   Today's Goal Met! (+1)
+                 </div>
+               ) : (
+                 <div className="bg-orange-100 dark:bg-orange-900/10 text-orange-700 dark:text-orange-400 px-4 py-1.5 rounded-full text-sm font-medium flex items-center gap-2 border border-orange-200 dark:border-orange-900/30">
+                   <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
+                   Incomplete for today
+                 </div>
+               )}
+             </div>
+             <p className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 max-w-md italic">
+               "{currentQuote}"
+             </p>
+           </div>
+         </div>
 
         {/* Main Content - Flex column on mobile, row on larger screens */}
         <div className="flex flex-col lg:flex-row gap-4">

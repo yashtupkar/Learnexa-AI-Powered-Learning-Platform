@@ -19,10 +19,17 @@ export const StreakUpdate = async (activity) => {
     );
 
     if (response.data.updated) {
-      toast.success("Streak updated successfully");
+      if (response.data.isNewStreak) {
+        toast.success(`Streak increased! You're on a ${response.data.currentStreak} day streak! 🔥`, {
+          duration: 4000,
+          icon: '🔥',
+        });
+      } else {
+        toast.success("Activity recorded! Streak maintained. ✅");
+      }
     }
   } catch (error) {
     console.error("Streak update failed:", error);
-    toast.error("Failed to update streak");
+    toast.error("Could not update streak. Please try again.");
   }
 };

@@ -156,6 +156,7 @@ const QuestionsPage = () => {
     setSelectedOptions(newSelectedOptions);
 
     if (isCorrect) {
+      StreakUpdate("Questions Solved");
       setSubmitted({
         ...submitted,
         [questionId]: true,
@@ -173,7 +174,6 @@ const QuestionsPage = () => {
   };
 
   const toggleExplanation = (questionId) => {
-    StreakUpdate("Questions Solved");
     setShowExplanations({
       ...showExplanations,
       [questionId]: !showExplanations[questionId],

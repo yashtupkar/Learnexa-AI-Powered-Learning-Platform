@@ -9,6 +9,7 @@ const fs = require("fs");
 const Quiz = require("../models/quizModel");
 const Tesseract = require("tesseract.js");
 const userModel = require("../models/userModel");
+const userController = require("./userController");
 
 const pdf = require("pdf-parse");
 
@@ -528,10 +529,19 @@ const submitQuiz = async (req, res) => {
     // Save changes
     await Promise.all([user.save(), quiz.save()]);
 
+    // Automatically update streak on submission
+    let streakInfo = null;
+    try {
+      streakInfo = await userController.updateStreakInternal(user);
+    } catch (streakError) {
+      console.error("Streak auto-update failed during submission:", streakError);
+    }
+
     res.status(200).json({
       success: true,
       message: "Quiz attempt recorded successfully",
       attempt: newScore,
+      streakInfo,
       totalAttempts:
         userAttemptIndex !== -1
           ? user.attemptedQuizzes[userAttemptIndex].scores.length

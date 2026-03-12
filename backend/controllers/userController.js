@@ -79,64 +79,54 @@ const allUserAccordingStreak = async (req, res) => {
   }
 };
 
-const trackStreak = async (req, res) => {
+// Internal function to update streak
+const updateStreakInternal = async (user) => {
   try {
-    const { activity } = req.body;
-    const { userId } = req.user;
-
-    const user = await userModel.findById(userId);
-    if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found!" });
-    }
-
-    // Get today's date in IST (normalized to midnight)
     const todayIST = getCurrentIndianDate();
-
+    
     // Check if today's date is already logged
     const alreadyLogged = user.activeDates.some((activeDate) => {
-      const activeDateIST = getCurrentIndianDate(new Date(activeDate));
+      const activeDateIST = getCurrentIndianDate(activeDate);
       return activeDateIST.getTime() === todayIST.getTime();
     });
 
-    // If already logged today, return current streak info
     if (alreadyLogged) {
-      return res.json({
-        success: true,
-        message: "Already logged for today",
+      return { 
+        updated: true, 
+        isNewStreak: false, 
+        milestoneReached: null,
         currentStreak: user.currentStreak,
-        longestStreak: user.longestStreak,
-        activeDates: user.activeDates,
-        streakHistory: user.streakHistory,
-      });
+        longestStreak: user.longestStreak
+      };
     }
 
-    // If no activity flag from frontend, skip update
-    if (!activity) {
-      return res.json({
-        success: true,
-        updated:false,
-        message: "No activity provided — streak not updated",
-        currentStreak: user.currentStreak,
-        longestStreak: user.longestStreak,
-        activeDates: user.activeDates,
-        streakHistory: user.streakHistory,
-      });
-    }
+    let isNewStreak = false;
+    let milestoneReached = null;
 
-    // ---- Explicit Activity ----
     user.activeDates.push(new Date()); // store as UTC
 
     const lastActivityIST = user.lastActivityDate
-      ? getCurrentIndianDate(new Date(user.lastActivityDate))
+      ? getCurrentIndianDate(user.lastActivityDate)
       : null;
 
     // Streak update logic
     if (!lastActivityIST) {
       user.currentStreak = 1;
+      isNewStreak = true;
     } else if (isConsecutiveDay(lastActivityIST, todayIST)) {
       user.currentStreak++;
+      isNewStreak = true;
+      
+      // Check for milestones
+      const milestones = [3, 7, 10, 15, 30, 50, 75, 100, 365];
+      if (milestones.includes(user.currentStreak)) {
+        milestoneReached = user.currentStreak;
+        user.notifications.push({
+          type: "success",
+          title: "Streak Milestone!",
+          message: `Incredible! You've reached a ${user.currentStreak}-day streak. Keep it up!`,
+        });
+      }
     } else {
       // Save previous streak to history if > 1
       if (user.currentStreak > 1) {
@@ -152,6 +142,7 @@ const trackStreak = async (req, res) => {
         });
       }
       user.currentStreak = 1; // reset streak
+      isNewStreak = true;
     }
 
     // Update longest streak if needed
@@ -162,12 +153,50 @@ const trackStreak = async (req, res) => {
     user.lastActivityDate = new Date(); // save now in UTC
     await user.save();
 
+    return {
+      updated: true,
+      isNewStreak,
+      milestoneReached,
+      currentStreak: user.currentStreak,
+      longestStreak: user.longestStreak
+    };
+  } catch (error) {
+    console.error("Internal Streak Update Error:", error);
+    throw error;
+  }
+};
+
+const trackStreak = async (req, res) => {
+  try {
+    const { activity } = req.body;
+    const { userId } = req.user;
+
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found!" });
+    }
+
+    // If no explicit activity flag from frontend, just return current data
+    if (!activity) {
+      return res.json({
+        success: true,
+        updated: false,
+        message: "No activity provided",
+        currentStreak: user.currentStreak,
+        longestStreak: user.longestStreak,
+        activeDates: user.activeDates,
+        streakHistory: user.streakHistory,
+      });
+    }
+
+    const streakResult = await updateStreakInternal(user);
+
     return res.json({
       success: true,
-      message: "Streak updated successfully",
-      updated:true,
-      currentStreak: user.currentStreak,
-      longestStreak: user.longestStreak,
+      ...streakResult,
+      message: streakResult.isNewStreak ? "Streak increased!" : "Streak maintained",
       activeDates: user.activeDates,
       streakHistory: user.streakHistory,
     });

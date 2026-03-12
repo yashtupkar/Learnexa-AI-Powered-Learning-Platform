@@ -64,6 +64,7 @@ const ReadingComprehensionPage = () => {
     setSelectedOptions(newSelectedOptions);
 
     if (isCorrect) {
+      StreakUpdate("Reading Comprehension Solved");
       setSubmitted({
         ...submitted,
         [questionId]: true,
@@ -81,7 +82,6 @@ const ReadingComprehensionPage = () => {
   };
 
   const toggleExplanation = (questionId) => {
-    StreakUpdate("Questions Solved");
     setShowExplanations({
       ...showExplanations,
       [questionId]: !showExplanations[questionId],
