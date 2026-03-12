@@ -22,6 +22,7 @@ import {
 import Layout from "../components/layouts/layout";
 import { StreakUpdate } from "../../utils/streakService";
 import { Helmet } from "react-helmet-async";
+import toast from "react-hot-toast";
 
 const ReadingComprehensionPage = () => {
   const questionsContainerRef = useRef(null);

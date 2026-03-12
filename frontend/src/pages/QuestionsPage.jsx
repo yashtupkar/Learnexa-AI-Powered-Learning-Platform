@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext, useRef } from "react";
 import { AppContext } from "../context/AppContext";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   BookOpen,
@@ -50,6 +50,13 @@ const QuestionsPage = () => {
 
   const { backend_URL } = useContext(AppContext);
   const { subject, topic } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (topic === "reading-comprehension") {
+      navigate(`/${subject}/reading-comprehension`);
+    }
+  }, [topic, subject, navigate]);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -79,7 +86,10 @@ const QuestionsPage = () => {
         );
         const formattedTopics = response.data.topics.map((topic) => ({
           title: formatTopicName(topic),
-          link: `/practice/${subject}/${topic}`,
+          link:
+            topic === "reading-comprehension"
+              ? `/${subject}/reading-comprehension`
+              : `/practice/${subject}/${topic}`,
           difficulty: getTopicDifficulty(topic),
         }));
         setTopics(formattedTopics);

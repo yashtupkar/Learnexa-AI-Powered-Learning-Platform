@@ -420,7 +420,10 @@ const SubjectTopicsPage = () => {
         const response = await axios.post(`${backend_URL}/api/questions/topics`, { subject });
         const formattedTopics = response.data.topics.map((topic) => ({
           title: formatTopicName(topic),
-          link: `/practice/${subject}/${topic}`,
+          link:
+            topic === "reading-comprehension"
+              ? `/${subject}/reading-comprehension`
+              : `/practice/${subject}/${topic}`,
           difficulty: getTopicDifficulty(topic),
         }));
         setTopics(formattedTopics);
