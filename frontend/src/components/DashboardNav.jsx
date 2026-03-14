@@ -60,8 +60,8 @@ export default function DashboardNav({
 
   return (
     <header className="sticky top-0 z-30 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-lg border-b border-gray-200/50 dark:border-gray-700/50 shadow-sm">
-      <div className="px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+      <div className="px-2 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-14">
           {/* Left Section - Menu Button & Title */}
           <div className="flex items-center sm:space-x-4">
             {/* Menu Button - works for both mobile and desktop */}
@@ -74,7 +74,7 @@ export default function DashboardNav({
             </button>
 
             {/* Page Title */}
-            <h1 className="text-lg  text-gray-800 dark:text-white truncate max-w-[160px] sm:max-w-none">
+            <h1 className="text-sm  text-gray-800 dark:text-white truncate max-w-[160px] sm:max-w-none">
               {pageTitle}
             </h1>
           </div>
@@ -83,14 +83,7 @@ export default function DashboardNav({
           <div className="flex items-center space-x-2">
             {/* Mobile Search Toggle */}
 
-            {/* Create New Button (Desktop) */}
-            <button
-              onClick={() => navigate("/create")}
-              className="hidden md:flex items-center space-x-1.5 px-3 py-2 bg-gradient-to-br from-indigo-600 to-indigo-400 cursor-pointer text-white text-sm font-medium rounded-lg transition-colors duration-200"
-            >
-              <Plus size={16} />
-              <span>Create</span>
-            </button>
+
 
             {/* Help Center */}
             <button

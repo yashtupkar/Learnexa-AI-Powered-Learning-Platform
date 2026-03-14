@@ -119,7 +119,14 @@ const authSlice = createSlice({
       state.user = action.payload;
       state.isAuthenticated = true;
       state.loading = false;
-      localStorage.setItem("user", JSON.stringify(action.payload));
+      const essentialDetails = {
+        _id: action.payload._id,
+        email: action.payload.email,
+        name: action.payload.name,
+        username: action.payload.username,
+        avatar: action.payload.avatar,
+      };
+      localStorage.setItem("user", JSON.stringify(essentialDetails));
       
       // Set auto logout timer if token is provided
       const token = localStorage.getItem("token");
@@ -172,7 +179,14 @@ const authSlice = createSlice({
     userUpdate: (state, action) => {
       state.user = action.payload;
       state.loading = false;
-      localStorage.setItem("user", JSON.stringify(action.payload));
+      const essentialDetails = {
+        _id: action.payload._id,
+        email: action.payload.email,
+        name: action.payload.name,
+        username: action.payload.username,
+        avatar: action.payload.avatar,
+      };
+      localStorage.setItem("user", JSON.stringify(essentialDetails));
     },
     // Clear error action
     clearError: (state) => {

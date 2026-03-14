@@ -1,7 +1,6 @@
 
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { AppContext } from "../context/AppContext";
-import Layout from "../components/layouts/layout";
 import { Search, ChevronLeft, ChevronRight, X, Bookmark, Share2, MessageSquare, Heart } from "lucide-react";
 import Avatar from "react-avatar";
 import { Helmet } from "react-helmet-async";
@@ -352,7 +351,7 @@ const nextPage = () => {
   );
 
   return (
-    <Layout>
+    <>
       <Helmet>
         <title>Current Affairs | Learnexa</title>
       </Helmet>
@@ -762,7 +761,7 @@ const nextPage = () => {
           )}
         </main>
       </div>
-    </Layout>
+    </>
   );
 };
 

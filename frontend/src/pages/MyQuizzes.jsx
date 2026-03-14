@@ -31,7 +31,6 @@ import {
   TrendingUp,
   BookOpen,
 } from "lucide-react";
-import Layout from "../components/layouts/layout";
 import axios from "axios";
 import { AppContext } from "../context/AppContext";
 import { useSelector } from "react-redux";
@@ -562,7 +561,7 @@ const MyQuizzes = () => {
   };
 
   return (
-    <Layout>
+    <>
       <Helmet>
         <title>My Quizzes | Learnexa</title>
       </Helmet>
@@ -1149,7 +1148,7 @@ const MyQuizzes = () => {
           </>
         )}
       </AnimatePresence>
-    </Layout>
+    </>
   );
 };
 

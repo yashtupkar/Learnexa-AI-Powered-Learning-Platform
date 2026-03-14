@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
-import Layout from "../components/layouts/layout";
 import {
   ChevronsRight,
   Search,
@@ -102,7 +101,7 @@ const RcTopics = () => {
   };
 
   return (
-    <Layout>
+    <>
       <Helmet>
         <title>Reading Comprehension Topics | Learnexa</title>
       </Helmet>
@@ -234,7 +233,7 @@ const RcTopics = () => {
           )}
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 

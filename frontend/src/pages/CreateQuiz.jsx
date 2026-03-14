@@ -1,7 +1,6 @@
 
 
 import React, { useEffect, useState } from "react";
-import Layout from "../components/layouts/layout";
 import {
   ChevronDown,
   ChevronRight,
@@ -44,8 +43,7 @@ const CreateQuiz = () => {
     setActiveTab(tabName);
   };
 
-  return (
-    <Layout>
+  return (<>
       <Helmet>
         <title>Create Quiz | Learnexa</title>
       </Helmet>
@@ -175,8 +173,8 @@ const CreateQuiz = () => {
             </div>
           )}
         </div>
-      </div>
-    </Layout>
+    </div>
+  </>
   );
 };
 

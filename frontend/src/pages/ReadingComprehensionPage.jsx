@@ -19,7 +19,6 @@ import {
   ArrowLeft,
   RefreshCw,
 } from "lucide-react";
-import Layout from "../components/layouts/layout";
 import { StreakUpdate } from "../../utils/streakService";
 import { Helmet } from "react-helmet-async";
 import toast from "react-hot-toast";
@@ -145,7 +144,7 @@ const ReadingComprehensionPage = () => {
   }
 
   return (
-    <Layout>
+    <>
       <Helmet>
         <title>{passageData.passageTitle} | Learnexa</title>
       </Helmet>
@@ -462,7 +461,7 @@ const ReadingComprehensionPage = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 

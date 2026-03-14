@@ -54,7 +54,7 @@ const AvatarUploadPopup = ({ isOpen, onClose }) => {
     if (!uploadedUrl) return;
 
     try {
-     const response =  await axios.patch(
+      const response = await axios.patch(
         `${backend_URL}/api/user/update-avatar`,
         {
           avatar: uploadedUrl,

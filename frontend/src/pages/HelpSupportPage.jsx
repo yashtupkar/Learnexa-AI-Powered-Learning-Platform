@@ -9,7 +9,6 @@ import {
   Moon,
   HelpCircle,
 } from "lucide-react";
-import Layout from "../components/layouts/layout";
 
 // Main App component
 const HelpSupportPage = () => {
@@ -69,7 +68,7 @@ const HelpSupportPage = () => {
   ];
 
   return (
-    <Layout>
+   
       <div className="min-h-screen bg-gray-100 text-gray-900 dark:bg-black dark:text-zinc-100  p-4 sm:p-6 lg:p-8">
         <div className="max-w-4xl mx-auto">
           {/* Header and Dark Mode Toggle */}
@@ -168,7 +167,7 @@ const HelpSupportPage = () => {
           </div>
         </div>
       </div>
-    </Layout>
+   
   );
 };
 

@@ -1,340 +1,4 @@
-// import React, { useState, useEffect, useContext } from "react";
-// import { useParams, useNavigate } from "react-router-dom";
-// import axios from "axios";
-// import { Save, X, Plus, Trash2 } from "lucide-react";
-// import Layout from "../components/layouts/layout";
-// import { AppContext } from "../context/AppContext";
 
-// const QuestionEditPage = () => {
-//   const [questions, setQuestions] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const { backend_URL } = useContext(AppContext);
-//   const { subject, topic } = useParams();
-//   const navigate = useNavigate();
-
-//   useEffect(() => {
-//     const fetchQuestions = async () => {
-//       try {
-//         setLoading(true);
-//         const response = await axios.get(
-//           `${backend_URL}/api/indiabix/questions/${subject}/${topic}`
-//         );
-//         setQuestions(response.data.questions || []);
-//         setLoading(false);
-//       } catch (err) {
-//         setError(err.response?.data?.message || err.message);
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchQuestions();
-//   }, [backend_URL, subject, topic]);
-
-//   const handleQuestionChange = (index, field, value) => {
-//     const updatedQuestions = [...questions];
-//     updatedQuestions[index] = {
-//       ...updatedQuestions[index],
-//       [field]: value,
-//     };
-//     setQuestions(updatedQuestions);
-//   };
-
-//   const handleOptionChange = (questionIndex, optionIndex, field, value) => {
-//     const updatedQuestions = [...questions];
-//     updatedQuestions[questionIndex].options[optionIndex] = {
-//       ...updatedQuestions[questionIndex].options[optionIndex],
-//       [field]: value,
-//     };
-//     setQuestions(updatedQuestions);
-//   };
-
-//   const toggleCorrectOption = (questionIndex, optionIndex) => {
-//     const updatedQuestions = [...questions];
-//     updatedQuestions[questionIndex].options.forEach((opt, idx) => {
-//       opt.isCorrect = idx === optionIndex;
-//     });
-//     setQuestions(updatedQuestions);
-//   };
-
-//   const addNewOption = (questionIndex) => {
-//     const updatedQuestions = [...questions];
-//     const newOptionId = String.fromCharCode(
-//       65 + updatedQuestions[questionIndex].options.length
-//     );
-//     updatedQuestions[questionIndex].options.push({
-//       identifier: newOptionId,
-//       text: "",
-//       isCorrect: false,
-//     });
-//     setQuestions(updatedQuestions);
-//   };
-
-//   const removeOption = (questionIndex, optionIndex) => {
-//     const updatedQuestions = [...questions];
-//     updatedQuestions[questionIndex].options.splice(optionIndex, 1);
-//     updatedQuestions[questionIndex].options.forEach((opt, idx) => {
-//       opt.identifier = String.fromCharCode(65 + idx);
-//     });
-//     setQuestions(updatedQuestions);
-//   };
-
-//   const addNewQuestion = () => {
-//     const newQuestion = {
-//       _id: `new-${Date.now()}`,
-//       questionText: "",
-//       subject: subject,
-//       category: topic.replace(/-/g, " "),
-//       options: [
-//         { identifier: "A", text: "", isCorrect: false },
-//         { identifier: "B", text: "", isCorrect: false },
-//         { identifier: "C", text: "", isCorrect: false },
-//         { identifier: "D", text: "", isCorrect: false },
-//       ],
-//       explanation: "",
-//       solution: "",
-//       diagrams: [],
-//       hasDiagram: false,
-//     };
-//     setQuestions([...questions, newQuestion]);
-//   };
-
-//   const removeQuestion = (questionIndex) => {
-//     const updatedQuestions = [...questions];
-//     updatedQuestions.splice(questionIndex, 1);
-//     setQuestions(updatedQuestions);
-//   };
-
-//   const saveChanges = async () => {
-//     try {
-//       setLoading(true);
-//       setError(null);
-
-//       // Validate questions before saving
-//       const validQuestions = questions.filter((q) => {
-//         const hasCorrectAnswer = q.options.some((opt) => opt.isCorrect);
-//         const hasQuestionText = q.questionText.trim() !== "";
-//         const hasValidOptions = q.options.every(
-//           (opt) => opt.text.trim() !== ""
-//         );
-//         return hasCorrectAnswer && hasQuestionText && hasValidOptions;
-//       });
-
-//       if (validQuestions.length === 0) {
-//         setError("Please add at least one valid question with correct answers");
-//         setLoading(false);
-//         return;
-//       }
-
-//       const response = await axios.put(
-//         `${backend_URL}/api/indiabix/questions/${subject}/${topic}/edit`,
-//         { questions: validQuestions }
-//       );
-
-//       if (response.data.success) {
-//         navigate(`/${subject}/${topic}`); // Redirect back to view mode
-//       } else {
-//         setError(response.data.message || "Failed to save questions");
-//       }
-//     } catch (err) {
-//       setError(err.response?.data?.message || err.message);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const cancelEditing = () => {
-//     navigate(`/${subject}/${topic}`); // Redirect back to view mode
-//   };
-
-//   if (loading && questions.length === 0) {
-//     return (
-//       <Layout>
-//         <div className="flex justify-center dark:bg-black items-center h-screen">
-//           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-//         </div>
-//       </Layout>
-//     );
-//   }
-
-//   if (error) {
-//     return (
-//       <Layout>
-//         <div className="flex justify-center items-center h-screen text-red-500">
-//           <div className="bg-red-100 dark:bg-red-900/20 p-6 rounded-lg max-w-md">
-//             <h3 className="text-lg font-bold mb-2">Error</h3>
-//             <p>{error}</p>
-//             <button
-//               onClick={() => window.location.reload()}
-//               className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-//             >
-//               Retry
-//             </button>
-//           </div>
-//         </div>
-//       </Layout>
-//     );
-//   }
-
-//   return (
-//     <Layout>
-//       <div className="container w-full px-4 py-8 max-w-3xl">
-//         <h1 className="text-3xl capitalize text-center mb-8 text-blue-600 dark:text-blue-400">
-//           Editing:{" "}
-//           <span className="text-gray-600 dark:text-white">{subject}</span> -{" "}
-//           {topic.replace(/-/g, " ")}
-//         </h1>
-
-//         <div className="flex gap-2 mb-6">
-//           <button
-//             onClick={saveChanges}
-//             disabled={loading}
-//             className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 disabled:opacity-50"
-//           >
-//             <Save size={18} /> {loading ? "Saving..." : "Save Changes"}
-//           </button>
-//           <button
-//             onClick={cancelEditing}
-//             className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
-//           >
-//             <X size={18} /> Cancel
-//           </button>
-//           <button
-//             onClick={addNewQuestion}
-//             className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-//           >
-//             <Plus size={18} /> Add Question
-//           </button>
-//         </div>
-
-//         {error && (
-//           <div className="mb-4 p-4 bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg">
-//             {error}
-//           </div>
-//         )}
-
-//         {questions.map((question, index) => (
-//           <div
-//             key={question._id}
-//             className="mb-8 p-6 bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900/50 relative"
-//           >
-//             <button
-//               onClick={() => removeQuestion(index)}
-//               className="absolute top-2 right-2 p-1 text-red-500 hover:text-red-700 dark:hover:text-red-400"
-//               title="Delete question"
-//             >
-//               <Trash2 size={18} />
-//             </button>
-
-//             <div className="flex items-start mb-4">
-//               <span className="text-lg font-semibold mr-2 text-gray-800 dark:text-zinc-200">
-//                 {index + 1}.
-//               </span>
-//               <textarea
-//                 value={question.questionText}
-//                 onChange={(e) =>
-//                   handleQuestionChange(index, "questionText", e.target.value)
-//                 }
-//                 className="flex-1 text-lg text-gray-800 dark:text-zinc-200 bg-gray-50 dark:bg-zinc-700 p-2 rounded border border-gray-300 dark:border-zinc-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none resize-none"
-//                 placeholder="Enter question text..."
-//                 rows={3}
-//               />
-//             </div>
-
-//             <div className="space-y-3 mb-6">
-//               {question.options.map((option, optIndex) => (
-//                 <div
-//                   key={option.identifier}
-//                   className="p-3 border rounded-md flex items-center bg-gray-50 dark:bg-zinc-700 border-gray-300 dark:border-zinc-600"
-//                 >
-//                   <button
-//                     onClick={() => toggleCorrectOption(index, optIndex)}
-//                     className={`inline-flex items-center justify-center w-6 h-6 mr-3 rounded-full font-medium text-sm cursor-pointer
-//                       ${
-//                         option.isCorrect
-//                           ? "bg-green-500 dark:bg-green-600 text-white"
-//                           : "bg-gray-300 dark:bg-zinc-600 hover:bg-gray-400 dark:hover:bg-zinc-500"
-//                       }`}
-//                   >
-//                     {option.identifier}
-//                   </button>
-
-//                   <div className="flex-1 flex items-center gap-2">
-//                     <input
-//                       type="text"
-//                       value={option.text}
-//                       onChange={(e) =>
-//                         handleOptionChange(
-//                           index,
-//                           optIndex,
-//                           "text",
-//                           e.target.value
-//                         )
-//                       }
-//                       className="flex-1 bg-transparent border-b border-gray-300 dark:border-zinc-600 focus:border-blue-500 dark:focus:border-blue-400 outline-none p-1"
-//                       placeholder="Enter option text..."
-//                     />
-//                     {question.options.length > 2 && (
-//                       <button
-//                         onClick={() => removeOption(index, optIndex)}
-//                         className="text-red-500 hover:text-red-700 dark:hover:text-red-400 p-1"
-//                         title="Remove option"
-//                       >
-//                         <X size={16} />
-//                       </button>
-//                     )}
-//                   </div>
-//                 </div>
-//               ))}
-
-//               {question.options.length < 6 && (
-//                 <button
-//                   onClick={() => addNewOption(index)}
-//                   className="flex items-center gap-2 text-sm text-blue-500 hover:text-blue-700 dark:hover:text-blue-400 p-2 border-2 border-dashed border-gray-300 dark:border-zinc-600 rounded-md w-full justify-center"
-//                 >
-//                   <Plus size={16} /> Add Option
-//                 </button>
-//               )}
-//             </div>
-
-//             <div className="space-y-4">
-//               <div>
-//                 <label className="block font-medium text-gray-700 dark:text-zinc-300 mb-2">
-//                   Explanation:
-//                 </label>
-//                 <textarea
-//                   value={question.explanation || ""}
-//                   onChange={(e) =>
-//                     handleQuestionChange(index, "explanation", e.target.value)
-//                   }
-//                   className="w-full p-3 border border-gray-300 dark:border-zinc-600 rounded-md bg-gray-50 dark:bg-zinc-700 text-gray-800 dark:text-zinc-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none resize-none"
-//                   placeholder="Enter explanation..."
-//                   rows={3}
-//                 />
-//               </div>
-//               <div>
-//                 <label className="block font-medium text-gray-700 dark:text-zinc-300 mb-2">
-//                   Solution (Optional):
-//                 </label>
-//                 <textarea
-//                   value={question.solution || ""}
-//                   onChange={(e) =>
-//                     handleQuestionChange(index, "solution", e.target.value)
-//                   }
-//                   className="w-full p-3 border border-gray-300 dark:border-zinc-600 rounded-md bg-gray-50 dark:bg-zinc-700 text-gray-800 dark:text-zinc-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none resize-none"
-//                   placeholder="Enter detailed solution..."
-//                   rows={2}
-//                 />
-//               </div>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//     </Layout>
-//   );
-// };
-
-// export default QuestionEditPage;
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -347,7 +11,6 @@ import {
   ChevronUp,
   ChevronDown,
 } from "lucide-react";
-import Layout from "../components/layouts/layout";
 import { AppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
 
@@ -621,17 +284,17 @@ const QuestionEditPage = () => {
 
   if (loading && questions.length === 0) {
     return (
-      <Layout>
+      
         <div className="flex justify-center dark:bg-black items-center h-screen">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
         </div>
-      </Layout>
+      
     );
   }
 
   if (error) {
     return (
-      <Layout>
+     
         <div className="flex justify-center items-center h-screen text-red-500">
           <div className="bg-red-100 dark:bg-red-900/20 p-6 rounded-lg max-w-md">
             <h3 className="text-lg font-bold mb-2">Error</h3>
@@ -644,12 +307,12 @@ const QuestionEditPage = () => {
             </button>
           </div>
         </div>
-      </Layout>
+     
     );
   }
 
   return (
-    <Layout>
+    
       <div className="container w-full px-4 py-8 max-w-3xl mx-auto">
         <h1 className="text-3xl capitalize text-center mb-8 text-blue-600 dark:text-blue-400">
           Editing:{" "}
@@ -882,7 +545,7 @@ const QuestionEditPage = () => {
           ))}
         </div>
       </div>
-    </Layout>
+   
   );
 };
 

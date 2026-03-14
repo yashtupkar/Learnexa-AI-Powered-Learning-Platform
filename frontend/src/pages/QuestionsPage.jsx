@@ -25,7 +25,6 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import Layout from "../components/layouts/layout";
 import toast from "react-hot-toast";
 import { StreakUpdate } from "../../utils/streakService";
 import { Helmet } from "react-helmet-async";
@@ -419,7 +418,7 @@ const Pagination = ({ currentPage, totalPages, paginate }) => {
   }
 
   return (
-    <Layout>
+    <>
       <Helmet>
         <title>{subject}| Learnexa</title>
       </Helmet>
@@ -879,7 +878,7 @@ const Pagination = ({ currentPage, totalPages, paginate }) => {
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 

@@ -1,5 +1,4 @@
 
-import Layout from "../components/layouts/layout";
 import { useState, useEffect, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -36,11 +35,11 @@ const NotificationPage = () => {
   const [expandedNotifications, setExpandedNotifications] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
-  
+
 
   const { user } = useSelector((state) => state.auth);
   const { backend_URL } = useContext(AppContext);
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const fetchGlobalNotifications = async () => {
     try {
@@ -65,7 +64,7 @@ const NotificationPage = () => {
 
       const receivedNotifications = response.data.notifications || [];
       setNotifications(receivedNotifications);
-      
+
       if (receivedNotifications.length === 0 && user?.name) {
         addWelcomeNotification();
       } else {
@@ -90,10 +89,10 @@ const NotificationPage = () => {
       title: `🎉 Welcome, ${user.name} to Learnexa!`,
       message: "We're thrilled to have you here! 🚀 Start exploring the amazing features we've built just for you. Here are some things you can do:\n\n• Complete your profile to get personalized recommendations\n• Explore courses in your areas of interest\n• Join community discussions\n• Set up your learning goals",
       type: "welcome",
-      time: new Date().toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'short', 
-        day: 'numeric' 
+      time: new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
       }),
       read: false,
     };
@@ -110,84 +109,84 @@ const NotificationPage = () => {
     setUnreadCount(notifications.filter((n) => !n.read).length);
   }, [notifications]);
 
- const markAsRead = async (id) => {
-   try {
-     const res = await axios.patch(
-       `${backend_URL}/api/user/mark-as-read`,
-       { notificationId: id },
-       {
-         headers: {
-           Authorization: `Bearer ${localStorage.getItem("token")}`,
-           "Content-Type": "application/json",
-         },
-       }
-     );
+  const markAsRead = async (id) => {
+    try {
+      const res = await axios.patch(
+        `${backend_URL}/api/user/mark-as-read`,
+        { notificationId: id },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-     dispatch(
-            userUpdate(res.data.user)
-          );
-    userNotifications();
-     setUnreadCount(updated.filter((n) => !n.read).length);
-   
-   } catch (error) {
-     console.error("Error marking notification as read:", {
-       message: error.message,
-       response: error.response?.data,
-       status: error.response?.status,
-     });
-   }
- };
+      dispatch(
+        userUpdate(res.data.user)
+      );
+      userNotifications();
+      setUnreadCount(updated.filter((n) => !n.read).length);
 
-const deleteNotification = async (id) => {
-  try {
-    const res =await axios.delete(`${backend_URL}/api/user/delete-notification`, {
-      data: { notificationId: id },
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
-      },
-    });
-   dispatch(
-          userUpdate(res.data.user)
-        );
-    userNotifications();
-    setUnreadCount(updated.filter((n) => !n.read).length);
-  } catch (error) {
-    console.error("Error deleting notification:", {
-      message: error.message,
-      response: error.response?.data,
-      status: error.response?.status,
-    });
-  }
-};
+    } catch (error) {
+      console.error("Error marking notification as read:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+      });
+    }
+  };
 
-const markAllAsRead = async () => {
-  try {
-    await axios.post(
-      `${backend_URL}/api/user/mark-all-notifications-as-read`,
-      {}, // Empty body since we only need the userId from the token
-      {
+  const deleteNotification = async (id) => {
+    try {
+      const res = await axios.delete(`${backend_URL}/api/user/delete-notification`, {
+        data: { notificationId: id },
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
         },
-      }
-    );
+      });
+      dispatch(
+        userUpdate(res.data.user)
+      );
+      userNotifications();
+      setUnreadCount(updated.filter((n) => !n.read).length);
+    } catch (error) {
+      console.error("Error deleting notification:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+      });
+    }
+  };
 
-    const updated = notifications.map((notification) => ({
-      ...notification,
-      read: true,
-    }));
-    setNotifications(updated);
-    setUnreadCount(0);
-  } catch (error) {
-    console.error("Error marking all notifications as read:", {
-      message: error.message,
-      response: error.response?.data,
-      status: error.response?.status,
-    });
-  }
-};
+  const markAllAsRead = async () => {
+    try {
+      await axios.post(
+        `${backend_URL}/api/user/mark-all-notifications-as-read`,
+        {}, // Empty body since we only need the userId from the token
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const updated = notifications.map((notification) => ({
+        ...notification,
+        read: true,
+      }));
+      setNotifications(updated);
+      setUnreadCount(0);
+    } catch (error) {
+      console.error("Error marking all notifications as read:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+      });
+    }
+  };
 
 
 
@@ -251,7 +250,7 @@ const markAllAsRead = async () => {
 
   const formatMessage = (message) => {
     if (!message) return null;
-    
+
     return message.split('\n').map((paragraph, i) => (
       <p key={i} className="mb-2 last:mb-0">
         {paragraph}
@@ -266,7 +265,7 @@ const markAllAsRead = async () => {
   const showEmptyState = currentNotifications.length === 0 && !isLoading;
 
   return (
-    <Layout>
+    <>
       <Helmet>
         <title>Notifications | Learnexa</title>
       </Helmet>
@@ -290,11 +289,10 @@ const markAllAsRead = async () => {
           <div className="flex border-b border-zinc-200 dark:border-zinc-700 mb-6">
             <button
               onClick={() => setActiveTab("personal")}
-              className={`px-4 py-2 font-medium flex items-center ${
-                activeTab === "personal"
+              className={`px-4 py-2 font-medium flex items-center ${activeTab === "personal"
                   ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-500"
                   : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
-              }`}
+                }`}
             >
               Personal
               {unreadCount > 0 && (
@@ -305,11 +303,10 @@ const markAllAsRead = async () => {
             </button>
             <button
               onClick={() => setActiveTab("global")}
-              className={`px-4 py-2 font-medium ${
-                activeTab === "global"
+              className={`px-4 py-2 font-medium ${activeTab === "global"
                   ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-500"
                   : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
-              }`}
+                }`}
             >
               Global
             </button>
@@ -365,13 +362,12 @@ const markAllAsRead = async () => {
                 .map((notification) => (
                   <div
                     key={notification.id}
-                    className={`rounded-lg overflow-hidden transition-all duration-200 ${
-                      !notification.read && activeTab === "personal"
+                    className={`rounded-lg overflow-hidden transition-all duration-200 ${!notification.read && activeTab === "personal"
                         ? `ring-1 ring-blue-500/30 ${getNotificationColor(
-                            notification.type
-                          )}`
+                          notification.type
+                        )}`
                         : "bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700"
-                    }`}
+                      }`}
                   >
                     <div className="p-4">
                       <div className="flex items-start gap-3">
@@ -381,11 +377,10 @@ const markAllAsRead = async () => {
                         <div className="flex-1 min-w-0">
                           <div className="flex justify-between items-start">
                             <h3
-                              className={`font-medium truncate ${
-                                !notification.read && activeTab === "personal"
+                              className={`font-medium truncate ${!notification.read && activeTab === "personal"
                                   ? "text-blue-600 dark:text-blue-400"
                                   : "text-zinc-900 dark:text-zinc-100"
-                              }`}
+                                }`}
                             >
                               {notification.title}
                             </h3>
@@ -395,11 +390,10 @@ const markAllAsRead = async () => {
                           </div>
 
                           <div
-                            className={`text-sm text-zinc-600 dark:text-zinc-300 mt-1 ${
-                              expandedNotifications[notification.id]
+                            className={`text-sm text-zinc-600 dark:text-zinc-300 mt-1 ${expandedNotifications[notification.id]
                                 ? ""
                                 : "line-clamp-3"
-                            }`}
+                              }`}
                             onClick={() =>
                               toggleExpandNotification(notification.id)
                             }
@@ -463,7 +457,7 @@ const markAllAsRead = async () => {
           )}
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 

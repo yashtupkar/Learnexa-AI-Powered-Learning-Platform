@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { useState, useEffect } from "react";
-import Layout from "../components/layouts/layout";
 import { Trophy } from "lucide-react";
 import axios from "axios";
 import { AppContext } from "../context/AppContext";
@@ -317,7 +316,7 @@ const StreakMap = () => {
   };
 
   return (
-    <Layout>
+    <>
       <Helmet>
         <title>Streak | Learnexa</title>
       </Helmet>
@@ -685,7 +684,7 @@ const StreakMap = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 

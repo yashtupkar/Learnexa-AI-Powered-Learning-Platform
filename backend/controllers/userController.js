@@ -395,18 +395,18 @@ const addYoutubeApiKey = async (req, res) => {
          .json({ success: false, message: "User not found" });
      }
     if (user.youtubeApiKey) {
-       res.json("api key is already saved")
+       return res.json({ success: true, message: "api key is already saved" });
     }
     else {
           user.youtubeApiKey = youtubeApiKey;
 
     }
-    user.save();
-    res.json({
+    await user.save();
+    return res.json({
       success: true,
       message: "Api saved successfully",
       user
-    })
+    });
   } catch (error) {
     console.log(error);
   }

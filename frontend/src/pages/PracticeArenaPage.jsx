@@ -31,7 +31,6 @@ import {
   Star,
 } from "lucide-react";
 import Confetti from "react-confetti";
-import Layout from "../components/layouts/layout";
 
 const PracticeArena = () => {
   const navigate = useNavigate();
@@ -247,7 +246,7 @@ const PracticeArena = () => {
   };
 
     return (
-      <Layout>
+      
         <div className="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen">
           {showConfetti && (
             <Confetti
@@ -750,7 +749,6 @@ const PracticeArena = () => {
             </div>
           </div>
         </div>
-      </Layout>
     );
 };
 

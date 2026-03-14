@@ -9,7 +9,6 @@ import {
   BookOpen,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import Layout from "../components/layouts/layout";
 import { Helmet } from "react-helmet-async";
 import Navbar from "../components/NavigationBar";
 import { useSelector } from "react-redux";

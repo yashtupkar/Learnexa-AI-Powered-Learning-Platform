@@ -719,7 +719,7 @@ const QuizResults = () => {
           colors={["#f59e0b", "#10b981", "#3b82f6", "#6366f1", "#ec4899"]}
         />
       )}
-   
+
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-zinc-900 dark:to-zinc-800 font-sans text-gray-800 dark:text-gray-200 p-4 sm:p-6 lg:p-8 flex items-center justify-center transition-colors duration-300">
         <main className="w-full max-w-3xl mx-auto space-y-8">
           {/* Hero Section */}
@@ -876,7 +876,7 @@ const QuizResults = () => {
           </motion.div>
 
           {/* Performance Badge */}
-  
+
 
           {/* Review Accordion Section */}
           <div className="text-center">
@@ -916,9 +916,8 @@ const QuizResults = () => {
                   >
                     <div className="flex items-start gap-3">
                       <div
-                        className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
-                          q.is_correct ? "bg-green-500" : "bg-red-500"
-                        }`}
+                        className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${q.is_correct ? "bg-green-500" : "bg-red-500"
+                          }`}
                       ></div>
                       <div className="w-full">
                         <p className="font-semibold text-gray-800 dark:text-gray-200">
@@ -926,18 +925,16 @@ const QuizResults = () => {
                         </p>
                         <div className="mt-3 space-y-2">
                           <div
-                            className={`flex items-center gap-2 p-2 rounded ${
-                              q.is_correct
+                            className={`flex items-center gap-2 p-2 rounded ${q.is_correct
                                 ? "bg-green-50 dark:bg-green-900/20"
                                 : "bg-red-50 dark:bg-red-900/20"
-                            }`}
+                              }`}
                           >
                             <span
-                              className={`text-sm font-medium ${
-                                q.is_correct
+                              className={`text-sm font-medium ${q.is_correct
                                   ? "text-gray-600 dark:text-gray-400"
                                   : "text-red-500"
-                              }`}
+                                }`}
                             >
                               Your answer:
                             </span>
@@ -1009,8 +1006,8 @@ const QuizResults = () => {
                 </motion.span>
               )}
             </motion.button>
-          
-       
+
+
             <div className="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
             <motion.button
               onClick={() => navigate("/dashboard")}

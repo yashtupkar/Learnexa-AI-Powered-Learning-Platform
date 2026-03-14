@@ -3,7 +3,7 @@
 // const InterviewResponseAnalyzer = async (question, answer) => {
 //   const prompt = `
 //   You are a Interviewer you have to Analyze this interview response and provide detailed feedback in JSON format:
-  
+
 //   Question: "${question}"
 //   Answer: "${answer}"
 
@@ -270,9 +270,11 @@ const InterviewResponseAnalyzer = async (question, answer) => {
   `;
 
   const API_KEY = process.env.OPENROUTER_API_KEY;
+  const requestTimeoutMs = 30000;
+  const modelName = "openrouter/free";
 
   try {
-    const response = await fetch(
+    const response = await fetchWithTimeout(
       "https://openrouter.ai/api/v1/chat/completions",
       {
         method: "POST",
@@ -282,18 +284,18 @@ const InterviewResponseAnalyzer = async (question, answer) => {
           "HTTP-Referer": "https://localhost:5173",
         },
         body: JSON.stringify({
-          model: "deepseek/deepseek-r1:free", // Using a more powerful model
+          model: modelName,
           messages: [
             {
               role: "user",
               content: prompt,
             },
           ],
-          temperature: 0.2, // Lower temperature for more focused responses
-          max_tokens: 4000, // Allow for longer, more detailed responses
+          temperature: 0.2,
           response_format: { type: "json_object" },
         }),
-      }
+      },
+      requestTimeoutMs,
     );
 
     if (!response.ok) {
@@ -328,7 +330,7 @@ const InterviewResponseAnalyzer = async (question, answer) => {
       // Add metadata
       analysis.metadata = {
         analyzedAt: new Date().toISOString(),
-        modelUsed: "anthropic/claude-3-opus",
+        modelUsed: modelName,
         questionLength: question.length,
         answerLength: answer.length,
         wordCount: answer.split(/\s+/).length,
@@ -345,6 +347,16 @@ const InterviewResponseAnalyzer = async (question, answer) => {
     return getEnhancedFallbackAnalysis(question, answer, error.message);
   }
 };
+
+async function fetchWithTimeout(url, options, timeoutMs) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
 
 // Helper functions
 function extractJsonFromResponse(rawString) {
@@ -389,7 +401,7 @@ function isValidEnhancedAnalysis(analysis) {
       (score) =>
         typeof analysis.scores[score] === "number" &&
         analysis.scores[score] >= 1 &&
-        analysis.scores[score] <= 10
+        analysis.scores[score] <= 10,
     ) &&
     typeof analysis.contentAnalysis === "object" &&
     Array.isArray(analysis.strengths.items) &&
@@ -412,7 +424,7 @@ function calculateEnhancedOverallScore(scores) {
   return parseFloat(
     Object.entries(scores)
       .reduce((sum, [key, value]) => sum + value * weights[key], 0)
-      .toFixed(1)
+      .toFixed(1),
   );
 }
 

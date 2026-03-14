@@ -163,9 +163,8 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden transition-all duration-300 ease-in-out ${
-          mobileMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
-        } overflow-hidden`}
+        className={`md:hidden transition-all duration-300 ease-in-out ${mobileMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+          } overflow-hidden`}
       >
         <div className="px-4 pt-2 pb-4 space-y-2 border-t border-gray-200 dark:border-gray-800">
           {isAuthenticated ? (

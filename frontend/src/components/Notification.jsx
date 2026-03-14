@@ -78,8 +78,8 @@ export default function Notifications() {
         }}
       >
         <Bell
-          sm:size={18}
-          size={16}
+          sm:size={14}
+          size={14}
           className="text-gray-500 dark:text-gray-400 group-hover:text-gray-800 dark:group-hover:text-gray-200 transition-colors duration-200"
         />
         {unreadCount > 0 && (
@@ -91,3 +91,4 @@ export default function Notifications() {
     </div>
   );
 }
+
